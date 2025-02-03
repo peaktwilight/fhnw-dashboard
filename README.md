@@ -50,3 +50,13 @@ Created by [Doruk Tan Ozturk](https://doruk.ch)
 ## Disclaimer
 
 This is an unofficial student project and is not affiliated with FHNW. Made by a student, for students.
+
+## Deployment
+
+This project is deployed on Vercel. To deploy your own instance:
+
+1. Push to GitHub
+2. Import to [Vercel](https://vercel.com)
+3. Configure custom domain if needed
+
+Live version: [fhnw.doruk.ch](https://fhnw.doruk.ch)
