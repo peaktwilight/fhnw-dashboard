@@ -21,27 +21,6 @@ const headerVariants = {
   }
 };
 
-const iconVariants = {
-  hidden: { opacity: 0, scale: 0.8, rotate: -180 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  },
-  hover: {
-    scale: 1.1,
-    rotate: 15,
-    transition: {
-      duration: 0.2,
-      ease: "easeInOut"
-    }
-  }
-};
-
 export default function SectionHeader({ title, subtitle, icon, rightElement }: SectionHeaderProps) {
   return (
     <motion.div

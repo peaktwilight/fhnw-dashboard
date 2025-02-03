@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Registration {
   modulanlassAnmeldungId: number;
@@ -106,7 +106,6 @@ export default function RegistrationWidget() {
   const [activeTab, setActiveTab] = useState<'overview' | 'completed' | 'current'>('overview');
   const [searchTerm, setSearchTerm] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     setMounted(true);
