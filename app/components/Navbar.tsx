@@ -58,7 +58,7 @@ export default function Navbar() {
             <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-1 sm:mx-2"></div>
 
             <a
-              href="https://github.com/yourusername/fhnw-dashboard"
+              href="https://github.com/peaktwilight/fhnw-dashboard"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
