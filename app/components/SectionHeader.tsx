@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 interface SectionHeaderProps {
   title: string;
   subtitle: string;
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
+  rightElement?: React.ReactNode;
 }
 
 const headerVariants = {
@@ -41,41 +42,38 @@ const iconVariants = {
   }
 };
 
-export default function SectionHeader({ title, subtitle, icon }: SectionHeaderProps) {
+export default function SectionHeader({ title, subtitle, icon, rightElement }: SectionHeaderProps) {
   return (
     <motion.div
       variants={headerVariants}
       initial="hidden"
       animate="visible"
-      className="flex items-center space-x-2"
+      className="flex flex-col gap-1"
     >
-      {icon && (
+      <div className="flex items-center gap-2">
         <motion.div
-          variants={iconVariants}
-          whileHover="hover"
-          className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-300"
+          initial={{ rotate: -90, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-blue-600 dark:text-blue-400"
         >
           {icon}
         </motion.div>
-      )}
-      <div>
-        <motion.h2
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-lg font-semibold text-gray-900 dark:text-white"
-        >
-          {title}
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-sm text-gray-600 dark:text-gray-400"
-        >
-          {subtitle}
-        </motion.p>
+        <div className="flex items-center">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white leading-none m-0">
+            {title}
+          </h2>
+          {rightElement}
+        </div>
       </div>
+      <motion.p
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.3 }}
+        className="text-sm text-gray-600 dark:text-gray-400 ml-7 hidden sm:block"
+      >
+        {subtitle}
+      </motion.p>
     </motion.div>
   );
 } 

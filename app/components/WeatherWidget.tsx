@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface WeatherData {
   current: {
@@ -77,6 +78,45 @@ function getWeatherIcon(code: string) {
   return <WeatherIcons.ClearDay />;
 }
 
+// Add animation variants before the component
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 }
+  }
+};
+
+const iconVariants = {
+  hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  },
+  hover: {
+    scale: 1.1,
+    rotate: 15,
+    transition: { duration: 0.3 }
+  }
+};
+
 export default function WeatherWidget() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -120,7 +160,11 @@ export default function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm"
+      >
         <div className="animate-pulse flex flex-col gap-4">
           {/* Current Weather Loading */}
           <div className="flex items-center justify-between">
@@ -153,44 +197,69 @@ export default function WeatherWidget() {
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/50 rounded-lg p-4">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-red-50 dark:bg-red-900/50 rounded-lg p-4"
+      >
         <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <span className="text-sm font-medium">{error}</span>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   if (!weather) return null;
 
   return (
-    <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
-      <div className="flex flex-col gap-4">
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm"
+    >
+      <motion.div variants={containerVariants} className="flex flex-col gap-4">
         {/* Current Weather */}
-        <div className="flex items-center justify-between">
+        <motion.div variants={itemVariants} className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14">
+            <motion.div 
+              variants={iconVariants}
+              whileHover="hover"
+              className="w-14 h-14"
+            >
               {getWeatherIcon(weather.current.icon)}
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <motion.div 
+                className="text-3xl font-bold text-gray-900 dark:text-white"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
                 {Math.round(weather.current.temp)}°C
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-300 capitalize">
+              </motion.div>
+              <motion.div 
+                className="text-sm text-gray-600 dark:text-gray-300 capitalize"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+              >
                 {weather.current.description}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
-          <div className="flex flex-col items-end gap-1">
+          <motion.div 
+            variants={itemVariants}
+            className="flex flex-col items-end gap-1"
+          >
             <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -203,14 +272,22 @@ export default function WeatherWidget() {
               </svg>
               <span>Humidity {weather.current.humidity}%</span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Forecast */}
         {weather.forecast.length > 0 && (
-          <div className="grid grid-cols-3 gap-2">
+          <motion.div 
+            variants={containerVariants}
+            className="grid grid-cols-3 gap-2"
+          >
             {weather.forecast.map((day, index) => (
-              <div key={index} className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-2">
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05 }}
+                className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-2"
+              >
                 <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                   {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
                 </div>
@@ -227,11 +304,11 @@ export default function WeatherWidget() {
                     {getWeatherIcon(day.icon)}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 } 

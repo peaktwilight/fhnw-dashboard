@@ -58,6 +58,29 @@ const cardVariants = {
   }
 };
 
+// Update the LiveIndicator component
+const LiveIndicator = () => (
+  <motion.div 
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="inline-flex items-center h-5 px-1.5 text-[10px] font-medium tracking-wide uppercase rounded-full bg-green-100 dark:bg-green-900/30 ml-2 text-green-700 dark:text-green-300"
+  >
+    <motion.div
+      className="w-1.5 h-1.5 mr-1 rounded-full bg-green-500 dark:bg-green-400"
+      animate={{
+        scale: [1, 1.2, 1],
+        opacity: [1, 0.7, 1],
+      }}
+      transition={{
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+    Live
+  </motion.div>
+);
+
 export default function Home() {
   const resources = [
     {
@@ -124,53 +147,51 @@ export default function Home() {
         className="space-y-4"
       >
         {/* Weather */}
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <SectionHeader
-            title="Weather"
-            subtitle="Current weather in Brugg"
-            icon={
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-              </svg>
-            }
-          />
-          <motion.div 
-            className="mt-3"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <WeatherWidget />
-          </motion.div>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible">
+          <div className="flex flex-col gap-1">
+            <SectionHeader
+              title="Weather"
+              subtitle="Current weather in Brugg"
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                </svg>
+              }
+              rightElement={<LiveIndicator />}
+            />
+            <motion.div 
+              className="mt-3"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <WeatherWidget />
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Transport */}
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <SectionHeader
-            title="Transport"
-            subtitle="Train departures from Brugg station"
-            icon={
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16v-4a2 2 0 00-2-2H6l3.47-3.47a4 4 0 015.66 0L18.59 10H14a2 2 0 00-2 2v4m-5 0v1a2 2 0 002 2h6a2 2 0 002-2v-1m-5 0h5" />
-              </svg>
-            }
-          />
-          <motion.div 
-            className="mt-3"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <StationBoard />
-          </motion.div>
+        <motion.div variants={sectionVariants} initial="hidden" animate="visible">
+          <div className="flex flex-col gap-1">
+            <SectionHeader
+              title="Transport"
+              subtitle="Train departures from Brugg station"
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16v-4a2 2 0 00-2-2H6l3.47-3.47a4 4 0 015.66 0L18.59 10H14a2 2 0 00-2 2v4m-5 0v1a2 2 0 002 2h6a2 2 0 002-2v-1m-5 0h5" />
+                </svg>
+              }
+              rightElement={<LiveIndicator />}
+            />
+            <motion.div 
+              className="mt-3"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <StationBoard />
+            </motion.div>
+          </div>
         </motion.div>
       </motion.div>
 
@@ -180,21 +201,48 @@ export default function Home() {
         id="menu" 
         className="space-y-4"
       >
+        <div className="flex flex-col gap-1">
+          <SectionHeader
+            title="Today's Menu"
+            subtitle="FHNW Mensa daily offerings"
+            icon={
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            }
+            rightElement={<LiveIndicator />}
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <MenuDisplay />
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Registrations Section */}
+      <motion.section 
+        variants={sectionVariants}
+        id="registrations" 
+        className="space-y-4"
+      >
         <SectionHeader
-          title="Today's Menu"
-          subtitle="FHNW Mensa daily offerings"
+          title="Semester Progress Tracker"
+          subtitle="Visualize your grades, modules, and academic journey at FHNW"
           icon={
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           }
         />
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <MenuDisplay />
+          <RegistrationWidget />
         </motion.div>
       </motion.section>
 
@@ -214,7 +262,7 @@ export default function Home() {
           }
         />
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -263,30 +311,6 @@ export default function Home() {
               </div>
             </motion.a>
           ))}
-        </motion.div>
-      </motion.section>
-
-      {/* Registrations Section */}
-      <motion.section 
-        variants={sectionVariants}
-        id="registrations" 
-        className="space-y-4"
-      >
-        <SectionHeader
-          title="Academic Progress Tracker"
-          subtitle="Visualize your grades, modules, and academic journey at FHNW"
-          icon={
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          }
-        />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          <RegistrationWidget />
         </motion.div>
       </motion.section>
     </motion.main>
