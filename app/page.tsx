@@ -1,9 +1,62 @@
 'use client';
 import React from 'react';
+import { motion } from 'framer-motion';
 import MenuDisplay from './components/MenuDisplay';
 import WeatherWidget from './components/WeatherWidget';
 import StationBoard from './components/StationBoard';
 import SectionHeader from './components/SectionHeader';
+import RegistrationWidget from './components/RegistrationWidget';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut"
+    }
+  },
+  hover: {
+    y: -8,
+    scale: 1.02,
+    transition: {
+      duration: 0.2,
+      ease: "easeInOut"
+    }
+  },
+  tap: {
+    scale: 0.98,
+    transition: {
+      duration: 0.1
+    }
+  }
+};
 
 export default function Home() {
   const resources = [
@@ -58,11 +111,24 @@ export default function Home() {
   ];
 
   return (
-    <main className="container mx-auto p-4 space-y-12">
+    <motion.main 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="container mx-auto p-4 space-y-12"
+    >
       {/* Weather & Transport Section */}
-      <div id="weather-transport" className="space-y-4">
+      <motion.div 
+        variants={sectionVariants}
+        id="weather-transport" 
+        className="space-y-4"
+      >
         {/* Weather */}
-        <div>
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <SectionHeader
             title="Weather"
             subtitle="Current weather in Brugg"
@@ -72,13 +138,22 @@ export default function Home() {
               </svg>
             }
           />
-          <div className="mt-3">
+          <motion.div 
+            className="mt-3"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <WeatherWidget />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Transport */}
-        <div>
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <SectionHeader
             title="Transport"
             subtitle="Train departures from Brugg station"
@@ -88,14 +163,23 @@ export default function Home() {
               </svg>
             }
           />
-          <div className="mt-3">
+          <motion.div 
+            className="mt-3"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <StationBoard />
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
 
       {/* Menu Section */}
-      <section id="menu" className="space-y-4">
+      <motion.section 
+        variants={sectionVariants}
+        id="menu" 
+        className="space-y-4"
+      >
         <SectionHeader
           title="Today's Menu"
           subtitle="FHNW Mensa daily offerings"
@@ -105,11 +189,21 @@ export default function Home() {
             </svg>
           }
         />
-        <MenuDisplay />
-      </section>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <MenuDisplay />
+        </motion.div>
+      </motion.section>
 
       {/* Quick Links Section */}
-      <section id="links" className="space-y-4">
+      <motion.section 
+        variants={sectionVariants}
+        id="links" 
+        className="space-y-4"
+      >
         <SectionHeader
           title="Quick Links"
           subtitle="Frequently used FHNW resources"
@@ -119,29 +213,82 @@ export default function Home() {
             </svg>
           }
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {resources.map((resource, index) => (
-            <a
+            <motion.a
               key={index}
               href={resource.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              variants={cardVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/10"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              />
               <div className="relative z-10 flex flex-col items-center text-center">
-                <span className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{resource.icon}</span>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <motion.span 
+                  className="text-4xl mb-4"
+                  whileHover={{ scale: 1.2, rotate: [0, -10, 10, -10, 0] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {resource.icon}
+                </motion.span>
+                <motion.h3 
+                  className="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
                   {resource.title}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                </motion.h3>
+                <motion.p 
+                  className="text-sm text-gray-600 dark:text-gray-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
                   {resource.description}
-                </p>
+                </motion.p>
               </div>
-            </a>
+            </motion.a>
           ))}
-        </div>
-      </section>
-    </main>
+        </motion.div>
+      </motion.section>
+
+      {/* Registrations Section */}
+      <motion.section 
+        variants={sectionVariants}
+        id="registrations" 
+        className="space-y-4"
+      >
+        <SectionHeader
+          title="Academic Progress Tracker"
+          subtitle="Visualize your grades, modules, and academic journey at FHNW"
+          icon={
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          }
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <RegistrationWidget />
+        </motion.div>
+      </motion.section>
+    </motion.main>
   );
 } 

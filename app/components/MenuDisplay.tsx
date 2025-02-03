@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { DailyMenu, MenuItem, ALLERGEN_MAP } from '../types/menu';
 import { getMenu } from '../services/menuService';
