@@ -17,6 +17,21 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
+  background-image: 
+    radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.03) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.03) 0px, transparent 50%);
+}
+
+.bg-grid-gray-900\/\[0\.02\] {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgb(17 24 39 / 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(17 24 39 / 0.02) 1px, transparent 1px);
+}
+
+.dark .bg-grid-white\/\[0\.02\] {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgb(255 255 255 / 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.02) 1px, transparent 1px);
 }
 
 @layer base {
