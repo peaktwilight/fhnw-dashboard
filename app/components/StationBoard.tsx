@@ -100,7 +100,7 @@ export default function StationBoard() {
 
   return (
     <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {departures.map((departure, index) => {
           const scheduledTime = new Date(departure.stop.departure);
           const prognosisTime = departure.stop.prognosis.departure 
