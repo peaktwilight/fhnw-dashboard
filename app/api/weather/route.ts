@@ -1,5 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+interface OpenWeatherResponse {
+  main: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+  };
+  weather: Array<{
+    description: string;
+    icon: string;
+  }>;
+}
+
+interface OpenWeatherForecastResponse {
+  list: Array<{
+    dt: number;
+    main: {
+      temp_min: number;
+      temp_max: number;
+    };
+    weather: Array<{
+      description: string;
+      icon: string;
+    }>;
+  }>;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -21,56 +47,45 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch current weather and forecast data in parallel
-    const [currentResponse, forecastResponse] = await Promise.all([
-      fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-      ),
-      fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-      )
-    ]);
+    // Fetch current weather
+    const currentRes = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+    );
+    const currentData: OpenWeatherResponse = await currentRes.json();
 
-    if (!currentResponse.ok || !forecastResponse.ok) {
-      throw new Error('Failed to fetch weather data');
-    }
+    // Fetch forecast
+    const forecastRes = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+    );
+    const forecastData: OpenWeatherForecastResponse = await forecastRes.json();
 
-    const [currentData, forecastData] = await Promise.all([
-      currentResponse.json(),
-      forecastResponse.json()
-    ]);
+    // Process forecast data to get daily values
+    const dailyForecasts = forecastData.list
+      .filter((item, index) => index % 8 === 0) // Get one reading per day (every 8th item is 24h apart)
+      .slice(0, 3) // Get next 3 days
+      .map(day => ({
+        date: day.dt * 1000, // Convert to milliseconds
+        temp: {
+          min: Math.round(day.main.temp_min),
+          max: Math.round(day.main.temp_max)
+        },
+        description: day.weather[0].description,
+        icon: day.weather[0].icon
+      }));
 
-    // Get unique days from forecast (excluding today)
-    const today = new Date().setHours(0, 0, 0, 0);
-    const uniqueDays = forecastData.list.reduce((acc: any[], item: any) => {
-      const date = new Date(item.dt * 1000).setHours(0, 0, 0, 0);
-      if (date > today && !acc.find((d: any) => d.date === date)) {
-        acc.push({
-          date,
-          temp: {
-            min: item.main.temp_min,
-            max: item.main.temp_max
-          },
-          description: item.weather[0].description,
-          icon: item.weather[0].icon
-        });
-      }
-      return acc;
-    }, []).slice(0, 3); // Get next 3 days
-
-    // Format the response
-    const weatherData = {
+    // Format response
+    const response = {
       current: {
-        temp: currentData.main.temp,
-        feels_like: currentData.main.feels_like,
+        temp: Math.round(currentData.main.temp),
+        feels_like: Math.round(currentData.main.feels_like),
         humidity: currentData.main.humidity,
         description: currentData.weather[0].description,
-        icon: currentData.weather[0].icon,
+        icon: currentData.weather[0].icon
       },
-      forecast: uniqueDays
+      forecast: dailyForecasts
     };
 
-    return NextResponse.json(weatherData);
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Weather API error:', error);
     return NextResponse.json(
