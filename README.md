@@ -33,6 +33,16 @@ npm run dev
 npm run build
 ```
 
+## Contributing
+
+Feel free to contribute! If you have ideas for new features or improvements:
+
+1. Fork the repository
+2. Create your feature branch
+3. Submit a pull request
+
+All contributions are welcome, especially from fellow FHNW students.
+
 ## Author
 
 Created by [Doruk Tan Ozturk](https://doruk.ch)
