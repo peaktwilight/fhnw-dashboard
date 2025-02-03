@@ -120,22 +120,38 @@ export default function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="animate-pulse bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
-            <div className="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+      <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
+        <div className="animate-pulse flex flex-col gap-4">
+          {/* Current Weather Loading */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+              <div>
+                <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+                <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              </div>
+            </div>
+            <div className="flex flex-col items-end gap-2">
+              <div className="h-4 w-28 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            </div>
           </div>
-        </div>
-        <div className="flex gap-2 mb-3">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex-1 h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
-          ))}
-        </div>
-        <div className="grid grid-cols-3 gap-1">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
-          ))}
+
+          {/* Forecast Loading */}
+          <div className="grid grid-cols-3 gap-2">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-2">
+                <div className="h-3 w-12 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-1">
+                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div className="h-3 w-6 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                  </div>
+                  <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -158,68 +174,56 @@ export default function WeatherWidget() {
 
   return (
     <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm">
-      <div className="space-y-2">
+      <div className="flex flex-col gap-4">
+        {/* Current Weather */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="text-right">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14">
+              {getWeatherIcon(weather.current.icon)}
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">
                 {Math.round(weather.current.temp)}°C
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-300 capitalize">
+              <div className="text-sm text-gray-600 dark:text-gray-300 capitalize">
                 {weather.current.description}
               </div>
             </div>
-            <div className="w-10 h-10">
-              {getWeatherIcon(weather.current.icon)}
-            </div>
           </div>
-        </div>
-
-        <div className="flex gap-2">
-          <div className="flex-1 bg-white/50 dark:bg-gray-700/50 rounded p-2">
-            <div className="flex items-center gap-1 mb-1">
-              <svg className="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span className="text-xs text-gray-600 dark:text-gray-300">Feels Like</span>
+              <span>Feels like {Math.round(weather.current.feels_like)}°C</span>
             </div>
-            <div className="text-sm font-bold text-gray-900 dark:text-white">
-              {Math.round(weather.current.feels_like)}°C
-            </div>
-          </div>
-
-          <div className="flex-1 bg-white/50 dark:bg-gray-700/50 rounded p-2">
-            <div className="flex items-center gap-1 mb-1">
-              <svg className="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
-              <span className="text-xs text-gray-600 dark:text-gray-300">Humidity</span>
-            </div>
-            <div className="text-sm font-bold text-gray-900 dark:text-white">
-              {weather.current.humidity}%
+              <span>Humidity {weather.current.humidity}%</span>
             </div>
           </div>
         </div>
 
+        {/* Forecast */}
         {weather.forecast.length > 0 && (
-          <div className="grid grid-cols-3 gap-1 mt-1">
+          <div className="grid grid-cols-3 gap-2">
             {weather.forecast.map((day, index) => (
-              <div key={index} className="bg-white/50 dark:bg-gray-700/50 rounded p-1">
-                <div className="flex items-center justify-between gap-1">
-                  <div>
-                    <div className="text-[10px] font-medium text-gray-600 dark:text-gray-300">
-                      {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
-                    </div>
-                    <div className="flex items-center gap-0.5">
-                      <span className="text-xs font-bold text-gray-900 dark:text-white">
-                        {Math.round(day.temp.max)}°
-                      </span>
-                      <span className="text-[10px] text-gray-600 dark:text-gray-400">
-                        {Math.round(day.temp.min)}°
-                      </span>
-                    </div>
+              <div key={index} className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-2">
+                <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-gray-900 dark:text-white">
+                      {Math.round(day.temp.max)}°
+                    </span>
+                    <span className="text-xs text-gray-600 dark:text-gray-400">
+                      {Math.round(day.temp.min)}°
+                    </span>
                   </div>
-                  <div className="w-5 h-5">
+                  <div className="w-8 h-8">
                     {getWeatherIcon(day.icon)}
                   </div>
                 </div>

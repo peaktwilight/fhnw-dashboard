@@ -61,29 +61,34 @@ export default function Home() {
     <main className="container mx-auto p-4 space-y-12">
       {/* Weather & Transport Section */}
       <div id="weather-transport" className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-4">
-            <SectionHeader
-              title="Weather"
-              subtitle="Current weather in Brugg"
-              icon={
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                </svg>
-              }
-            />
+        {/* Weather */}
+        <div>
+          <SectionHeader
+            title="Weather"
+            subtitle="Current weather in Brugg"
+            icon={
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+              </svg>
+            }
+          />
+          <div className="mt-3">
             <WeatherWidget />
           </div>
-          <div className="space-y-4">
-            <SectionHeader
-              title="Transport"
-              subtitle="Train departures from Brugg"
-              icon={
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16v-4a2 2 0 00-2-2H6l3.47-3.47a4 4 0 015.66 0L18.59 10H14a2 2 0 00-2 2v4m-5 0v1a2 2 0 002 2h6a2 2 0 002-2v-1m-5 0h5" />
-                </svg>
-              }
-            />
+        </div>
+
+        {/* Transport */}
+        <div>
+          <SectionHeader
+            title="Transport"
+            subtitle="Train departures from Brugg station"
+            icon={
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16v-4a2 2 0 00-2-2H6l3.47-3.47a4 4 0 015.66 0L18.59 10H14a2 2 0 00-2 2v4m-5 0v1a2 2 0 002 2h6a2 2 0 002-2v-1m-5 0h5" />
+              </svg>
+            }
+          />
+          <div className="mt-3">
             <StationBoard />
           </div>
         </div>
