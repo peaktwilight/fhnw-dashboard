@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import MenuDisplay from './components/MenuDisplay';
 
 export default function Home() {
   const resources = [
@@ -55,9 +56,22 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
-        FHNW Student Resources
-      </h1>
+      
+      <div className="mb-8">
+        <MenuDisplay />
+      </div>
+
+      <div className="relative py-8 mb-8">
+        <div className="absolute inset-0 flex items-center" aria-hidden="true">
+          <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-gray-50 dark:bg-gray-900 px-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+            Quick Links
+          </span>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {resources.map((resource, index) => (
           <a
