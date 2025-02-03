@@ -35,7 +35,7 @@ body {
 }
 
 @layer base {
-  h1:not(.no-margin) {
+  h1 {
     @apply text-2xl font-bold mb-4;
   }
   h2 {
