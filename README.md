@@ -11,6 +11,7 @@
 - Real-time weather updates for Brugg campus
 - Live train departures from Brugg station
 - Daily mensa menu with dietary information
+- Latest FHNW news and announcements
 
 📊 **Academic Tools**
 - Visual grade distribution analytics
@@ -18,9 +19,15 @@
 - Study progress monitoring
 - Comprehensive module overview
 
-🎯 **Quick Access**
+🎯 **Smart Navigation**
+- Intelligent navbar with section tracking
+- Smooth scrolling with visual feedback
+- Responsive highlight animations
+- Mobile-optimized menu interface
+
+🔗 **Quick Access**
 - One-click access to all FHNW platforms
-- Smart navigation with smooth scrolling
+- Organized resource categories
 - Mobile-optimized interface
 
 ## 🛠️ Technology
@@ -30,6 +37,7 @@
 - 🎭 **Framer Motion** - Smooth animations
 - 🌙 **Dark Mode** - Easy on the eyes
 - 📱 **Mobile First** - Perfect on all devices
+- 🔄 **Intersection Observer** - Smart scroll tracking
 
 ## 🚀 Getting Started
 
@@ -79,6 +87,9 @@ This is an unofficial student project and is not affiliated with FHNW. Made by a
 
 ## 🔄 Recent Updates
 
+- 📰 Added FHNW news section
+- 🎯 Enhanced navbar with smart section tracking
+- 🎨 Added smooth highlight animations
 - ✨ Added 5-day weather forecast
 - 📊 Enhanced grade analytics
 - 🌙 Improved dark mode
