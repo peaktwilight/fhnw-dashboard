@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment, useState, useEffect } from 'react';
+import { Squares2X2Icon } from '@heroicons/react/24/outline';
 
 const navVariants = {
   hidden: { opacity: 0, y: -20 },
@@ -196,17 +197,13 @@ export default function Navbar() {
               href="/" 
               className="flex items-center gap-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 hover:opacity-80 transition-opacity"
             >
-              <motion.svg 
-                className="w-6 h-6" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
+              <motion.div 
                 initial={{ rotate: 0 }}
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, delay: 0.5 }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </motion.svg>
+                <Squares2X2Icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              </motion.div>
               FHNW Dashboard
             </Link>
           </motion.div>

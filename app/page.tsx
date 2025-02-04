@@ -8,6 +8,16 @@ import SectionHeader from './components/SectionHeader';
 import RegistrationWidget from './components/RegistrationWidget';
 import MapWidget from './components/MapWidget';
 import NewsWidget from './components/NewsWidget';
+import { 
+  HomeIcon, 
+  CalendarIcon, 
+  AcademicCapIcon, 
+  ClockIcon, 
+  ChartBarIcon, 
+  BookOpenIcon, 
+  BuildingOfficeIcon, 
+  PencilSquareIcon 
+} from '@heroicons/react/24/outline';
 
 // Animation variants
 const containerVariants = {
@@ -86,49 +96,49 @@ const LiveIndicator = () => (
 export default function Home() {
   const resources = [
     {
-      icon: '🏛️',
+      icon: <HomeIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'FHNW Homepage',
       description: 'Official website of FHNW',
       link: 'https://www.fhnw.ch'
     },
     {
-      icon: '📚',
+      icon: <CalendarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'Modulplaner',
       description: 'Plan and manage your modules',
       link: 'https://pub092.cs.technik.fhnw.ch/#/'
     },
     {
-      icon: '🎓',
+      icon: <AcademicCapIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'StudentHub',
       description: 'Access student resources and information',
       link: 'https://studenthub.technik.fhnw.ch/#/student'
     },
     {
-      icon: '📅',
+      icon: <ClockIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'Auxilium Timetable',
       description: 'Check your class schedule',
       link: 'https://auxilium.webapps.fhnw.ch/student/timetable'
     },
     {
-      icon: '📊',
+      icon: <ChartBarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'Grades',
       description: 'View your grades',
       link: 'https://auxilium.webapps.fhnw.ch/student/noten'
     },
     {
-      icon: '📖',
+      icon: <BookOpenIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'Moodle',
       description: 'Access your course materials',
       link: 'https://moodle.fhnw.ch/login/index.php'
     },
     {
-      icon: '🏢',
+      icon: <BuildingOfficeIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'Room Reservation',
       description: 'Book rooms and facilities',
       link: 'https://raum.fhnw.ch/'
     },
     {
-      icon: '✍️',
+      icon: <PencilSquareIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
       title: 'ESP Registration',
       description: 'Register for courses',
       link: 'https://esp.technik.fhnw.ch/Views/Register.aspx'
@@ -332,22 +342,29 @@ export default function Home() {
               variants={cardVariants}
               whileHover="hover"
               whileTap="tap"
-              className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6"
+              className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 cursor-pointer"
             >
               <motion.div 
-                className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/10"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
+                className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 dark:from-blue-500/10 dark:via-purple-500/10 dark:to-blue-500/10"
+                initial={{ opacity: 0, backgroundPosition: '0% 50%' }}
+                whileHover={{ 
+                  opacity: 1,
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
               />
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <motion.span 
-                  className="text-4xl mb-4"
+              <div className="flex flex-col items-center text-center relative z-10">
+                <motion.div 
+                  className="mb-4"
                   whileHover={{ scale: 1.2, rotate: [0, -10, 10, -10, 0] }}
                   transition={{ duration: 0.5 }}
                 >
                   {resource.icon}
-                </motion.span>
+                </motion.div>
                 <motion.h3 
                   className="text-lg font-semibold text-gray-900 dark:text-white mb-2"
                   initial={{ opacity: 0 }}
