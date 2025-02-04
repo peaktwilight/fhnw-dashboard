@@ -42,16 +42,21 @@ const logoVariants = {
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState('weather-transport');
+  const [highlightStyle, setHighlightStyle] = useState({});
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setActiveSection(id);
+    if (typeof window !== 'undefined') {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        setActiveSection(id);
+      }
     }
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     // Create an Intersection Observer to track which section is in view
     const observer = new IntersectionObserver(
       (entries) => {
@@ -78,22 +83,29 @@ export default function Navbar() {
   }, []);
 
   // Calculate highlight position
-  const getHighlightStyle = () => {
-    if (!activeSection) return {};
+  useEffect(() => {
+    if (typeof window === 'undefined' || !activeSection) return;
     
-    const activeButton = document.querySelector(`[data-section="${activeSection}"]`);
-    const container = document.querySelector('.relative');
-    
-    if (!activeButton || !container) return {};
+    const calculateHighlightStyle = () => {
+      const activeButton = document.querySelector(`[data-section="${activeSection}"]`);
+      const container = document.querySelector('.relative');
+      
+      if (!activeButton || !container) return {};
 
-    const buttonRect = activeButton.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
+      const buttonRect = activeButton.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
 
-    return {
-      width: buttonRect.width,
-      left: buttonRect.left - containerRect.left,
+      setHighlightStyle({
+        width: buttonRect.width,
+        left: buttonRect.left - containerRect.left,
+      });
     };
-  };
+
+    calculateHighlightStyle();
+    window.addEventListener('resize', calculateHighlightStyle);
+    
+    return () => window.removeEventListener('resize', calculateHighlightStyle);
+  }, [activeSection]);
 
   const menuItems = [
     {
@@ -207,7 +219,7 @@ export default function Navbar() {
               className="absolute h-8 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 border border-blue-500/20 dark:border-blue-500/30"
               layoutId="navbar-highlight"
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              style={getHighlightStyle()}
+              style={highlightStyle}
             />
 
             {menuItems.map((item) => (
