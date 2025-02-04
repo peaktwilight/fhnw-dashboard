@@ -6,6 +6,7 @@ import WeatherWidget from './components/WeatherWidget';
 import StationBoard from './components/StationBoard';
 import SectionHeader from './components/SectionHeader';
 import RegistrationWidget from './components/RegistrationWidget';
+import MapWidget from './components/MapWidget';
 
 // Animation variants
 const containerVariants = {
@@ -220,6 +221,30 @@ export default function Home() {
             <MenuDisplay />
           </motion.div>
         </div>
+      </motion.section>
+
+      {/* Map Section */}
+      <motion.section 
+        variants={sectionVariants}
+        id="map" 
+        className="space-y-4"
+      >
+        <SectionHeader
+          title="Campus Map"
+          subtitle="FHNW Campus Brugg-Windisch location"
+          icon={
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+          }
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <MapWidget />
+        </motion.div>
       </motion.section>
 
       {/* Registrations Section */}
