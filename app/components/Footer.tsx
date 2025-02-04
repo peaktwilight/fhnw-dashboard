@@ -1,6 +1,15 @@
 'use client';
 import { motion } from 'framer-motion';
 
+// Get build info from environment variables
+const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA 
+  ? `${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7)}`
+  : 'dev';
+
+const buildTime = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
+  ? new Date(process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_MESSAGE || '').toLocaleString()
+  : 'development build';
+
 const footerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -99,14 +108,19 @@ export default function Footer() {
               <span>Open Source</span>
             </motion.a>
           </motion.div>
-          <motion.p 
+          <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-xs text-gray-400 dark:text-gray-500"
+            className="flex flex-col items-center gap-1"
           >
-            Not affiliated with FHNW. Made by a student, for students.
-          </motion.p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">
+              Not affiliated with FHNW. Made by a student, for students.
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 font-mono">
+              Build: {buildId}
+            </p>
+          </motion.div>
         </motion.div>
       </div>
     </motion.footer>
