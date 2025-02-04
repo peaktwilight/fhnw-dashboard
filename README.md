@@ -1,97 +1,86 @@
 # FHNW Student Dashboard
 
-A unified dashboard providing quick access to essential FHNW student resources and real-time information. Built with Next.js and Tailwind CSS.
+> 🎓 A modern, unified dashboard for FHNW students. Access all your essential resources in one place.  
+> **[Live Demo →](https://fhnw.doruk.ch)**
 
-## Features
+![FHNW Dashboard Screenshot](public/images/screenshot.png)
 
-- Quick access to all important FHNW platforms
-- Clean, responsive interface with modern animations
-- Dark mode support
-- Mobile-first design with touch-optimized interface
-- Real-time weather information for Brugg campus
-- Module registration tracking and analytics
-- Grade distribution visualization
+## ✨ Features
+
+🌤️ **Live Information**
+- Real-time weather updates for Brugg campus
+- Live train departures from Brugg station
+- Daily mensa menu with dietary information
+
+📊 **Academic Tools**
+- Visual grade distribution analytics
+- Module registration tracking
 - Study progress monitoring
-- Responsive navigation with smooth scrolling
-
-### Dashboard Components
-
-- **Weather Widget**: Real-time weather updates and 3-day forecast
-- **Module Progress**: Visual representation of completed and ongoing modules
-- **Grade Analytics**: Distribution charts and performance metrics
-- **Quick Links**: Grid-based access to essential FHNW resources
-- **Mobile Menu**: Touch-optimized navigation with animations
-
-### Module Registration Features
-
 - Comprehensive module overview
-- Grade distribution visualization
-- Progress tracking with completion percentages
-- Detailed module information including:
-  - Course schedules
-  - Instructor details
-  - Registration dates
-  - Grade history
-  - Capacity statistics
 
-## Resources Included
+🎯 **Quick Access**
+- One-click access to all FHNW platforms
+- Smart navigation with smooth scrolling
+- Mobile-optimized interface
 
-- FHNW Homepage
-- Modulplaner
-- StudentHub
-- Auxilium Timetable
-- Grades Portal
-- Moodle
-- Room Reservation System
-- ESP Course Registration
+## 🛠️ Technology
 
-## Development
+- ⚡️ **Next.js 14** - For lightning-fast performance
+- 🎨 **Tailwind CSS** - Beautiful, responsive design
+- 🎭 **Framer Motion** - Smooth animations
+- 🌙 **Dark Mode** - Easy on the eyes
+- 📱 **Mobile First** - Perfect on all devices
+
+## 🚀 Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/fhnw-dashboard.git
+
 # Install dependencies
 npm install
 
-# Run development server
+# Start development server
 npm run dev
-
-# Build for production
-npm run build
 ```
 
-## Contributing
+Visit `http://localhost:3000` to see your local version!
 
-Feel free to contribute! If you have ideas for new features or improvements:
+## 🤝 Contributing
+
+Contributions are welcome! Whether it's:
+- 🐛 Bug fixes
+- ✨ New features
+- 📚 Documentation improvements
+- 🎨 UI/UX enhancements
 
 1. Fork the repository
 2. Create your feature branch
 3. Submit a pull request
 
-All contributions are welcome, especially from fellow FHNW students.
+## 📱 Available Resources
 
-## Author
+- 🏛️ FHNW Homepage
+- 📚 Modulplaner
+- 🎓 StudentHub
+- 📅 Auxilium Timetable
+- 📊 Grades Portal
+- 📖 Moodle
+- 🏢 Room Reservation
+- ✍️ ESP Registration
 
-Created by [Doruk Tan Ozturk](https://doruk.ch)
+## 👨‍💻 Author
 
-## Disclaimer
+Created with ❤️ by [Doruk Tan Ozturk](https://doruk.ch)
+
+## ⚠️ Disclaimer
 
 This is an unofficial student project and is not affiliated with FHNW. Made by a student, for students.
 
-## Deployment
+## 🔄 Recent Updates
 
-This project is deployed on Vercel. To deploy your own instance:
-
-1. Push to GitHub
-2. Import to [Vercel](https://vercel.com)
-3. Configure custom domain if needed
-
-Live version: [fhnw.doruk.ch](https://fhnw.doruk.ch)
-
-## Recent Updates
-
-- Added real-time weather widget with forecast
-- Implemented module registration analytics
-- Enhanced mobile navigation experience
-- Added grade distribution visualizations
-- Improved accessibility features
-- Added dark mode support
-- Optimized performance with modern animations
+- ✨ Added 5-day weather forecast
+- 📊 Enhanced grade analytics
+- 🌙 Improved dark mode
+- 📱 Optimized mobile experience
+- ⚡️ Performance improvements
