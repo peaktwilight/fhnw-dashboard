@@ -49,7 +49,6 @@ export default function Navbar() {
       const element = document.getElementById(id);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
-        setActiveSection(id);
       }
     }
   };
