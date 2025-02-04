@@ -142,13 +142,12 @@ export default function Home() {
       animate="visible"
       className="container mx-auto p-4 space-y-12"
     >
-      {/* Weather & Transport Section */}
-      <motion.div 
+      {/* Weather Section */}
+      <motion.section 
         variants={sectionVariants}
-        id="weather-transport" 
-        className="space-y-4"
+        id="weather" 
+        className="space-y-4 scroll-mt-20"
       >
-        {/* Weather */}
         <motion.div variants={sectionVariants} initial="hidden" animate="visible">
           <div className="flex flex-col gap-1">
             <SectionHeader
@@ -171,8 +170,14 @@ export default function Home() {
             </motion.div>
           </div>
         </motion.div>
+      </motion.section>
 
-        {/* Transport */}
+      {/* Transport Section */}
+      <motion.section 
+        variants={sectionVariants}
+        id="transport" 
+        className="space-y-4 scroll-mt-20"
+      >
         <motion.div variants={sectionVariants} initial="hidden" animate="visible">
           <div className="flex flex-col gap-1">
             <SectionHeader
@@ -195,7 +200,7 @@ export default function Home() {
             </motion.div>
           </div>
         </motion.div>
-      </motion.div>
+      </motion.section>
 
       {/* News Section */}
       <motion.section 
