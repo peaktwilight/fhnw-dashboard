@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     // Process forecast data to get daily values
     const dailyForecasts = forecastData.list
       .filter((item, index) => index % 8 === 0) // Get one reading per day (every 8th item is 24h apart)
-      .slice(0, 3) // Get next 3 days
+      .slice(0, 5) // Get next 5 days
       .map(day => ({
         date: day.dt * 1000, // Convert to milliseconds
         temp: {

@@ -279,14 +279,16 @@ export default function WeatherWidget() {
         {weather.forecast.length > 0 && (
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-3 gap-2"
+            className="grid grid-cols-6 md:grid-cols-5 gap-2"
           >
             {weather.forecast.map((day, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
                 whileHover={{ scale: 1.05 }}
-                className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-2"
+                className={`bg-white/30 dark:bg-gray-700/30 rounded-lg p-2 ${
+                  index < 2 ? 'col-span-3 md:col-span-1' : 'col-span-2 md:col-span-1'
+                }`}
               >
                 <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                   {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
