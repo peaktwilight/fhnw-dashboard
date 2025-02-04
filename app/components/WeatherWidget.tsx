@@ -1,6 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { 
+  SunIcon, 
+  MoonIcon, 
+  CloudIcon, 
+  CloudArrowDownIcon,
+  SparklesIcon,
+  BoltIcon
+} from '@heroicons/react/24/outline';
 
 interface WeatherData {
   current: {
@@ -21,47 +29,18 @@ interface WeatherData {
   }>;
 }
 
-// Weather icon components
+// Weather icon components using Heroicons
 const WeatherIcons = {
-  ClearDay: () => (
-    <svg className="w-full h-full" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="5" className="fill-yellow-400" />
-      <path className="fill-yellow-400" d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-    </svg>
-  ),
-  ClearNight: () => (
-    <svg className="w-full h-full" viewBox="0 0 24 24" fill="none">
-      <path className="fill-blue-300" d="M9 6C9 10.97 13.03 15 18 15C18.39 15 18.77 14.97 19.14 14.91C17.93 17.27 15.46 19 12.5 19C8.36 19 5 15.64 5 11.5C5 8.54 6.73 6.07 9.09 4.86C9.03 5.23 9 5.61 9 6Z" />
-    </svg>
-  ),
-  Clouds: () => (
-    <svg className="w-full h-full" viewBox="0 0 24 24" fill="none">
-      <path className="fill-gray-300 dark:fill-gray-400" d="M4.5 10H4C2.89543 10 2 10.8954 2 12V13C2 14.1046 2.89543 15 4 15H4.5C6.433 15 8 13.433 8 11.5C8 9.567 6.433 8 4.5 8C3.94772 8 3.5 8.44772 3.5 9V10Z" />
-      <path className="fill-gray-400 dark:fill-gray-500" d="M12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12H20C21.1046 12 22 11.1046 22 10C22 8.89543 21.1046 8 20 8H19.5C17.567 8 16 6.433 16 4.5C16 2.567 17.567 1 19.5 1C20.0523 1 20.5 1.44772 20.5 2V3C20.5 3.55228 20.0523 4 19.5 4H12Z" />
-    </svg>
-  ),
-  Rain: () => (
-    <svg className="w-full h-full" viewBox="0 0 24 24" fill="none">
-      <path className="fill-gray-400 dark:fill-gray-500" d="M4 14.5C2.067 14.5 0.5 12.933 0.5 11C0.5 9.067 2.067 7.5 4 7.5H4.5C6.433 7.5 8 9.067 8 11C8 12.933 6.433 14.5 4.5 14.5H4Z" />
-      <path className="fill-gray-300 dark:fill-gray-400" d="M12 3.5C9.79086 3.5 8 5.29086 8 7.5C8 9.70914 9.79086 11.5 12 11.5H20C21.1046 11.5 22 10.6046 22 9.5C22 8.39543 21.1046 7.5 20 7.5H19.5C17.567 7.5 16 5.933 16 4C16 2.067 17.567 0.5 19.5 0.5C20.0523 0.5 20.5 0.947715 20.5 1.5V2.5C20.5 3.05228 20.0523 3.5 19.5 3.5H12Z" />
-      <path className="fill-blue-400" d="M4 17L3 20M8 17L7 20M12 17L11 20M16 17L15 20M20 17L19 20" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  ),
-  Snow: () => (
-    <svg className="w-full h-full" viewBox="0 0 24 24" fill="none">
-      <path className="fill-gray-400 dark:fill-gray-500" d="M4 14.5C2.067 14.5 0.5 12.933 0.5 11C0.5 9.067 2.067 7.5 4 7.5H4.5C6.433 7.5 8 9.067 8 11C8 12.933 6.433 14.5 4.5 14.5H4Z" />
-      <path className="fill-gray-300 dark:fill-gray-400" d="M12 3.5C9.79086 3.5 8 5.29086 8 7.5C8 9.70914 9.79086 11.5 12 11.5H20C21.1046 11.5 22 10.6046 22 9.5C22 8.39543 21.1046 7.5 20 7.5H19.5C17.567 7.5 16 5.933 16 4C16 2.067 17.567 0.5 19.5 0.5C20.0523 0.5 20.5 0.947715 20.5 1.5V2.5C20.5 3.05228 20.0523 3.5 19.5 3.5H12Z" />
-      <circle cx="4" cy="17" r="1" className="fill-blue-200" />
-      <circle cx="8" cy="19" r="1" className="fill-blue-200" />
-      <circle cx="12" cy="17" r="1" className="fill-blue-200" />
-      <circle cx="16" cy="19" r="1" className="fill-blue-200" />
-      <circle cx="20" cy="17" r="1" className="fill-blue-200" />
-    </svg>
-  )
+  ClearDay: () => <SunIcon className="w-full h-full text-yellow-400" />,
+  ClearNight: () => <MoonIcon className="w-full h-full text-blue-300" />,
+  Clouds: () => <CloudIcon className="w-full h-full text-gray-400 dark:text-gray-500" />,
+  Rain: () => <CloudArrowDownIcon className="w-full h-full text-blue-400" />,
+  Snow: () => <SparklesIcon className="w-full h-full text-blue-200" />,
+  Thunder: () => <BoltIcon className="w-full h-full text-yellow-400" />
 };
 
 function getWeatherIcon(code: string) {
-  // Map OpenWeather icon codes to our custom icons
+  // Map OpenWeather icon codes to Heroicons
   if (code.startsWith('01')) {
     return code.endsWith('d') ? <WeatherIcons.ClearDay /> : <WeatherIcons.ClearNight />;
   }
@@ -70,6 +49,9 @@ function getWeatherIcon(code: string) {
   }
   if (code.startsWith('09') || code.startsWith('10')) {
     return <WeatherIcons.Rain />;
+  }
+  if (code.startsWith('11')) {
+    return <WeatherIcons.Thunder />;
   }
   if (code.startsWith('13')) {
     return <WeatherIcons.Snow />;
