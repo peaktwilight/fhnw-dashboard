@@ -51,6 +51,148 @@ const departureVariants = {
   }
 };
 
+// Add AnimatedDigit component for individual digit animations
+function AnimatedDigit({ digit, unit }: { digit: string, unit?: string }) {
+  return (
+    <motion.div
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 20, opacity: 0 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 300, 
+        damping: 25,
+        opacity: { duration: 0.2 }
+      }}
+      className="inline-flex items-baseline relative"
+    >
+      <span>{digit}</span>
+      {unit && (
+        <span className="text-xs ml-1 opacity-50">
+          {unit}
+        </span>
+      )}
+    </motion.div>
+  );
+}
+
+// Add CountdownTimer component
+function CountdownTimer({ departureTime }: { departureTime: Date }) {
+  const [timeLeft, setTimeLeft] = useState<{
+    hours: number;
+    minutes: number;
+    seconds: number;
+    status: 'future' | 'imminent' | 'departed';
+  }>({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    status: 'future'
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const difference = departureTime.getTime() - now.getTime();
+      
+      if (difference <= 0) {
+        setTimeLeft({ hours: 0, minutes: 0, seconds: 0, status: 'departed' });
+        return;
+      }
+
+      const hours = Math.floor(difference / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      
+      setTimeLeft({
+        hours,
+        minutes,
+        seconds,
+        status: minutes < 5 ? 'imminent' : 'future'
+      });
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+    return () => clearInterval(timer);
+  }, [departureTime]);
+
+  if (timeLeft.status === 'departed') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="text-red-600 dark:text-red-400 font-medium text-sm flex items-center gap-1"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+        <span>Departed</span>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className={`flex items-center gap-1 text-sm ${
+        timeLeft.status === 'imminent'
+          ? 'text-red-600 dark:text-red-400 font-medium' 
+          : 'text-gray-600 dark:text-gray-400'
+      }`}
+    >
+      <svg 
+        className={`w-4 h-4 ${timeLeft.status === 'imminent' ? 'animate-pulse' : ''}`} 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" 
+        />
+      </svg>
+      <div className="font-mono flex items-baseline gap-0.5">
+        <AnimatePresence mode="popLayout" initial={false}>
+          {timeLeft.hours > 0 && (
+            <motion.div
+              key="hours-section"
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: "auto", opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              className="flex items-baseline"
+            >
+              <div key={`hours-${timeLeft.hours}`} className="mr-1">
+                <AnimatedDigit 
+                  digit={timeLeft.hours.toString()} 
+                  unit="h" 
+                />
+              </div>
+              <motion.span key="hours-spacer" className="mx-1 opacity-50">:</motion.span>
+            </motion.div>
+          )}
+          <div key={`minutes-${timeLeft.minutes}`} className="mr-1">
+            <AnimatedDigit 
+              digit={timeLeft.minutes.toString().padStart(2, '0')} 
+              unit="m" 
+            />
+          </div>
+          <motion.span key="minutes-spacer" className="mx-1 opacity-50">:</motion.span>
+          <div key={`seconds-${timeLeft.seconds}`} className="mr-1">
+            <AnimatedDigit 
+              digit={timeLeft.seconds.toString().padStart(2, '0')} 
+              unit="s" 
+            />
+          </div>
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function StationBoard() {
   const [departures, setDepartures] = useState<Departure[]>([]);
   const [loading, setLoading] = useState(true);
@@ -155,23 +297,6 @@ export default function StationBoard() {
               ? Math.round((prognosisTime.getTime() - scheduledTime.getTime()) / 60000)
               : 0;
 
-            // Get intermediate stops (max 3)
-            const intermediateStops = departure.passList
-              ?.slice(1, -1)
-              .slice(0, 3)
-              .map(stop => ({
-                name: stop.station.name,
-                arrival: stop.arrival ? new Date(stop.arrival).toLocaleTimeString('de-CH', { 
-                  hour: '2-digit',
-                  minute: '2-digit'
-                }) : null
-              })) || [];
-
-            // Format train name for display
-            const trainName = departure.category === departure.name 
-              ? `${departure.category}${departure.number}`
-              : departure.name;
-
             // Determine train type icon
             const getTrainIcon = (category: string) => {
               switch(category.toLowerCase()) {
@@ -201,128 +326,91 @@ export default function StationBoard() {
                 key={index}
                 variants={departureVariants}
                 whileHover="hover"
-                className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-3 hover:bg-white/50 dark:hover:bg-gray-700/50 transition-colors"
+                className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-2 sm:p-3 hover:bg-white/50 dark:hover:bg-gray-700/50 transition-colors"
               >
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex flex-col gap-3"
+                  className="flex flex-col gap-2"
                 >
-                  {/* Top row: Time, Platform, and Train Category */}
-                  <motion.div 
-                    className="flex items-center justify-between"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 + 0.2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      {/* Time */}
-                      <div className="flex items-center gap-1.5">
-                        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span className="text-base font-medium">
-                          {scheduledTime.toLocaleTimeString('de-CH', { 
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </span>
+                  {/* Top row: Time, Countdown, and Platform */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <div className="flex items-center justify-between w-full sm:w-auto">
+                      {/* Time Section */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-sm sm:text-base font-medium whitespace-nowrap">
+                            {scheduledTime.toLocaleTimeString('de-CH', { 
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
                       </div>
 
-                      {/* Platform */}
+                      {/* Platform - Moved to top right on mobile */}
                       {departure.stop.platform && (
-                        <div className="flex items-center gap-1">
-                          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                          <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded font-medium">
-                            <span className="text-gray-600 dark:text-gray-300">Gleis </span>
+                        <div className="flex items-center gap-1 sm:hidden">
+                          <span className="px-1.5 py-0.5 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded font-medium whitespace-nowrap">
                             {departure.stop.platform}
                           </span>
                         </div>
                       )}
                     </div>
 
-                    {/* Train Category and Number */}
-                    <div className="flex items-center gap-2">
-                      <span className="flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded font-medium">
-                        {getTrainIcon(departure.category)}
-                        {departure.category}
-                      </span>
-                      <span className="hidden sm:block text-sm text-gray-600 dark:text-gray-400">
-                        {trainName}
-                      </span>
+                    {/* Countdown */}
+                    <div className="flex-shrink-0">
+                      <CountdownTimer departureTime={prognosisTime || scheduledTime} />
                     </div>
-                  </motion.div>
 
-                  {/* Middle row: Route Information (Desktop only) */}
-                  <motion.div 
-                    className="hidden sm:flex items-center justify-between text-sm text-gray-600 dark:text-gray-400"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.1 + 0.3 }}
-                  >
-                    <div className="flex items-center gap-4">
-                      {/* Operator */}
-                      <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    {/* Platform - Hidden on mobile, shown on desktop */}
+                    {departure.stop.platform && (
+                      <div className="hidden sm:flex items-center gap-1 sm:ml-auto">
+                        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
-                        <span>{departure.operator}</span>
+                        <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded font-medium whitespace-nowrap">
+                          <span className="text-gray-600 dark:text-gray-300">Gleis </span>
+                          {departure.stop.platform}
+                        </span>
                       </div>
+                    )}
+                  </div>
 
-                      {/* Via Stations */}
-                      {intermediateStops.length > 0 && (
-                        <div className="flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                          </svg>
-                          <span>
-                            {intermediateStops.map((stop, i) => (
-                              <span key={stop.name}>
-                                {i > 0 && " → "}
-                                <span className="whitespace-nowrap">
-                                  {stop.name}
-                                  {stop.arrival && (
-                                    <span className="text-xs ml-1 text-gray-500">
-                                      ({stop.arrival})
-                                    </span>
-                                  )}
-                                </span>
-                              </span>
-                            ))}
-                          </span>
-                        </div>
-                      )}
+                  {/* Bottom row: Train Category, Destination, and Delay */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {/* Train Category */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded font-medium text-sm sm:text-base">
+                        {getTrainIcon(departure.category)}
+                        <span className="whitespace-nowrap">{departure.category}</span>
+                      </span>
                     </div>
-                  </motion.div>
 
-                  {/* Bottom row: Destination and Delay */}
-                  <motion.div 
-                    className="flex items-center justify-between"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 + 0.4 }}
-                  >
-                    <div className="flex items-center gap-1.5 text-gray-900 dark:text-white min-w-0">
-                      <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {/* Destination */}
+                    <div className="flex items-center gap-1.5 text-gray-900 dark:text-white min-w-0 flex-1">
+                      <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
-                      <span className="font-medium truncate">
+                      <span className="font-medium truncate text-sm sm:text-base">
                         {departure.to}
                       </span>
                     </div>
 
+                    {/* Delay */}
                     {delay > 0 && (
-                      <div className="flex items-center gap-1.5 text-red-600 dark:text-red-400 whitespace-nowrap ml-3">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="flex items-center gap-1.5 text-red-600 dark:text-red-400 whitespace-nowrap flex-shrink-0 text-sm sm:text-base">
+                        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span className="font-medium">+{delay} min</span>
                       </div>
                     )}
-                  </motion.div>
+                  </div>
                 </motion.div>
               </motion.div>
             );
