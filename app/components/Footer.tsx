@@ -2,13 +2,18 @@
 import { motion } from 'framer-motion';
 
 // Get build info from environment variables
-const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA 
-  ? `${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7)}`
-  : 'dev';
+const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || 'dev';
 
-const buildTime = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-  ? new Date(process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_MESSAGE || '').toLocaleString()
-  : 'development build';
+const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME
+  ? new Date(process.env.NEXT_PUBLIC_BUILD_TIME).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short'
+    })
+  : 'development';
 
 const footerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -117,9 +122,11 @@ export default function Footer() {
             <p className="text-xs text-gray-400 dark:text-gray-500">
               Not affiliated with FHNW. Made by a student, for students.
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 font-mono">
-              Build: {buildId}
-            </p>
+            <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 font-mono">
+              <span>Build: {buildId}</span>
+              <span>•</span>
+              <span>{buildTime}</span>
+            </div>
           </motion.div>
         </motion.div>
       </div>
