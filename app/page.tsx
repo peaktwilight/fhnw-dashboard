@@ -201,7 +201,7 @@ export default function Home() {
       <motion.section 
         variants={sectionVariants}
         id="news" 
-        className="space-y-4"
+        className="space-y-4 scroll-mt-20"
       >
         <SectionHeader
           title="FHNW News"
