@@ -67,13 +67,14 @@ export default function Navbar() {
         });
       },
       {
-        rootMargin: '-20% 0px -80% 0px',
-        threshold: 0
+        // Adjust the root margin to be more precise
+        rootMargin: '-10% 0px -85% 0px',
+        threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
       }
     );
 
-    // Observe all sections
-    const sections = ['weather', 'transport', 'news', 'menu', 'map', 'registrations', 'links'];
+    // Update sections array to match page order and correct IDs
+    const sections = ['transport', 'weather', 'menu', 'news', 'progress', 'map', 'events', 'links'];
     sections.forEach((id) => {
       const element = document.getElementById(id);
       if (element) observer.observe(element);
@@ -109,16 +110,6 @@ export default function Navbar() {
 
   const menuItems = [
     {
-      name: 'Weather',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-        </svg>
-      ),
-      onClick: () => scrollToSection('weather'),
-      sectionId: 'weather'
-    },
-    {
       name: 'Transport',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,14 +120,14 @@ export default function Navbar() {
       sectionId: 'transport'
     },
     {
-      name: 'News',
+      name: 'Weather',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
         </svg>
       ),
-      onClick: () => scrollToSection('news'),
-      sectionId: 'news'
+      onClick: () => scrollToSection('weather'),
+      sectionId: 'weather'
     },
     {
       name: 'Menu',
@@ -149,6 +140,26 @@ export default function Navbar() {
       sectionId: 'menu'
     },
     {
+      name: 'News',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+      ),
+      onClick: () => scrollToSection('news'),
+      sectionId: 'news'
+    },
+    {
+      name: 'Progress',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+      onClick: () => scrollToSection('progress'),
+      sectionId: 'progress'
+    },
+    {
       name: 'Map',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,14 +170,14 @@ export default function Navbar() {
       sectionId: 'map'
     },
     {
-      name: 'Progress',
+      name: 'Events',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
       ),
-      onClick: () => scrollToSection('registrations'),
-      sectionId: 'registrations'
+      onClick: () => scrollToSection('events'),
+      sectionId: 'events'
     },
     {
       name: 'Links',
