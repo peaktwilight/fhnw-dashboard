@@ -3,7 +3,7 @@
 > 🎓 A modern, unified dashboard for FHNW students. Access all your essential resources in one place.  
 > **[Live Demo →](https://fhnw.doruk.ch)**
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/peaktwilight/fhnw-dashboard/releases)
+[![Version](https://img.shields.io/badge/version-1.1-blue.svg)](https://github.com/peaktwilight/fhnw-dashboard/releases)
 [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://fhnw.doruk.ch)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
