@@ -287,32 +287,36 @@ export default function Navbar() {
           <Menu as="div" className="relative md:hidden">
             {({ open }) => (
               <>
-                <Menu.Button className="p-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
+                <Menu.Button className="p-2 text-purple-600 dark:text-purple-400">
                   <span className="sr-only">Open menu</span>
                   <motion.div
                     animate={open ? "open" : "closed"}
-                    className="w-6 h-6 flex flex-col justify-center items-center"
+                    className="relative w-6 h-6 flex items-center justify-center"
+                    initial="closed"
                   >
                     <motion.span
                       variants={{
-                        closed: { rotate: 0, y: 0 },
-                        open: { rotate: 45, y: 2 }
+                        closed: { rotate: 0, y: -6, width: 20 },
+                        open: { rotate: 45, y: 0, width: 24 }
                       }}
-                      className="w-5 h-0.5 bg-current transform transition-transform origin-center mb-1"
+                      transition={{ duration: 0.4, ease: "circOut" }}
+                      className="absolute h-0.5 rounded-full transform origin-center bg-current"
                     />
                     <motion.span
                       variants={{
-                        closed: { opacity: 1 },
-                        open: { opacity: 0 }
+                        closed: { opacity: 1, x: 0, width: 16 },
+                        open: { opacity: 0, x: -16 }
                       }}
-                      className="w-5 h-0.5 bg-current mb-1"
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="absolute h-0.5 rounded-full bg-current"
                     />
                     <motion.span
                       variants={{
-                        closed: { rotate: 0, y: 0 },
-                        open: { rotate: -45, y: -2 }
+                        closed: { rotate: 0, y: 6, width: 20 },
+                        open: { rotate: -45, y: 0, width: 24 }
                       }}
-                      className="w-5 h-0.5 bg-current transform transition-transform origin-center"
+                      transition={{ duration: 0.4, ease: "circOut" }}
+                      className="absolute h-0.5 rounded-full transform origin-center bg-current"
                     />
                   </motion.div>
                 </Menu.Button>
