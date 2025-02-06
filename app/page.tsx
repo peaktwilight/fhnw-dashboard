@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import MenuDisplay from './components/MenuDisplay';
@@ -94,7 +95,8 @@ const LiveIndicator = () => (
   </motion.div>
 );
 
-export default function Home() {
+// Create a new ClientHome component that contains all the interactive content
+const ClientHome = () => {
   const resources = [
     {
       icon: <HomeIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
@@ -414,4 +416,9 @@ export default function Home() {
       </motion.section>
     </motion.main>
   );
+};
+
+// Make the default export a server component that wraps the client component
+export default function Home() {
+  return <ClientHome />;
 } 
