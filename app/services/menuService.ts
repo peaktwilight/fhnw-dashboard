@@ -12,13 +12,3 @@ export async function getMenu(date?: Date): Promise<DailyMenu> {
     throw error;
   }
 }
-
-export async function getMenuForToday(): Promise<DailyMenu> {
-  return getMenu(new Date());
-}
-
-// TODO: Implement actual scraping logic
-// This function will be implemented to fetch and parse the actual menu data
-export async function scrapeMenuData(): Promise<DailyMenu> {
-  throw new Error("Not implemented yet");
-} 
