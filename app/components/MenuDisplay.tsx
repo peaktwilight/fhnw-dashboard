@@ -10,6 +10,7 @@ export default function MenuDisplay() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     async function fetchMenu() {
@@ -27,7 +28,7 @@ export default function MenuDisplay() {
     }
 
     fetchMenu();
-  }, [selectedDate]);
+  }, [selectedDate, refreshKey]);
 
   const handlePreviousDay = () => {
     let newDate = subDays(selectedDate, 1);
@@ -105,7 +106,7 @@ export default function MenuDisplay() {
             <p className="font-medium">Fehler beim Laden des Menüs</p>
             <p className="text-sm mt-1">{error}</p>
             <button 
-              onClick={() => window.location.reload()} 
+              onClick={() => setRefreshKey(prev => prev + 1)} 
               className="mt-2 px-4 py-2 text-sm bg-red-100 dark:bg-red-800 text-red-700 dark:text-red-100 rounded hover:bg-red-200 dark:hover:bg-red-700 transition-colors"
             >
               Neu laden

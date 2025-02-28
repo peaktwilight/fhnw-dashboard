@@ -262,7 +262,6 @@ export default function RegistrationWidget() {
             {showJsonInput && (
               <ModuleDataImport 
                 onDataImported={handleDataImported} 
-                lastUpdated={lastUpdated} 
               />
             )}
           </AnimatePresence>
