@@ -266,14 +266,14 @@ const ClientHome = () => {
         </motion.div>
       </motion.section>
 
-      {/* Progress Section */}
+      {/* Grade Progress Tracker Section */}
       <motion.section 
         variants={sectionVariants}
-        id="progress" 
+        id="grades" 
         className="space-y-4 scroll-mt-20"
       >
         <SectionHeader
-          title="Semester Progress"
+          title="FHNW Grade Tracker"
           subtitle="Visualize your grades, modules, and academic journey at FHNW"
           icon={
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

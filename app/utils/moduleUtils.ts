@@ -5,28 +5,25 @@ import { Registration, ModuleType, ModuleGroup, GradeDistribution, ModuleProgres
  */
 export const detectModuleType = (module: Registration): ModuleType => {
   const bezeichnung = module.modulanlass.bezeichnung;
-  const isMain = !bezeichnung.includes('(MSP)') &&
-                 !bezeichnung.includes('(EN)') &&
-                 !bezeichnung.includes('.SE/') &&
-                 !bezeichnung.includes('.SP/');
+  const nummer = module.modulanlass.nummer;
   
-  // Main modules are those without MSP/EN suffix and with HN in the number
-  if (isMain && module.modulanlass.nummer.includes('.HN')) {
-    return { type: 'MAIN', weight: 100, ects: 3 }; // Main grade gets 100% weight as it's the official university grade
+  // Check if this is an official final grade (HN in number)
+  if (nummer.includes('.HN')) {
+    return { type: 'MAIN', weight: 100, ects: module.moduleType?.ects || 3 }; // Use existing ECTS if available
   }
   
   // MSP modules are those with MSP suffix or SP in the number
-  if (bezeichnung.includes('(MSP)') || module.modulanlass.nummer.includes('.SP/')) {
-    return { type: 'MSP', weight: 50, ects: 0 }; // Default 50% - should be adjusted based on professor's requirements
+  if (bezeichnung.includes('(MSP)') || nummer.includes('.SP/')) {
+    return { type: 'MSP', weight: 50, ects: 0 }; // MSP doesn't contribute to ECTS
   }
   
   // EN modules are those with EN suffix or SE in the number
-  if (bezeichnung.includes('(EN)') || module.modulanlass.nummer.includes('.SE/')) {
-    return { type: 'EN', weight: 50, ects: 0 }; // Default 50% - should be adjusted based on professor's requirements
+  if (bezeichnung.includes('(EN)') || nummer.includes('.SE/')) {
+    return { type: 'EN', weight: 50, ects: 0 }; // EN doesn't contribute to ECTS
   }
   
-  // Default to MAIN if none of the above
-  return { type: 'MAIN', weight: 100, ects: 3 };
+  // If no specific type is detected, treat as a regular module
+  return { type: 'MAIN', weight: 100, ects: module.moduleType?.ects || 3 };
 };
 
 /**
@@ -35,7 +32,7 @@ export const detectModuleType = (module: Registration): ModuleType => {
 export const getModuleBaseName = (bezeichnung: string): string => {
   // Remove semester info and section numbers
   return bezeichnung
-    .replace(/ 24HS.*$/, '')  // Remove semester and section
+    .replace(/ (24HS|25FS).*$/, '')  // Remove semester and section
     .replace(/ \(MSP\)/, '')  // Remove MSP indicator
     .replace(/ \(EN\)/, '')   // Remove EN indicator
     .replace(/ \(SG I\)/, '') // Remove SG I indicator
@@ -52,6 +49,12 @@ export const groupModules = (modules: Registration[]): ModuleGroup[] => {
   modules.forEach(module => {
     const baseName = getModuleBaseName(module.modulanlass.bezeichnung);
     const moduleType = detectModuleType(module);
+    
+    // Preserve existing ECTS value if it exists
+    if (module.moduleType?.ects) {
+      moduleType.ects = module.moduleType.ects;
+    }
+    
     module.moduleType = moduleType;
     module.groupName = baseName;
     
@@ -61,40 +64,37 @@ export const groupModules = (modules: Registration[]): ModuleGroup[] => {
     groups.get(baseName)?.push(module);
   });
 
-  // Second pass: Create module groups with weighted calculations
   return Array.from(groups.entries()).map(([name, groupModules]) => {
-    // Sort modules so MAIN comes first, then EN, then MSP
+    // Sort modules: MAIN (HN) first, then other MAIN, then EN, then MSP
     const sortedModules = groupModules.sort((a, b) => {
-      const typeOrder = { MAIN: 0, EN: 1, MSP: 2 };
-      return typeOrder[a.moduleType?.type || 'MAIN'] - typeOrder[b.moduleType?.type || 'MAIN'];
+      const typeOrder = { 'MAIN-HN': 0, MAIN: 1, EN: 2, MSP: 3 };
+      const aType = a.modulanlass.nummer.includes('.HN') ? 'MAIN-HN' : a.moduleType?.type || 'MAIN';
+      const bType = b.modulanlass.nummer.includes('.HN') ? 'MAIN-HN' : b.moduleType?.type || 'MAIN';
+      return typeOrder[aType] - typeOrder[bType];
     });
 
-    // Find the main module for ECTS
-    const mainModule = sortedModules.find(m =>
-      m.moduleType?.type === 'MAIN' && m.modulanlass.nummer.includes('.HN')
-    );
-    const ects = mainModule?.moduleType?.ects || 0;
+    // Find the official final grade module (HN)
+    const mainModule = sortedModules.find(m => m.modulanlass.nummer.includes('.HN'));
+    const ects = mainModule?.moduleType?.ects || 3;
     
-    // If main module has a grade, use that directly
+    // Calculate final grade
     const mainModuleGrade = mainModule?.freieNote;
     let weightedGrade: number | undefined;
 
     if (mainModuleGrade !== null && mainModuleGrade !== undefined) {
-      // Use the official grade from the main module
       weightedGrade = mainModuleGrade;
     } else {
-      // Calculate weighted grade from EN and MSP modules
-      const validGrades = sortedModules
-        .filter(m => m.freieNote !== null && m.moduleType?.type !== 'MAIN');
+      const validGrades = sortedModules.filter(m => 
+        m.freieNote !== null && 
+        !m.modulanlass.nummer.includes('.HN')
+      );
       
       if (validGrades.length > 0) {
-        const weightedSum = validGrades.reduce((sum, module) => {
-          return sum + (module.freieNote || 0) * (module.moduleType?.weight || 0);
-        }, 0);
+        const weightedSum = validGrades.reduce((sum, module) => 
+          sum + (module.freieNote || 0) * (module.moduleType?.weight || 0), 0);
         
-        const totalWeight = validGrades.reduce((sum, module) => {
-          return sum + (module.moduleType?.weight || 0);
-        }, 0);
+        const totalWeight = validGrades.reduce((sum, module) => 
+          sum + (module.moduleType?.weight || 0), 0);
 
         weightedGrade = totalWeight > 0 ? (weightedSum / totalWeight) : undefined;
       }
@@ -107,7 +107,7 @@ export const groupModules = (modules: Registration[]): ModuleGroup[] => {
       weightedGrade,
       isOfficialGrade: mainModuleGrade !== null && mainModuleGrade !== undefined
     };
-  }).sort((a, b) => a.name.localeCompare(b.name)); // Sort groups alphabetically
+  }).sort((a, b) => a.name.localeCompare(b.name));
 };
 
 /**
@@ -151,6 +151,50 @@ export const calculateStats = (registrations: Registration[] | null): ModuleStat
   if (!registrations) return null;
   
   const completed = registrations.filter(r => r.freieNote !== null) || [];
+  const grouped = groupModules(completed);
+  
+  // Calculate weighted average based on ECTS
+  const weightedAverage = (() => {
+    let totalEcts = 0;
+    let weightedSum = 0;
+
+    grouped.forEach(group => {
+      // Use the official final grade if available, otherwise calculate from EN/MSP
+      const mainModule = group.modules.find(m => m.modulanlass.nummer.includes('.HN'));
+      const ects = mainModule?.moduleType?.ects || 3;
+      
+      if (mainModule?.freieNote !== null && mainModule?.freieNote !== undefined) {
+        // Use official final grade
+        totalEcts += ects;
+        weightedSum += mainModule.freieNote * ects;
+      } else {
+        // Calculate from EN/MSP grades
+        const validGrades = group.modules.filter(m => 
+          m.freieNote !== null && 
+          !m.modulanlass.nummer.includes('.HN')
+        );
+        
+        if (validGrades.length > 0) {
+          const gradeSum = validGrades.reduce((sum, module) => 
+            sum + (module.freieNote || 0) * (module.moduleType?.weight || 0), 0);
+          
+          const totalWeight = validGrades.reduce((sum, module) => 
+            sum + (module.moduleType?.weight || 0), 0);
+
+          if (totalWeight > 0) {
+            const finalGrade = gradeSum / totalWeight;
+            totalEcts += ects;
+            weightedSum += finalGrade * ects;
+          }
+        }
+      }
+    });
+
+    if (totalEcts === 0) return null;
+    const average = weightedSum / totalEcts;
+    // Round up grades ≥ 5.25 to 5.5 for the overall average
+    return average >= 5.25 ? 5.5 : average;
+  })();
   
   return {
     totalModules: registrations.length,
@@ -159,13 +203,7 @@ export const calculateStats = (registrations: Registration[] | null): ModuleStat
     averageGrade: completed.length > 0
       ? (completed.reduce((sum, reg) => sum + (reg.freieNote || 0), 0) / completed.length).toFixed(2)
       : null,
-    weightedAverage: completed.length > 0
-      ? (groupModules(completed).reduce((sum, group) => {
-          const weightedGrade = group.weightedGrade || 0;
-          const weight = group.ects || 0;
-          return sum + (weightedGrade * weight);
-        }, 0) / groupModules(completed).reduce((sum, group) => sum + (group.ects || 0), 0)).toFixed(2)
-      : null,
+    weightedAverage: weightedAverage !== null ? weightedAverage.toFixed(2) : null,
     passedModules: completed.filter(reg => reg.freieNote && reg.freieNote >= 4).length,
     totalStudents: registrations.reduce((max, reg) => Math.max(max, reg.modulanlass.anzahlAnmeldung), 0),
     uniqueLecturers: new Set(registrations.flatMap(reg => 
