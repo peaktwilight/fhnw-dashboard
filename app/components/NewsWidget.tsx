@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 import { 
@@ -21,6 +23,10 @@ interface NewsItem {
     src: string;
     alt: string;
   };
+}
+
+interface NewsWidgetProps {
+  limit?: number;
 }
 
 const containerVariants = {
@@ -178,7 +184,7 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export default function NewsWidget() {
+export default function NewsWidget({ limit }: NewsWidgetProps) {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [availableSchools, setAvailableSchools] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -209,8 +215,13 @@ export default function NewsWidget() {
       return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
     });
 
+    // Apply limit if specified
+    if (limit) {
+      filtered = filtered.slice(0, limit);
+    }
+
     return filtered;
-  }, [news, dateFrom, dateTo, sortOrder]);
+  }, [news, dateFrom, dateTo, sortOrder, limit]);
 
   useEffect(() => {
     const fetchNews = async () => {

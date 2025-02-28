@@ -6,7 +6,7 @@ import { calculateStats } from '../utils/moduleUtils';
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
+  visible: { 
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
@@ -184,11 +184,11 @@ export default function RegistrationWidget() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
         <div className="mx-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <div className="animate-pulse space-y-3">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+        <div className="animate-pulse space-y-3">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
             </div>
           </div>
         </div>
@@ -210,53 +210,53 @@ export default function RegistrationWidget() {
           variants={containerVariants}
           className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700"
         >
-          {/* Header Section */}
+      {/* Header Section */}
           <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
+          <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                   Grade Progress Dashboard
                 </h1>
-                {lastUpdated && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Last updated: {new Date(lastUpdated).toLocaleString()}
-                  </p>
-                )}
-              </div>
+            {lastUpdated && (
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Last updated: {new Date(lastUpdated).toLocaleString()}
+              </p>
+            )}
+          </div>
               <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-                {registrations && !showJsonInput && (
+            {registrations && !showJsonInput && (
                   <>
-                    <motion.button
-                      variants={buttonVariants}
-                      initial="initial"
-                      whileHover="hover"
-                      whileTap="tap"
+              <motion.button
+                variants={buttonVariants}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
                       onClick={handleExportData}
                       className="text-sm px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
-                    >
+              >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                      </svg>
+                </svg>
                       Export
-                    </motion.button>
-                    <motion.button
-                      variants={buttonVariants}
-                      initial="initial"
-                      whileHover="hover"
-                      whileTap="tap"
+              </motion.button>
+                        <motion.button
+                          variants={buttonVariants}
+                          initial="initial"
+                          whileHover="hover"
+                          whileTap="tap"
                       onClick={() => setShowJsonInput(true)}
                       className="text-sm px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
-                    >
+                        >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
+                          </svg>
                       Update
-                    </motion.button>
+                        </motion.button>
                   </>
                 )}
-              </div>
-            </div>
-          </div>
+                      </div>
+                              </div>
+                          </div>
 
           {/* JSON Input Section - Collapsible */}
           <AnimatePresence>
@@ -295,10 +295,10 @@ export default function RegistrationWidget() {
                   {/* Mobile Menu */}
                   <AnimatePresence>
                     {isMobileMenuOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
                         className="mt-2 space-y-1"
                       >
                         {tabs.map((tab) => (
@@ -318,62 +318,62 @@ export default function RegistrationWidget() {
                             {tab.label}
                           </button>
                         ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+            </div>
 
                 {/* Desktop Tabs */}
                 <nav className="hidden md:flex p-4">
                   <div className="flex space-x-4">
                     {tabs.map((tab) => (
-                      <button
-                        key={tab.id}
+                  <button
+                    key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ease-in-out ${
-                          activeTab === tab.id
-                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 transform scale-105'
-                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-102'
-                        }`}
-                      >
+                      activeTab === tab.id
+                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 transform scale-105'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-102'
+                    }`}
+                  >
                         {tab.icon}
-                        {tab.label}
-                      </button>
-                    ))}
-                  </div>
-                </nav>
+                    {tab.label}
+                  </button>
+                ))}
               </div>
+            </nav>
+          </div>
 
-              {/* Search Bar */}
+          {/* Search Bar */}
               {activeTab !== 'overview' && activeTab !== 'grade-manager' && (
-                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                   <div className="relative max-w-md mx-auto">
-                    <input
-                      type="text"
-                      placeholder="Search modules, lecturers..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-                    />
-                    <svg
-                      className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                </div>
-              )}
+                <input
+                  type="text"
+                  placeholder="Search modules, lecturers..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                />
+                <svg
+                  className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          )}
 
-              {/* Content Sections */}
+          {/* Content Sections */}
               <div className="p-4">
                 <AnimatePresence mode="wait">
-                  <motion.div
+                    <motion.div
                     key={activeTab}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.2 }}
                   >
@@ -387,36 +387,36 @@ export default function RegistrationWidget() {
                         searchTerm={searchTerm} 
                         onSelectModule={setSelectedModule} 
                       />
-                    )}
+          )}
 
-                    {activeTab === 'current' && (
+          {activeTab === 'current' && (
                       <ModuleList 
                         modules={current} 
                         searchTerm={searchTerm} 
                         onSelectModule={setSelectedModule} 
                       />
-                    )}
+          )}
 
-                    {activeTab === 'grade-manager' && (
+          {activeTab === 'grade-manager' && (
                       <GradeManager 
                         registrations={registrations}
                         onUpdateRegistration={handleUpdateRegistration}
                         onAddManualGrade={handleAddManualGrade}
                       />
                     )}
-                  </motion.div>
+                        </motion.div>
                 </AnimatePresence>
-              </div>
-            </>
-          )}
+                    </div>
+        </>
+      )}
 
           {/* Module Detail Modal */}
           <ModuleDetailModal 
             module={selectedModule} 
             onClose={() => setSelectedModule(null)} 
           />
-        </motion.div>
-      </div>
-    </div>
+            </motion.div>
+              </div>
+                </div>
   );
 }
