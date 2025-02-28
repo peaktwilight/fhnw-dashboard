@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Registration, ModuleStats, GradeDistribution, ModuleProgress } from '../../types/modules';
+import { Registration, ModuleStats } from '../../types/modules';
 import { getGradeDistribution, getModuleProgress } from '../../utils/moduleUtils';
 
 interface ModuleOverviewProps {

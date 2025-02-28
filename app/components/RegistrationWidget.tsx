@@ -47,7 +47,6 @@ const tabs = [
 
 export default function RegistrationWidget() {
   const [registrations, setRegistrations] = useState<Registration[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [showJsonInput, setShowJsonInput] = useState(true);
   const [selectedModule, setSelectedModule] = useState<Registration | null>(null);

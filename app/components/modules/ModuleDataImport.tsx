@@ -1,14 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { buttonVariants, tutorialStepVariants } from '../../types/modules';
+import { buttonVariants, tutorialStepVariants, Registration } from '../../types/modules';
 
 interface ModuleDataImportProps {
-  onDataImported: (data: any[]) => void;
-  lastUpdated: string | null;
+  onDataImported: (data: Registration[]) => void;
 }
 
-export default function ModuleDataImport({ onDataImported, lastUpdated }: ModuleDataImportProps) {
+export default function ModuleDataImport({ onDataImported }: ModuleDataImportProps) {
   const [jsonInput, setJsonInput] = useState('');
   const [error, setError] = useState<string | null>(null);
 

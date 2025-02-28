@@ -3,7 +3,6 @@
 import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import RegistrationWidget from '@/app/components/RegistrationWidget';
-import SectionHeader from '@/app/components/SectionHeader';
 
 const containerVariants = {
   hidden: { opacity: 0 },

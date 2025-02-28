@@ -1,13 +1,13 @@
 'use client';
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Registration, ManualGrade, NewManualGrade, ModuleType, buttonVariants } from '../../types/modules';
-import { groupModules, getAvailableModules } from '../../utils/moduleUtils';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Registration, ManualGrade, NewManualGrade, buttonVariants } from '../../types/modules';
+import { groupModules } from '../../utils/moduleUtils';
 import { ModuleEditModal } from './ModuleEditModal';
 
 interface GradeManagerProps {
   registrations: Registration[] | null;
-  onUpdateRegistration: (updatedModule: Registration) => void;
+  onUpdateRegistration: (module: Registration) => void;
   onAddManualGrade: (grade: ManualGrade) => void;
 }
 
@@ -17,17 +17,10 @@ export default function GradeManager({
   onAddManualGrade 
 }: GradeManagerProps) {
   const [showAddGradeModal, setShowAddGradeModal] = useState(false);
-  const [editingModule, setEditingModule] = useState<Registration | null>(null);
-  const [editingModuleTemp, setEditingModuleTemp] = useState<{
-    grade: number;
-    weight: number; // Weight in percentage for internal module calculation
-    ects: number;
-    type: 'MAIN' | 'MSP' | 'EN';
-  } | null>(null);
   const [newManualGrade, setNewManualGrade] = useState<NewManualGrade>({
     moduleName: '',
     grade: 4.0,
-    weight: 100, // Default to 100% if it's the only grade
+    weight: 100,
     ects: 3,
     type: 'MAIN',
     isExistingModule: false
@@ -114,22 +107,6 @@ export default function GradeManager({
     }
   };
 
-  const handleSaveModuleEdit = () => {
-    if (editingModule && editingModuleTemp) {
-      const updatedModule = {
-        ...editingModule,
-        freieNote: editingModuleTemp.grade,
-        moduleType: {
-          type: editingModuleTemp.type,
-          weight: editingModuleTemp.weight,
-          ects: editingModuleTemp.ects
-        }
-      };
-      onUpdateRegistration(updatedModule);
-      setEditingModule(null);
-    }
-  };
-
   const onEditGrade = (module: Registration) => {
     setNewManualGrade({
       moduleName: module.modulanlass.bezeichnung,
@@ -170,7 +147,6 @@ export default function GradeManager({
   };
 
   const handleSaveModule = (updatedModule: Registration) => {
-    // Update the module through the parent component
     onUpdateRegistration(updatedModule);
     setIsEditModalOpen(false);
     setSelectedModule(null);
@@ -191,7 +167,7 @@ export default function GradeManager({
         <div className="mt-2 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
           <p className="text-sm text-blue-700 dark:text-blue-300">
             <strong>Important:</strong> For modules without an official university-calculated final grade, 
-            please adjust the weights of EN and MSP grades according to your professor's requirements. 
+            please adjust the weights of EN and MSP grades according to your professor&apos;s requirements. 
             Default weights are set to 50% but may vary by module.
           </p>
         </div>
@@ -213,7 +189,7 @@ export default function GradeManager({
               <li>EN (Individual Grade): 50%</li>
               <li>MSP (Oral Exam): 50%</li>
             </ul>
-            <li>Please adjust these weights according to your professor's requirements</li>
+            <li>Please adjust these weights according to your professor&apos;s requirements</li>
           </ul>
         </div>
 
