@@ -98,7 +98,7 @@ const sections = [
   },
   {
     title: 'News & Events',
-    description: 'Stay updated with the latest stuff at FHNW :)',
+    description: 'Stay updated with the latest stuff at FHNW.',
     icon: (
       <div className="inline-flex">
         <CalendarIcon className="w-10 h-10 text-purple-500/90 dark:text-purple-400/90" />
