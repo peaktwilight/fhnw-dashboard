@@ -164,13 +164,6 @@ export default function GradeManager({
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Manage and customize your module grades, weights, and ECTS credits
         </p>
-        <div className="mt-2 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-          <p className="text-sm text-blue-700 dark:text-blue-300">
-            <strong>Important:</strong> For modules without an official university-calculated final grade, 
-            please adjust the weights of EN and MSP grades according to your professor&apos;s requirements. 
-            Default weights are set to 50% but may vary by module.
-          </p>
-        </div>
         {overallAverage !== null && (
           <p className="text-lg font-semibold text-blue-600 dark:text-blue-400 mt-2">
             Overall ECTS Weighted Average: {overallAverage.toFixed(2)}
@@ -180,17 +173,39 @@ export default function GradeManager({
 
       <div className="space-y-6">
         {/* Important Notice Box */}
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 text-sm text-blue-700 dark:text-blue-300">
-          <p className="mb-2 font-medium">Important Notice about Grade Weights:</p>
-          <ul className="list-disc list-inside space-y-1 ml-1">
-            <li>The official university-calculated final grade (when available) has a weight of 100%</li>
-            <li>For modules without an official grade, default weights are:</li>
-            <ul className="list-disc list-inside ml-4 text-blue-600 dark:text-blue-400">
-              <li>EN (Individual Grade): 50%</li>
-              <li>MSP (Oral Exam): 50%</li>
-            </ul>
-            <li>Please adjust these weights according to your professor&apos;s requirements</li>
-          </ul>
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2">Grade Weight Information</h4>
+              <ul className="text-sm space-y-2 text-blue-700 dark:text-blue-300">
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full"></span>
+                  <span>Official university-calculated final grades always have a weight of 100%</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full"></span>
+                  <span>For modules without an official grade, default weights are:</span>
+                </li>
+                <ul className="ml-8 space-y-1 text-blue-600 dark:text-blue-400">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-blue-300 dark:bg-blue-600 rounded-full"></span>
+                    <span>EN (Individual Grade): 50%</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-blue-300 dark:bg-blue-600 rounded-full"></span>
+                    <span>MSP (Oral Exam): 50%</span>
+                  </li>
+                </ul>
+                <li className="flex items-center gap-2 italic">
+                  <span className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full"></span>
+                  <span>Please adjust these weights according to your professor&apos;s specific requirements</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* Module Cards Grid */}
