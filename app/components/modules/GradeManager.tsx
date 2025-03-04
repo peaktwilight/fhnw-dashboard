@@ -1,9 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Registration, ManualGrade, NewManualGrade, buttonVariants } from '../../types/modules';
 import { groupModules } from '../../utils/moduleUtils';
-import { ModuleEditModal } from './ModuleEditModal';
+import ModuleEditModal from './ModuleEditModal';
+import { useTranslations } from 'next-intl';
 
 interface GradeManagerProps {
   registrations: Registration[] | null;
@@ -16,6 +17,70 @@ export default function GradeManager({
   onUpdateRegistration, 
   onAddManualGrade 
 }: GradeManagerProps) {
+  // Move hooks to the top level
+  const t = useTranslations('grades');
+  const commonT = useTranslations('common');
+
+  // Define fallback functions
+  const getFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'grade_manager': 'Grade Manager',
+      'grade_manager_description': 'Manage and customize your module grades, weights, and ECTS credits',
+      'overall_ects_average': 'Overall ECTS Weighted Average',
+      'grade_weight_info': 'Grade Weight Information',
+      'weight_info_official': 'Official university-calculated final grades always have a weight of 100%',
+      'weight_info_default': 'For modules without an official grade, default weights are:',
+      'weight_info_en': 'EN (Individual Grade): 50%',
+      'weight_info_msp': 'MSP (Oral Exam): 50%',
+      'weight_info_adjust': 'Please adjust these weights according to your professor\'s specific requirements',
+      'final_grade': 'Final Grade',
+      'module_name': 'Module Name',
+      'add_manual_grade': 'Add Manual Grade',
+      'new_module': 'New Module',
+      'existing_module': 'Existing Module',
+      'select_module': 'Select a module...',
+      'enter_module_name': 'Enter module name...',
+      'grade': 'Grade',
+      'weight': 'Weight',
+      'ects': 'ECTS',
+      'type': 'Type',
+      'official_university_final': 'Official University Final',
+      'add_grade': 'Add Grade',
+      'edit': 'Edit',
+      'delete': 'Delete'
+    };
+    return fallbacks[key] || key;
+  }, []);
+
+  const getCommonFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'cancel': 'Cancel',
+      'official_final': 'Official Final',
+      'weight': 'Weight',
+      'add_grade': 'Add Grade',
+      'edit': 'Edit',
+      'delete': 'Delete'
+    };
+    return fallbacks[key] || key;
+  }, []);
+
+  // Wrap translation calls in try-catch
+  const getTranslation = useCallback((key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  }, [t, getFallbackTranslation]);
+
+  const getCommonTranslation = useCallback((key: string): string => {
+    try {
+      return commonT(key);
+    } catch {
+      return getCommonFallbackTranslation(key);
+    }
+  }, [commonT, getCommonFallbackTranslation]);
+
   const [showAddGradeModal, setShowAddGradeModal] = useState(false);
   const [newManualGrade, setNewManualGrade] = useState<NewManualGrade>({
     moduleName: '',
@@ -120,7 +185,7 @@ export default function GradeManager({
   };
 
   const onDeleteGrade = (module: Registration) => {
-    if (window.confirm('Are you sure you want to delete this grade?')) {
+    if (window.confirm(getTranslation('confirm_delete'))) {
       const updatedModule = {
         ...module,
         freieNote: null
@@ -160,13 +225,13 @@ export default function GradeManager({
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Grade Manager</h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{getTranslation('grade_manager')}</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Manage and customize your module grades, weights, and ECTS credits
+          {getTranslation('grade_manager_description')}
         </p>
         {overallAverage !== null && (
           <p className="text-lg font-semibold text-blue-600 dark:text-blue-400 mt-2">
-            Overall ECTS Weighted Average: {overallAverage.toFixed(2)}
+            {getTranslation('overall_ects_average')}: {overallAverage.toFixed(2)}
           </p>
         )}
       </div>
@@ -179,29 +244,29 @@ export default function GradeManager({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2">Grade Weight Information</h4>
+              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2">{getTranslation('grade_weight_info')}</h4>
               <ul className="text-sm space-y-2 text-blue-700 dark:text-blue-300">
                 <li className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full"></span>
-                  <span>Official university-calculated final grades always have a weight of 100%</span>
+                  <span>{getTranslation('weight_info_official')}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full"></span>
-                  <span>For modules without an official grade, default weights are:</span>
+                  <span>{getTranslation('weight_info_default')}</span>
                 </li>
                 <ul className="ml-8 space-y-1 text-blue-600 dark:text-blue-400">
                   <li className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-blue-300 dark:bg-blue-600 rounded-full"></span>
-                    <span>EN (Individual Grade): 50%</span>
+                    <span>{getTranslation('weight_info_en')}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-blue-300 dark:bg-blue-600 rounded-full"></span>
-                    <span>MSP (Oral Exam): 50%</span>
+                    <span>{getTranslation('weight_info_msp')}</span>
                   </li>
                 </ul>
                 <li className="flex items-center gap-2 italic">
                   <span className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full"></span>
-                  <span>Please adjust these weights according to your professor&apos;s specific requirements</span>
+                  <span>{getTranslation('weight_info_adjust')}</span>
                 </li>
               </ul>
             </div>
@@ -232,9 +297,9 @@ export default function GradeManager({
                         {hasMainGrade && (
                           <span 
                             className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
-                            title="Official university-calculated final grade"
+                            title={getTranslation('official_university_final')}
                           >
-                            Official Final
+                            {getCommonTranslation('official_final')}
                           </span>
                         )}
                         <motion.button
@@ -243,7 +308,7 @@ export default function GradeManager({
                           whileTap="tap"
                           onClick={() => handleEditModule(group.modules[0])}
                           className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                          title="Edit Module Details"
+                          title={getTranslation('edit_module')}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -253,11 +318,11 @@ export default function GradeManager({
                       </div>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <span>ECTS: {group.ects}</span>
+                      <span>{getTranslation('ects')}: {group.ects}</span>
                       {finalGrade !== null && (
                         <>
                           <span>•</span>
-                          <span>Final Grade: {finalGrade.toFixed(2)}</span>
+                          <span>{getTranslation('final_grade')}: {finalGrade.toFixed(2)}</span>
                         </>
                       )}
                     </div>
@@ -277,7 +342,7 @@ export default function GradeManager({
                               module.moduleType?.type === 'EN' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' :
                               'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                             }`}>
-                              {module.moduleType?.type === 'MAIN' ? 'Official Final' : module.moduleType?.type || 'Official Final'}
+                              {module.moduleType?.type === 'MAIN' ? getCommonTranslation('official_final') : module.moduleType?.type || getCommonTranslation('official_final')}
                             </span>
                             {module.freieNote !== null && (
                               <span className={`text-sm font-medium ${
@@ -291,7 +356,7 @@ export default function GradeManager({
                           </div>
                           {module.moduleType?.weight && (
                             <span className="text-xs text-gray-500 dark:text-gray-400">
-                              Weight: {module.moduleType.weight}%
+                              {getCommonTranslation('weight')}: {module.moduleType.weight}%
                             </span>
                           )}
                         </div>
@@ -310,7 +375,7 @@ export default function GradeManager({
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                 </svg>
-                                Add Grade
+                                {getCommonTranslation('add_grade')}
                               </motion.button>
                             ) : (
                               <>
@@ -324,7 +389,7 @@ export default function GradeManager({
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                   </svg>
-                                  Edit
+                                  {getCommonTranslation('edit')}
                                 </motion.button>
                                 <motion.button
                                   variants={buttonVariants}
@@ -336,7 +401,7 @@ export default function GradeManager({
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                   </svg>
-                                  Delete
+                                  {getCommonTranslation('delete')}
                                 </motion.button>
                               </>
                             )}
@@ -356,7 +421,7 @@ export default function GradeManager({
       {showAddGradeModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Add Manual Grade</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{getTranslation('add_manual_grade')}</h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <button
@@ -367,7 +432,7 @@ export default function GradeManager({
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                   }`}
                 >
-                  New Module
+                  {getTranslation('new_module')}
                 </button>
                 <button
                   onClick={() => setNewManualGrade(prev => ({ ...prev, isExistingModule: true }))}
@@ -377,13 +442,13 @@ export default function GradeManager({
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                   }`}
                 >
-                  Existing Module
+                  {getTranslation('existing_module')}
                 </button>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Module Name
+                  {getTranslation('module_name')}
                 </label>
                 {newManualGrade.isExistingModule ? (
                   <select
@@ -405,7 +470,7 @@ export default function GradeManager({
                     }}
                     className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
                   >
-                    <option value="">Select a module...</option>
+                    <option value="">{getTranslation('select_module')}</option>
                     {getAvailableModules().map(moduleName => (
                       <option key={moduleName} value={moduleName}>
                         {moduleName}
@@ -418,13 +483,13 @@ export default function GradeManager({
                     value={newManualGrade.moduleName}
                     onChange={(e) => setNewManualGrade(prev => ({ ...prev, moduleName: e.target.value }))}
                     className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
-                    placeholder="Enter module name..."
+                    placeholder={getTranslation('enter_module_name')}
                   />
                 )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Grade
+                  {getTranslation('grade')}
                 </label>
                 <input
                   type="number"
@@ -438,7 +503,7 @@ export default function GradeManager({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Weight (%)
+                  {getTranslation('weight')} (%)
                 </label>
                 <input
                   type="number"
@@ -451,7 +516,7 @@ export default function GradeManager({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  ECTS
+                  {getTranslation('ects')}
                 </label>
                 <input
                   type="number"
@@ -463,14 +528,14 @@ export default function GradeManager({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Type
+                  {getTranslation('type')}
                 </label>
                 <select
                   value={newManualGrade.type}
                   onChange={(e) => setNewManualGrade(prev => ({ ...prev, type: e.target.value as 'MAIN' | 'MSP' | 'EN' }))}
                   className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
                 >
-                  <option value="MAIN">Official University Final</option>
+                  <option value="MAIN">{getTranslation('official_university_final')}</option>
                   <option value="MSP">MSP</option>
                   <option value="EN">EN</option>
                 </select>
@@ -491,13 +556,13 @@ export default function GradeManager({
                 }}
                 className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
               >
-                Cancel
+                {getCommonTranslation('cancel')}
               </button>
               <button
                 onClick={handleAddManualGrade}
                 className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
               >
-                Add Grade
+                {getTranslation('add_grade')}
               </button>
             </div>
           </div>
@@ -505,15 +570,15 @@ export default function GradeManager({
       )}
 
       {/* Edit Module Modal */}
-      {selectedModule && (
+      {isEditModalOpen && selectedModule && (
         <ModuleEditModal
           isOpen={isEditModalOpen}
+          module={selectedModule}
+          onSave={handleSaveModule}
           onClose={() => {
             setIsEditModalOpen(false);
             setSelectedModule(null);
           }}
-          module={selectedModule}
-          onSave={handleSaveModule}
         />
       )}
     </div>

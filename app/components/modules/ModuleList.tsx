@@ -1,8 +1,9 @@
 'use client';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Registration } from '../../types/modules';
 import { filterModules } from '../../utils/moduleUtils';
+import { useTranslations } from 'next-intl';
 
 interface ModuleListProps {
   modules: Registration[];
@@ -11,6 +12,25 @@ interface ModuleListProps {
 }
 
 export default function ModuleList({ modules, searchTerm, onSelectModule }: ModuleListProps) {
+  const t = useTranslations('modules');
+  const commonT = useTranslations('common');
+  
+  const getFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'no_modules_found': 'No modules found matching your search.',
+      'registered': 'Registered:'
+    };
+    return fallbacks[key] || key;
+  }, []);
+  
+  const getTranslation = useCallback((key: string): string => {
+    try {
+      return t(key);
+    } catch (error) {
+      return getFallbackTranslation(key);
+    }
+  }, [t, getFallbackTranslation]);
+  
   const filteredModules = filterModules(modules, searchTerm);
 
   return (
@@ -18,7 +38,7 @@ export default function ModuleList({ modules, searchTerm, onSelectModule }: Modu
       <div className="space-y-3">
         {filteredModules.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500 dark:text-gray-400">No modules found matching your search.</p>
+            <p className="text-gray-500 dark:text-gray-400">{getTranslation('no_modules_found')}</p>
           </div>
         ) : (
           filteredModules.map((reg, index) => (
@@ -50,7 +70,7 @@ export default function ModuleList({ modules, searchTerm, onSelectModule }: Modu
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <span>Registered: {new Date(reg.anmeldungsDatum).toLocaleDateString()}</span>
+                        <span>{getTranslation('registered')} {new Date(reg.anmeldungsDatum).toLocaleDateString()}</span>
                       </>
                     ) : (
                       <>

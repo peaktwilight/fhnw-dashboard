@@ -3,6 +3,7 @@
 import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import RegistrationWidget from '@/app/components/RegistrationWidget';
+import { useTranslations } from 'next-intl';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,6 +29,24 @@ const sectionVariants = {
 };
 
 export default function GradesPage() {
+  const t = useTranslations('grades');
+
+  const getFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'page_title': 'Grade Management',
+      'page_description': 'Track your grades, manage modules, and monitor your progress at FHNW.'
+    };
+    return fallbacks[key] || key;
+  };
+
+  const getTranslation = (key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  };
+
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-screen">
@@ -46,10 +65,10 @@ export default function GradesPage() {
           className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700"
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Grade Management
+            {getTranslation('page_title')}
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
-            Track your grades, manage modules, and monitor your progress at FHNW.
+            {getTranslation('page_description')}
           </p>
         </motion.div>
 

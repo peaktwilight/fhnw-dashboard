@@ -2,18 +2,61 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../providers/ThemeProvider';
+import { useTranslations } from 'next-intl';
 
 export default function ThemeSettings() {
   const { theme, setTheme } = useTheme();
+  
+  // Move hooks outside try-catch
+  const t = useTranslations('theme');
+  const commonT = useTranslations('common');
+  
+  // Define fallback functions
+  const getFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'title': 'Theme Settings',
+      'description': 'Choose your preferred theme for FHNW Dashboard',
+      'dark_description': 'Use dark mode for the interface',
+      'light_description': 'Use light mode for the interface',
+      'system_description': 'Follow your system\'s theme settings'
+    };
+    return fallbacks[key] || key;
+  };
+  
+  const getCommonFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'dark': 'Dark',
+      'light': 'Light',
+      'system': 'System'
+    };
+    return fallbacks[key] || key;
+  };
+
+  // Wrap translation calls in try-catch instead of the hook
+  const getTranslation = (key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  };
+
+  const getCommonTranslation = (key: string): string => {
+    try {
+      return commonT(key);
+    } catch {
+      return getCommonFallbackTranslation(key);
+    }
+  };
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-          Theme Settings
+          {getTranslation('title')}
         </h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          Choose how you&apos;d like FHNW Dashboard to appear to you
+          {getTranslation('description')}
         </p>
       </div>
 
@@ -43,9 +86,9 @@ export default function ThemeSettings() {
               )}
             </div>
           </div>
-          <h3 className="font-medium text-gray-900 dark:text-white">Light Mode</h3>
+          <h3 className="font-medium text-gray-900 dark:text-white">{getCommonTranslation('light')}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Light background with dark text
+            {getTranslation('light_description')}
           </p>
         </motion.button>
 
@@ -74,9 +117,9 @@ export default function ThemeSettings() {
               )}
             </div>
           </div>
-          <h3 className="font-medium text-gray-900 dark:text-white">Dark Mode</h3>
+          <h3 className="font-medium text-gray-900 dark:text-white">{getCommonTranslation('dark')}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Dark background with light text
+            {getTranslation('dark_description')}
           </p>
         </motion.button>
 
@@ -105,9 +148,9 @@ export default function ThemeSettings() {
               )}
             </div>
           </div>
-          <h3 className="font-medium text-gray-900 dark:text-white">System</h3>
+          <h3 className="font-medium text-gray-900 dark:text-white">{getCommonTranslation('system')}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Match your system theme
+            {getTranslation('system_description')}
           </p>
         </motion.button>
       </div>

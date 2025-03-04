@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Registration, ManualGrade, buttonVariants } from '../types/modules';
 import { calculateStats } from '../utils/moduleUtils';
+import { useTranslations } from 'next-intl';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -22,30 +23,72 @@ import ModuleList from './modules/ModuleList';
 import ModuleDetailModal from './modules/ModuleDetailModal';
 import GradeManager from './modules/GradeManager';
 
-const tabs = [
-  { id: 'grade-manager', label: 'Grades', icon: (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-    </svg>
-  )},
-  { id: 'overview', label: 'Overview', icon: (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-    </svg>
-  )},
-  { id: 'current', label: 'Current Modules', icon: (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  )},
-  { id: 'completed', label: 'Completed', icon: (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  )}
-] as const;
-
 export default function RegistrationWidget() {
+  const t = useTranslations('grades');
+  const commonT = useTranslations('common');
+
+  const getFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'grade_progress_dashboard': 'Grade Progress Dashboard',
+      'search_placeholder': 'Search modules, lecturers...',
+      'grade_manager': 'Grades',
+      'overview': 'Overview',
+      'current_modules': 'Current Modules',
+      'completed': 'Completed',
+      'manual_entry': 'Manual Entry',
+      'manual_grade_entry': 'Manual grade entry'
+    };
+    return fallbacks[key] || key;
+  };
+  
+  const getCommonFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'update': 'Update',
+      'export': 'Export',
+      'last_updated': 'Last updated'
+    };
+    return fallbacks[key] || key;
+  };
+
+  const getTranslation = (key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  };
+
+  const getCommonTranslation = (key: string): string => {
+    try {
+      return commonT(key);
+    } catch {
+      return getCommonFallbackTranslation(key);
+    }
+  };
+
+  const tabs = [
+    { id: 'grade-manager', label: getTranslation('grade_manager'), icon: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+    )},
+    { id: 'overview', label: getTranslation('overview'), icon: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+      </svg>
+    )},
+    { id: 'current', label: getTranslation('current_modules'), icon: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    )},
+    { id: 'completed', label: getTranslation('completed'), icon: (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    )}
+  ] as const;
+
   const [registrations, setRegistrations] = useState<Registration[] | null>(null);
   const [mounted, setMounted] = useState(false);
   const [showJsonInput, setShowJsonInput] = useState(true);
@@ -119,11 +162,11 @@ export default function RegistrationWidget() {
       modulanlassId: -1,
       studierendeId: -1,
       statusId: 1,
-      statusName: "Manual Entry",
+      statusName: getTranslation('manual_entry'),
       freieNote: grade.grade,
       noteId: null,
       titelArbeit: null,
-      text: "Manual grade entry",
+      text: getTranslation('manual_grade_entry'),
       anmeldungsDatum: new Date().toISOString(),
       hochschule: "Manual",
       ausbildungsart: 0,
@@ -139,7 +182,7 @@ export default function RegistrationWidget() {
         nummer: "MANUAL",
         bezeichnung: grade.moduleName,
         statusId: 1,
-        statusName: "Manual Entry",
+        statusName: getTranslation('manual_entry'),
         hochschule: "Manual",
         ausbildungsart: 0,
         maxTeilnehmende: 1,
@@ -214,11 +257,11 @@ export default function RegistrationWidget() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                  Grade Progress Dashboard
+                  {getTranslation('grade_progress_dashboard')}
                 </h1>
             {lastUpdated && (
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Last updated: {new Date(lastUpdated).toLocaleString()}
+                {getCommonTranslation('last_updated')}: {new Date(lastUpdated).toLocaleString()}
               </p>
             )}
           </div>
@@ -236,7 +279,7 @@ export default function RegistrationWidget() {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                      Export
+                      {getCommonTranslation('export')}
               </motion.button>
                         <motion.button
                           variants={buttonVariants}
@@ -249,7 +292,7 @@ export default function RegistrationWidget() {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                           </svg>
-                      Update
+                      {getCommonTranslation('update')}
                         </motion.button>
                   </>
                 )}
@@ -348,7 +391,7 @@ export default function RegistrationWidget() {
                   <div className="relative max-w-md mx-auto">
                 <input
                   type="text"
-                  placeholder="Search modules, lecturers..."
+                  placeholder={getTranslation('search_placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"

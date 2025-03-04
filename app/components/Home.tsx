@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react';
 import { motion } from 'framer-motion';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { 
   ChartBarIcon,
@@ -60,53 +61,56 @@ const cardVariants = {
   }
 };
 
-const sections = [
-  {
-    title: 'Grades Dashboard',
-    description: 'Track grades, modules, and statistics in one place!',
-    icon: (
-      <div className="inline-flex">
-        <ChartBarIcon className="w-10 h-10 text-emerald-500/90 dark:text-emerald-400/90" />
-      </div>
-    ),
-    features: [
-      { text: 'Module Info', color: 'emerald' },
-      { text: 'Grade Statistics', color: 'emerald' }
-    ],
-    href: '/grades'
-  },
-  {
-    title: 'Campus Tools',
-    description: 'Useful tools to make your campus life easier.',
-    icon: (
-      <div className="inline-flex">
-        <MapIcon className="w-10 h-10 text-amber-500/90 dark:text-amber-400/90" />
-      </div>
-    ),
-    features: [
-      { text: 'Mensa', color: 'rose' },
-      { text: 'Weather', color: 'sky' },
-      { text: 'Transport', color: 'amber' }
-    ],
-    href: '/campus'
-  },
-  {
-    title: 'News & Events',
-    description: 'Stay updated with the latest stuff at FHNW.',
-    icon: (
-      <div className="inline-flex">
-        <CalendarIcon className="w-10 h-10 text-purple-500/90 dark:text-purple-400/90" />
-      </div>
-    ),
-    features: [
-      { text: 'News & Events', color: 'violet' },
-      { text: 'Live Updates', color: 'fuchsia' }
-    ],
-    href: '/news'
-  }
-];
-
 export default function Home() {
+  const t = useTranslations();
+  const locale = useLocale();
+
+  const sections = [
+    {
+      title: t('home.sections.grades.title'),
+      description: t('home.sections.grades.description'),
+      icon: (
+        <div className="inline-flex">
+          <ChartBarIcon className="w-10 h-10 text-emerald-500/90 dark:text-emerald-400/90" />
+        </div>
+      ),
+      features: [
+        { text: t('home.sections.grades.features.moduleInfo'), color: 'emerald' },
+        { text: t('home.sections.grades.features.gradeStats'), color: 'emerald' }
+      ],
+      href: '/grades'
+    },
+    {
+      title: t('home.sections.campus.title'),
+      description: t('home.sections.campus.description'),
+      icon: (
+        <div className="inline-flex">
+          <MapIcon className="w-10 h-10 text-amber-500/90 dark:text-amber-400/90" />
+        </div>
+      ),
+      features: [
+        { text: t('home.sections.campus.features.mensa'), color: 'rose' },
+        { text: t('home.sections.campus.features.weather'), color: 'sky' },
+        { text: t('home.sections.campus.features.transport'), color: 'amber' }
+      ],
+      href: `/${locale}/campus`
+    },
+    {
+      title: t('home.sections.news.title'),
+      description: t('home.sections.news.description'),
+      icon: (
+        <div className="inline-flex">
+          <CalendarIcon className="w-10 h-10 text-purple-500/90 dark:text-purple-400/90" />
+        </div>
+      ),
+      features: [
+        { text: t('home.sections.news.features.news'), color: 'violet' },
+        { text: t('home.sections.news.features.updates'), color: 'fuchsia' }
+      ],
+      href: `/${locale}/news`
+    }
+  ];
+
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-screen">
@@ -126,10 +130,10 @@ export default function Home() {
         >
           <div className="text-center py-8">
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
-              FHNW Student Dashboard
+              {t('home.title')}
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Study smarter, not harder — your all-in-one FHNW campus survival tool.
+              {t('home.subtitle')}
             </p>
           </div>
         </motion.div>

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment, useState, useEffect, useRef } from 'react';
 import { Squares2X2Icon, ChartBarIcon } from '@heroicons/react/24/outline';
+import { useLocale, useTranslations } from 'next-intl';
 
 const navVariants = {
   hidden: { opacity: 0, y: -20 },
@@ -31,13 +32,37 @@ const logoVariants = {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations('navbar');
+  
+  const getFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'home': 'Home',
+      'grades': 'Grades',
+      'campus': 'Campus',
+      'news': 'News',
+      'settings': 'Settings'
+    };
+    return fallbacks[key] || key;
+  };
+
+  const getTranslation = (key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  };
+  
   const [highlightStyle, setHighlightStyle] = useState({});
   const navRef = useRef<HTMLDivElement>(null);
 
   // Update highlight position when pathname changes or on mount
   useEffect(() => {
     const updateHighlight = () => {
-      const activeLink = navRef.current?.querySelector(`a[href="${pathname}"]`);
+      // Remove locale prefix for comparison
+      const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+      const activeLink = navRef.current?.querySelector(`a[data-path="${pathWithoutLocale}"]`);
       if (activeLink) {
         const { offsetLeft, offsetWidth } = activeLink as HTMLElement;
         setHighlightStyle({
@@ -50,11 +75,11 @@ export default function Navbar() {
     updateHighlight();
     window.addEventListener('resize', updateHighlight);
     return () => window.removeEventListener('resize', updateHighlight);
-  }, [pathname]);
+  }, [pathname, locale]);
 
   const menuItems = [
     {
-      name: 'Home',
+      name: getTranslation('home'),
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -63,12 +88,12 @@ export default function Navbar() {
       href: '/'
     },
     {
-      name: 'Grades',
+      name: getTranslation('grades'),
       href: '/grades',
       icon: <ChartBarIcon className="w-5 h-5" />
     },
     {
-      name: 'Campus',
+      name: getTranslation('campus'),
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -77,7 +102,7 @@ export default function Navbar() {
       href: '/campus'
     },
     {
-      name: 'News',
+      name: getTranslation('news'),
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -86,7 +111,7 @@ export default function Navbar() {
       href: '/news'
     },
     {
-      name: 'Settings',
+      name: getTranslation('settings'),
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -96,6 +121,9 @@ export default function Navbar() {
       href: '/settings'
     }
   ];
+
+  // Remove locale prefix for comparison and handle empty path
+  const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
 
   return (
     <motion.header
@@ -111,7 +139,8 @@ export default function Navbar() {
             variants={logoVariants}
           >
             <Link 
-              href="/" 
+              href={`/${locale}`}
+              data-path="/"
               className="flex items-center gap-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 hover:opacity-80 transition-opacity"
             >
               <motion.div 
@@ -137,10 +166,11 @@ export default function Navbar() {
             {menuItems.map((item) => (
               <Link
                 key={item.name}
-                href={item.href}
+                href={`/${locale}${item.href === '/' ? '' : item.href}`}
+                data-path={item.href}
                 className={`
                   flex items-center gap-1.5 px-3 py-2 text-sm transition-colors rounded-lg relative z-10
-                  ${pathname === item.href
+                  ${pathWithoutLocale === item.href
                     ? 'text-blue-600 dark:text-blue-400 font-medium' 
                     : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
                   }
@@ -148,7 +178,7 @@ export default function Navbar() {
               >
                 <motion.div
                   className={`w-4 h-4 flex-shrink-0 flex items-center justify-center ${
-                    pathname === item.href
+                    pathWithoutLocale === item.href
                       ? 'text-blue-600 dark:text-blue-400' 
                       : ''
                   }`}
@@ -236,7 +266,8 @@ export default function Navbar() {
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <Link
-                              href={item.href}
+                              href={`/${locale}${item.href === '/' ? '' : item.href}`}
+                              data-path={item.href}
                               className={`${
                                 active ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
                               } group flex w-full items-center rounded-md px-2 py-2 text-sm`}

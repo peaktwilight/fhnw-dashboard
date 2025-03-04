@@ -1,5 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ModuleGrade {
   modulanlassAnmeldungId: number;
@@ -22,6 +23,47 @@ interface ModuleGrade {
 }
 
 export default function GradesWidget() {
+  // Move hooks outside try-catch
+  const t = useTranslations('grades');
+  const commonT = useTranslations('common');
+  
+  // Define fallback functions
+  const getFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'login_required': 'Please log in to StudentHub to view your grades',
+      'no_grades': 'No grades available',
+      'login_button': 'Login to StudentHub',
+      'completed': 'Completed Modules',
+      'in_progress': 'Current Semester'
+    };
+    return fallbacks[key] || key;
+  }, []);
+  
+  const getCommonFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'error': 'An error occurred',
+      'reset': 'Refresh Page'
+    };
+    return fallbacks[key] || key;
+  }, []);
+
+  // Wrap translation calls in try-catch instead of the hook
+  const getTranslation = useCallback((key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  }, [t, getFallbackTranslation]);
+
+  const getCommonTranslation = useCallback((key: string): string => {
+    try {
+      return commonT(key);
+    } catch {
+      return getCommonFallbackTranslation(key);
+    }
+  }, [commonT, getCommonFallbackTranslation]);
+  
   const [grades, setGrades] = useState<ModuleGrade[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -79,9 +121,9 @@ export default function GradesWidget() {
           console.log('Client: API response not OK:', response.status, data);
           if (response.status === 401 || data.requiresLogin) {
             setRequiresLogin(true);
-            setError('Please log in to StudentHub to view your grades');
+            setError(getTranslation('login_required'));
           } else {
-            setError(data.error || 'Failed to fetch grades');
+            setError(data.error || getCommonTranslation('error'));
           }
           return;
         }
@@ -92,14 +134,14 @@ export default function GradesWidget() {
         setRequiresLogin(false);
       } catch (err) {
         console.error('Client: Error fetching grades:', err);
-        setError('Failed to fetch grades. Please try again later.');
+        setError(getCommonTranslation('error'));
       } finally {
         setLoading(false);
       }
     };
 
     fetchGrades();
-  }, [mounted]);
+  }, [mounted, getTranslation, getCommonTranslation]);
 
   if (!mounted) {
     return (
@@ -137,7 +179,7 @@ export default function GradesWidget() {
                 onClick={handleLogin}
                 className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
               >
-                <span>Open StudentHub</span>
+                <span>{getTranslation('login_button')}</span>
                 <svg
                   className="w-4 h-4 ml-2"
                   fill="none"
@@ -153,13 +195,13 @@ export default function GradesWidget() {
                 </svg>
               </button>
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                After logging in to StudentHub, return here and click refresh
+                {getTranslation('login_required')}
               </div>
               <button
                 onClick={() => window.location.reload()}
                 className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg transition-colors"
               >
-                Refresh Page
+                {getCommonTranslation('reset')}
               </button>
             </div>
           )}
@@ -178,7 +220,7 @@ export default function GradesWidget() {
       {gradedModules.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-            Completed Modules
+            {getTranslation('completed')}
           </h3>
           <div className="space-y-3">
             {gradedModules.map((grade) => (
@@ -214,7 +256,7 @@ export default function GradesWidget() {
       {currentModules.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-            Current Semester
+            {getTranslation('in_progress')}
           </h3>
           <div className="space-y-3">
             {currentModules.map((module) => (
@@ -232,6 +274,12 @@ export default function GradesWidget() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {gradedModules.length === 0 && currentModules.length === 0 && (
+        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          {getTranslation('no_grades')}
         </div>
       )}
     </div>

@@ -9,7 +9,10 @@ interface ThemeContextType {
   setTheme: (theme: Theme) => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType>({
+  theme: 'system',
+  setTheme: () => {}
+});
 
 function getSystemTheme(): 'dark' | 'light' {
   if (typeof window === 'undefined') return 'light';
@@ -18,17 +21,20 @@ function getSystemTheme(): 'dark' | 'light' {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<Theme>('system');
+  const [theme, setThemeState] = useState<Theme>('system');
 
+  // Only run on the client side
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
-      setTheme(savedTheme);
+      setThemeState(savedTheme);
     }
     setMounted(true);
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const root = document.documentElement;
     if (theme === 'system') {
       const systemTheme = getSystemTheme();
@@ -38,9 +44,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.classList.remove('light', 'dark');
       root.classList.add(theme);
     }
-  }, [theme]);
+  }, [theme, mounted]);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
       if (theme === 'system') {
@@ -53,23 +61,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme]);
+  }, [theme, mounted]);
 
-  const value = {
-    theme,
-    setTheme: (newTheme: Theme) => {
-      setTheme(newTheme);
-      if (newTheme === 'system') {
-        localStorage.removeItem('theme');
-      } else {
-        localStorage.setItem('theme', newTheme);
-      }
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+    if (newTheme === 'system') {
+      localStorage.removeItem('theme');
+    } else {
+      localStorage.setItem('theme', newTheme);
     }
   };
 
-  if (!mounted) {
-    return null;
-  }
+  const value = {
+    theme,
+    setTheme
+  };
 
   return (
     <ThemeContext.Provider value={value}>

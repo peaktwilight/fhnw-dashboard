@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { AppWrapper } from './components/providers/AppWrapper';
+import { ThemeScript } from './components/providers/ThemeScript';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -34,15 +34,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" suppressHydrationWarning className="h-full">
       <head>
         <link rel="icon" type="image/png" href="/favicon.png" />
+        <ThemeScript />
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900`}>
-        <AppWrapper>
-          {children}
-        </AppWrapper>
+        {children}
       </body>
     </html>
   );
-} 
+}

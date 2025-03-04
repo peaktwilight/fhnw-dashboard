@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Registration, ModuleStats } from '../../types/modules';
 import { getGradeDistribution, getModuleProgress } from '../../utils/moduleUtils';
+import { useTranslations } from 'next-intl';
 
 interface ModuleOverviewProps {
   stats: ModuleStats | null;
@@ -10,6 +11,54 @@ interface ModuleOverviewProps {
 }
 
 export default function ModuleOverview({ stats, registrations }: ModuleOverviewProps) {
+  // Move hook outside try-catch
+  const t = useTranslations('grades');
+  
+  // Define fallback function
+  const getFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'total_modules': 'Total Modules',
+      'completed': 'Completed',
+      'raw_average': 'Raw Average',
+      'weighted_average': 'Weighted Average',
+      'pass_rate': 'Pass Rate',
+      'raw_average_description': 'Simple average of all grades',
+      'weighted_average_description': 'Average weighted by ECTS and module type',
+      'pass_rate_description': 'Percentage of modules with grade ≥ 4.0',
+      'study_progress': 'Study Progress',
+      'progress': 'Progress',
+      'grade_distribution': 'Grade Distribution',
+      'course_information': 'Course Information',
+      'total_students': 'Total Students',
+      'total_capacity': 'Total Capacity',
+      'unique_lecturers': 'Unique Lecturers',
+      'departments': 'Departments',
+      'timeline': 'Timeline',
+      'study_period': 'Study Period',
+      'current_status': 'Current Status',
+      'active': 'Active',
+      'in_progress': 'In Progress',
+      'passed': 'Passed',
+      'failed': 'Failed',
+      'grade_range_5.5_6.0': '5.5-6.0',
+      'grade_range_5.0_5.4': '5.0-5.4',
+      'grade_range_4.5_4.9': '4.5-4.9',
+      'grade_range_4.0_4.4': '4.0-4.4',
+      'grade_range_3.5_3.9': '3.5-3.9',
+      'grade_range_1.0_3.4': '1.0-3.4'
+    };
+    return fallbacks[key] || key;
+  };
+
+  // Wrap translation calls in try-catch instead of the hook
+  const getTranslation = (key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  };
+  
   if (!stats || !registrations) return null;
   
   // Get all grades for distribution
@@ -23,24 +72,24 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
       {/* Main Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {[
-          { label: 'Total Modules', value: stats.totalModules },
-          { label: 'Completed', value: stats.completedModules },
+          { label: getTranslation('total_modules'), value: stats.totalModules },
+          { label: getTranslation('completed'), value: stats.completedModules },
           {
-            label: 'Raw Average',
+            label: getTranslation('raw_average'),
             value: stats.averageGrade || '-',
-            description: 'Simple average of all grades'
+            description: getTranslation('raw_average_description')
           },
           {
-            label: 'Weighted Average',
+            label: getTranslation('weighted_average'),
             value: stats.weightedAverage || '-',
-            description: 'Average weighted by ECTS and module type'
+            description: getTranslation('weighted_average_description')
           },
           {
-            label: 'Pass Rate',
+            label: getTranslation('pass_rate'),
             value: stats.completedModules > 0
               ? `${Math.round((stats.passedModules / stats.completedModules) * 100)}%`
               : '-',
-            description: 'Percentage of modules with grade ≥ 4.0'
+            description: getTranslation('pass_rate_description')
           }
         ].map((stat, index) => (
           <motion.div
@@ -90,7 +139,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
         transition={{ delay: 0.4 }}
         className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
       >
-        <h4 className="font-medium text-gray-900 dark:text-white mb-3">Study Progress</h4>
+        <h4 className="font-medium text-gray-900 dark:text-white mb-3">{getTranslation('study_progress')}</h4>
         <div className="relative pt-1">
           <div className="flex mb-2 items-center justify-between">
             <div>
@@ -100,7 +149,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
                 transition={{ delay: 0.5 }}
                 className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 dark:text-blue-200 dark:bg-blue-900"
               >
-                Progress
+                {getTranslation('progress')}
               </motion.span>
             </div>
             <div className="text-right">
@@ -128,21 +177,21 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
             >
-              {moduleProgress.completed} Completed
+              {moduleProgress.completed} {getTranslation('completed')}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
             >
-              {moduleProgress.inProgress} In Progress
+              {moduleProgress.inProgress} {getTranslation('in_progress')}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
             >
-              {moduleProgress.total} Total
+              {moduleProgress.total} {getTranslation('total_modules')}
             </motion.span>
           </div>
         </div>
@@ -155,7 +204,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
         transition={{ delay: 1.0 }}
         className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
       >
-        <h4 className="font-medium text-gray-900 dark:text-white mb-3">Grade Distribution</h4>
+        <h4 className="font-medium text-gray-900 dark:text-white mb-3">{getTranslation('grade_distribution')}</h4>
         <div className="space-y-3">
           {gradeDistribution.map((grade, index) => (
             <div key={grade.range} className="relative">
@@ -189,13 +238,13 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
           transition={{ delay: 1.5 }}
           className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
         >
-          <h4 className="font-medium text-gray-900 dark:text-white mb-3">Course Information</h4>
+          <h4 className="font-medium text-gray-900 dark:text-white mb-3">{getTranslation('course_information')}</h4>
           <div className="space-y-2">
             {[
-              { label: 'Total Students', value: stats.totalStudents },
-              { label: 'Total Capacity', value: stats.totalCapacity },
-              { label: 'Unique Lecturers', value: stats.uniqueLecturers },
-              { label: 'Departments', value: stats.departments }
+              { label: getTranslation('total_students'), value: stats.totalStudents },
+              { label: getTranslation('total_capacity'), value: stats.totalCapacity },
+              { label: getTranslation('unique_lecturers'), value: stats.uniqueLecturers },
+              { label: getTranslation('departments'), value: stats.departments }
             ].map((item, index) => (
               <motion.div 
                 key={item.label}
@@ -217,14 +266,14 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
           transition={{ delay: 1.5 }}
           className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
         >
-          <h4 className="font-medium text-gray-900 dark:text-white mb-3">Timeline</h4>
+          <h4 className="font-medium text-gray-900 dark:text-white mb-3">{getTranslation('timeline')}</h4>
           <div className="space-y-2">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.6 }}
             >
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Study Period</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">{getTranslation('study_period')}</p>
               <p className="text-gray-900 dark:text-white">
                 {stats.earliestModule.toLocaleDateString()} — {stats.latestModule.toLocaleDateString()}
               </p>
@@ -234,7 +283,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.7 }}
             >
-              <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">Current Status</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">{getTranslation('current_status')}</p>
               <div className="mt-1 flex space-x-2">
                 <motion.div 
                   initial={{ scale: 0.9, opacity: 0 }}
@@ -243,7 +292,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
                   className="flex-1 bg-blue-100 dark:bg-blue-900/30 rounded-lg p-2"
                 >
                   <p className="text-sm text-blue-800 dark:text-blue-200">
-                    {stats.currentModules} Active
+                    {stats.currentModules} {getTranslation('active')}
                   </p>
                 </motion.div>
                 <motion.div 
@@ -253,7 +302,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
                   className="flex-1 bg-green-100 dark:bg-green-900/30 rounded-lg p-2"
                 >
                   <p className="text-sm text-green-800 dark:text-green-200">
-                    {stats.passedModules} Passed
+                    {stats.passedModules} {getTranslation('passed')}
                   </p>
                 </motion.div>
                 <motion.div 
@@ -263,7 +312,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
                   className="flex-1 bg-red-100 dark:bg-red-900/30 rounded-lg p-2"
                 >
                   <p className="text-sm text-red-800 dark:text-red-200">
-                    {stats.completedModules - stats.passedModules} Failed
+                    {stats.completedModules - stats.passedModules} {getTranslation('failed')}
                   </p>
                 </motion.div>
               </div>

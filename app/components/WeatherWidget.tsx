@@ -1,6 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { 
   SunIcon, 
   MoonIcon, 
@@ -100,6 +101,47 @@ const iconVariants = {
 };
 
 export default function WeatherWidget() {
+  // Move hooks outside try-catch
+  const t = useTranslations('weather');
+  const commonT = useTranslations('common');
+  
+  // Define fallback functions
+  const getFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'error_fetching': 'Error fetching weather data',
+      'feels_like': 'Feels like',
+      'humidity': 'Humidity',
+      'today': 'Today',
+      'tomorrow': 'Tomorrow'
+    };
+    return fallbacks[key] || key;
+  }, []);
+  
+  const getCommonFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'error': 'An error occurred',
+      'loading': 'Loading...'
+    };
+    return fallbacks[key] || key;
+  }, []);
+
+  // Wrap translation calls in try-catch instead of the hook
+  const getTranslation = useCallback((key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  }, [t, getFallbackTranslation]);
+
+  const getCommonTranslation = useCallback((key: string): string => {
+    try {
+      return commonT(key);
+    } catch {
+      return getCommonFallbackTranslation(key);
+    }
+  }, [commonT, getCommonFallbackTranslation]);
+  
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,7 +158,7 @@ export default function WeatherWidget() {
         const data = await response.json();
         
         if (!response.ok) {
-          throw new Error(data.error || 'Failed to fetch weather data');
+          throw new Error(data.error || getTranslation('error_fetching'));
         }
         
         setWeather(data);
@@ -124,7 +166,7 @@ export default function WeatherWidget() {
         setRetryCount(0);
       } catch (err) {
         console.error('Weather widget error:', err);
-        setError(err instanceof Error ? err.message : 'Could not load weather data');
+        setError(err instanceof Error ? err.message : getTranslation('error_fetching'));
         if (retryCount < 3) {
           setTimeout(() => {
             setRetryCount(prev => prev + 1);
@@ -138,7 +180,7 @@ export default function WeatherWidget() {
     fetchWeather();
     const interval = setInterval(fetchWeather, 600000);
     return () => clearInterval(interval);
-  }, [retryCount]);
+  }, [getTranslation, getCommonTranslation, retryCount]);
 
   if (loading) {
     return (
@@ -246,13 +288,13 @@ export default function WeatherWidget() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>Feels like {Math.round(weather.current.feels_like)}°C</span>
+              <span>{getTranslation('feels_like')} {Math.round(weather.current.feels_like)}°C</span>
             </div>
             <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
-              <span>Humidity {weather.current.humidity}%</span>
+              <span>{getTranslation('humidity')} {weather.current.humidity}%</span>
             </div>
           </motion.div>
         </motion.div>
@@ -273,7 +315,9 @@ export default function WeatherWidget() {
                 }`}
               >
                 <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                  {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                  {index === 0 ? getTranslation('today') : 
+                   index === 1 ? getTranslation('tomorrow') : 
+                   new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">

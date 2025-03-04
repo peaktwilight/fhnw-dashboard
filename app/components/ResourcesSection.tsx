@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import {
   HomeIcon,
   CalendarDaysIcon,
@@ -13,58 +14,95 @@ import {
   LinkIcon,
 } from '@heroicons/react/24/outline';
 
-const links = [
-  {
-    title: 'FHNW Homepage',
-    description: 'Official website of FHNW',
-    icon: <HomeIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://www.fhnw.ch'
-  },
-  {
-    title: 'Modulplaner',
-    description: 'Plan your module timetable',
-    icon: <CalendarDaysIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://pub092.cs.technik.fhnw.ch/#/'
-  },
-  {
-    title: 'StudentHub',
-    description: 'Access modules map and more',
-    icon: <AcademicCapIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://studenthub.technik.fhnw.ch/#/student'
-  },
-  {
-    title: 'Auxilium Timetable',
-    description: 'Check your class schedule',
-    icon: <ClockIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://auxilium.webapps.fhnw.ch/student/timetable'
-  },
-  {
-    title: 'Grades',
-    description: 'Official grades page',
-    icon: <ChartBarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://auxilium.webapps.fhnw.ch/student/noten'
-  },
-  {
-    title: 'Moodle',
-    description: 'Access your course materials',
-    icon: <BookOpenIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://moodle.fhnw.ch/login/index.php'
-  },
-  {
-    title: 'Room Reservation',
-    description: 'Book rooms and facilities',
-    icon: <BuildingOfficeIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://raum.fhnw.ch/'
-  },
-  {
-    title: 'ESP Registration',
-    description: 'Register for courses',
-    icon: <PencilSquareIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
-    href: 'https://esp.technik.fhnw.ch/Views/Register.aspx'
-  }
-];
-
 export default function ResourcesSection() {
+  // Move hook outside try-catch
+  const t = useTranslations('resources');
+  
+  // Define fallback function
+  const getFallbackTranslation = (key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'quick_links': 'Quick Links',
+      'description': 'Frequently used FHNW resources',
+      'fhnw_homepage': 'FHNW Homepage',
+      'fhnw_homepage_desc': 'Official website of FHNW',
+      'modulplaner': 'Modulplaner',
+      'modulplaner_desc': 'Plan your module timetable',
+      'studenthub': 'StudentHub',
+      'studenthub_desc': 'Access modules map and more',
+      'auxilium_timetable': 'Auxilium Timetable',
+      'auxilium_timetable_desc': 'Check your class schedule',
+      'grades': 'Grades',
+      'grades_desc': 'Official grades page',
+      'moodle': 'Moodle',
+      'moodle_desc': 'Access your course materials',
+      'room_reservation': 'Room Reservation',
+      'room_reservation_desc': 'Book rooms and facilities',
+      'esp_registration': 'ESP Registration',
+      'esp_registration_desc': 'Register for courses'
+    };
+    return fallbacks[key] || key;
+  };
+
+  // Wrap translation calls in try-catch instead of the hook
+  const getTranslation = (key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  };
+
+  const links = [
+    {
+      title: getTranslation('fhnw_homepage'),
+      description: getTranslation('fhnw_homepage_desc'),
+      icon: <HomeIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://www.fhnw.ch'
+    },
+    {
+      title: getTranslation('modulplaner'),
+      description: getTranslation('modulplaner_desc'),
+      icon: <CalendarDaysIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://pub092.cs.technik.fhnw.ch/#/'
+    },
+    {
+      title: getTranslation('studenthub'),
+      description: getTranslation('studenthub_desc'),
+      icon: <AcademicCapIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://studenthub.technik.fhnw.ch/#/student'
+    },
+    {
+      title: getTranslation('auxilium_timetable'),
+      description: getTranslation('auxilium_timetable_desc'),
+      icon: <ClockIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://auxilium.webapps.fhnw.ch/student/timetable'
+    },
+    {
+      title: getTranslation('grades'),
+      description: getTranslation('grades_desc'),
+      icon: <ChartBarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://auxilium.webapps.fhnw.ch/student/noten'
+    },
+    {
+      title: getTranslation('moodle'),
+      description: getTranslation('moodle_desc'),
+      icon: <BookOpenIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://moodle.fhnw.ch/login/index.php'
+    },
+    {
+      title: getTranslation('room_reservation'),
+      description: getTranslation('room_reservation_desc'),
+      icon: <BuildingOfficeIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://raum.fhnw.ch/'
+    },
+    {
+      title: getTranslation('esp_registration'),
+      description: getTranslation('esp_registration_desc'),
+      icon: <PencilSquareIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />,
+      href: 'https://esp.technik.fhnw.ch/Views/Register.aspx'
+    }
+  ];
+
   return (
     <motion.section
       id="links"
@@ -90,12 +128,12 @@ export default function ResourcesSection() {
           </motion.div>
           <div className="flex items-center">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white leading-none m-0">
-              Quick Links
+              {getTranslation('quick_links')}
             </h2>
           </div>
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400 ml-7 hidden sm:block">
-          Frequently used FHNW resources
+          {getTranslation('description')}
         </p>
       </motion.div>
 

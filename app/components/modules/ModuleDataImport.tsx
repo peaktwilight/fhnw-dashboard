@@ -1,7 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { buttonVariants, tutorialStepVariants, Registration } from '../../types/modules';
+import { useTranslations } from 'next-intl';
 
 interface ModuleDataImportProps {
   onDataImported: (data: Registration[]) => void;
@@ -10,6 +11,45 @@ interface ModuleDataImportProps {
 export default function ModuleDataImport({ onDataImported }: ModuleDataImportProps) {
   const [jsonInput, setJsonInput] = useState('');
   const [error, setError] = useState<string | null>(null);
+  
+  const t = useTranslations('registration');
+  
+  const getFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'import_title': 'Import Module Data',
+      'import_description': 'Import your module data from a JSON file',
+      'import_button': 'Import Data',
+      'import_success': 'Data imported successfully',
+      'import_error': 'Error importing data',
+      'how_to_get_data': 'How to get your module data',
+      'step1_title': 'Log in to StudentHub',
+      'step1_description': 'First, log in to your StudentHub account using your FHNW credentials',
+      'open_studenthub': 'Open StudentHub',
+      'step2_title': 'Access module data endpoint',
+      'step2_description': 'Click the button below to open the module data API endpoint',
+      'view_module_data': 'View Module Data',
+      'important_note': 'Important Note:',
+      'json_format_note': 'The data will appear as a JSON formatted text. You need to copy all of it.',
+      'login_error_note': 'If you see a login error, please log in to StudentHub first, then try again.',
+      'step3_title': 'Select all the data',
+      'step3_description': 'Once the data loads, select all the text (Ctrl+A or Command+A)',
+      'windows': 'Windows',
+      'mac': 'Mac',
+      'step4_title': 'Paste the data below',
+      'step4_description': 'Copy the selected text and paste it into the text area below',
+      'paste_here': 'Paste your JSON data here...',
+      'load_data': 'Load Data'
+    };
+    return fallbacks[key] || key;
+  }, []);
+
+  const getTranslation = useCallback((key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      return getFallbackTranslation(key);
+    }
+  }, [t, getFallbackTranslation]);
 
   const handleLogin = () => {
     window.open('https://studenthub.technik.fhnw.ch/#/student', '_blank');
@@ -31,10 +71,10 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
         onDataImported(parsed);
         setError(null);
       } else {
-        setError('Invalid JSON: Expected an array of registrations.');
+        setError(getTranslation('json_array_error'));
       }
     } catch {
-      setError('Invalid JSON format.');
+      setError(getTranslation('json_error'));
     }
   };
 
@@ -57,14 +97,14 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            How to Get Your Module Data
+            {getTranslation('how_to_get_data')}
           </h3>
           <div className="space-y-6">
             {[
               {
                 step: 1,
-                title: "Log in to StudentHub",
-                description: "First, click the button below to open StudentHub in a new tab. Log in with your FHNW account if you're not already logged in.",
+                title: getTranslation('step1_title'),
+                description: getTranslation('step1_description'),
                 action: (
                   <motion.button
                     variants={buttonVariants}
@@ -74,7 +114,7 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
                     onClick={handleLogin}
                     className="mt-2 inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm shadow-md hover:shadow-lg"
                   >
-                    <span>Open StudentHub</span>
+                    <span>{getTranslation('open_studenthub')}</span>
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
@@ -83,8 +123,8 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
               },
               {
                 step: 2,
-                title: "Get Your Module Data",
-                description: "After logging in, click the button below to view your module data in a new tab:",
+                title: getTranslation('step2_title'),
+                description: getTranslation('step2_description'),
                 action: (
                   <motion.button
                     variants={buttonVariants}
@@ -94,7 +134,7 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
                     onClick={handleOpenAnmeldungen}
                     className="mt-2 inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm shadow-md hover:shadow-lg"
                   >
-                    <span>View Module Data</span>
+                    <span>{getTranslation('view_module_data')}</span>
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
@@ -108,30 +148,30 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
                     className="mt-3 bg-yellow-50 dark:bg-yellow-900/30 p-3 rounded-lg border border-yellow-200 dark:border-yellow-800"
                   >
                     <p className="text-yellow-800 dark:text-yellow-200 text-sm">
-                      <span className="font-medium">Important:</span> You should see a page with a lot of text that starts with <code className="bg-yellow-100 dark:bg-yellow-800 px-1 py-0.5 rounded">[{"{"}...</code> and ends with <code className="bg-yellow-100 dark:bg-yellow-800 px-1 py-0.5 rounded">...{"}"}]</code>
+                      <span className="font-medium">{getTranslation('important_note')}</span> {getTranslation('json_format_note')}
                     </p>
                     <p className="text-yellow-700 dark:text-yellow-300 text-sm mt-1">
-                      If you see an error message instead, go back to step 1 and make sure you&apos;re logged in.
+                      {getTranslation('login_error_note')}
                     </p>
                   </motion.div>
                 )
               },
               {
                 step: 3,
-                title: "Copy Everything",
-                description: "Select all the text on the page using:",
+                title: getTranslation('step3_title'),
+                description: getTranslation('step3_description'),
                 shortcuts: [
-                  { os: "Windows", keys: ["Ctrl", "A"] },
-                  { os: "Mac", keys: ["⌘", "A"] }
+                  { os: getTranslation('windows'), keys: ["Ctrl", "A"] },
+                  { os: getTranslation('mac'), keys: ["⌘", "A"] }
                 ]
               },
               {
                 step: 4,
-                title: "Paste & Load",
-                description: "Paste the copied data in the box below using:",
+                title: getTranslation('step4_title'),
+                description: getTranslation('step4_description'),
                 shortcuts: [
-                  { os: "Windows", keys: ["Ctrl", "V"] },
-                  { os: "Mac", keys: ["⌘", "V"] }
+                  { os: getTranslation('windows'), keys: ["Ctrl", "V"] },
+                  { os: getTranslation('mac'), keys: ["⌘", "V"] }
                 ]
               }
             ].map((step, index) => (
@@ -186,7 +226,7 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
             <textarea
               className="w-full p-4 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
               rows={8}
-              placeholder="Paste your module data here..."
+              placeholder={getTranslation('paste_here')}
               value={jsonInput}
               onChange={(e) => setJsonInput(e.target.value)}
             />
@@ -201,7 +241,7 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-              <span>Load Data</span>
+              <span>{getTranslation('load_data')}</span>
             </motion.button>
           </div>
           <AnimatePresence mode="wait">
