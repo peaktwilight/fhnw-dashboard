@@ -1,8 +1,9 @@
 'use client';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Registration, backdropVariants, modalVariants } from '../../types/modules';
 import { detectModuleType } from '../../utils/moduleUtils';
+import { useTranslations } from 'next-intl';
 
 interface ModuleDetailModalProps {
   module: Registration | null;
@@ -11,6 +12,40 @@ interface ModuleDetailModalProps {
 
 export default function ModuleDetailModal({ module, onClose }: ModuleDetailModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations('modules');
+  const gradesT = useTranslations('grades');
+
+  // Define fallback translations
+  const getFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'module_details': 'Module Details',
+      'number': 'Number',
+      'status': 'Status',
+      'type': 'Type',
+      'weight': 'Weight',
+      'ects': 'ECTS',
+      'enrolled': 'Enrolled',
+      'capacity': 'Capacity',
+      'fill_rate': 'Fill Rate',
+      'schedule': 'Schedule',
+      'instructors': 'Instructors',
+      'grade': 'Grade'
+    };
+    return fallbacks[key] || key;
+  }, []);
+
+  // Wrap translation calls in try-catch
+  const getTranslation = useCallback((key: string): string => {
+    try {
+      return t(key);
+    } catch {
+      try {
+        return gradesT(key);
+      } catch {
+        return getFallbackTranslation(key);
+      }
+    }
+  }, [t, gradesT, getFallbackTranslation]);
 
   // Handle click outside modal
   useEffect(() => {
@@ -69,42 +104,42 @@ export default function ModuleDetailModal({ module, onClose }: ModuleDetailModal
             className="p-6 space-y-4"
           >
             <div>
-              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Module Details</h4>
-              <p className="text-gray-900 dark:text-white mt-1">Number: {module.modulanlass.nummer}</p>
-              <p className="text-gray-900 dark:text-white">Status: {module.statusName}</p>
+              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{getTranslation('module_details')}</h4>
+              <p className="text-gray-900 dark:text-white mt-1">{getTranslation('number')}: {module.modulanlass.nummer}</p>
+              <p className="text-gray-900 dark:text-white">{getTranslation('status')}: {module.statusName}</p>
               <div className="mt-2 flex flex-wrap gap-4">
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Type</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{getTranslation('type')}</p>
                   <p className="text-gray-900 dark:text-white font-medium">
                     {module.moduleType?.type || detectModuleType(module).type}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Weight</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{getTranslation('weight')}</p>
                   <p className="text-gray-900 dark:text-white font-medium">
                     {module.moduleType?.weight || detectModuleType(module).weight}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">ECTS</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{getTranslation('ects')}</p>
                   <p className="text-gray-900 dark:text-white font-medium">
                     {module.moduleType?.ects || detectModuleType(module).ects}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Enrolled</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{getTranslation('enrolled')}</p>
                   <p className="text-gray-900 dark:text-white font-medium">
                     {module.modulanlass.anzahlAnmeldung}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Capacity</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{getTranslation('capacity')}</p>
                   <p className="text-gray-900 dark:text-white font-medium">
                     {module.modulanlass.maxTeilnehmende}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Fill Rate</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{getTranslation('fill_rate')}</p>
                   <p className="text-gray-900 dark:text-white font-medium">
                     {Math.round((module.modulanlass.anzahlAnmeldung / module.modulanlass.maxTeilnehmende) * 100)}%
                   </p>
@@ -112,7 +147,7 @@ export default function ModuleDetailModal({ module, onClose }: ModuleDetailModal
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Schedule</h4>
+              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{getTranslation('schedule')}</h4>
               <p className="text-gray-900 dark:text-white mt-1">
                 {new Date(module.modulanlass.datumVon).toLocaleDateString()} — 
                 {new Date(module.modulanlass.datumBis).toLocaleDateString()}
@@ -124,7 +159,7 @@ export default function ModuleDetailModal({ module, onClose }: ModuleDetailModal
               )}
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Instructors</h4>
+              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{getTranslation('instructors')}</h4>
               <div className="mt-1 space-y-2">
                 {module.modulanlass.anlassleitungen.map((leitung, index) => (
                   <div key={index} className="flex items-start">
@@ -148,7 +183,7 @@ export default function ModuleDetailModal({ module, onClose }: ModuleDetailModal
             </div>
             {module.freieNote !== null && (
               <div>
-                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Grade</h4>
+                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">{getTranslation('grade')}</h4>
                 <div className={`inline-block mt-1 px-3 py-1 rounded-full ${
                   module.freieNote >= 4
                     ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100'

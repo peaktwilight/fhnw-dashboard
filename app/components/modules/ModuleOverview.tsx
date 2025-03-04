@@ -18,10 +18,12 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
   const getFallbackTranslation = (key: string): string => {
     const fallbacks: Record<string, string> = {
       'total_modules': 'Total Modules',
-      'completed': 'Completed',
+      'completed': 'Completed Modules',
+      'overall_average': 'Overall Average',
+      'pass_rate': 'Pass Rate',
+      'no_modules': 'No modules yet',
       'raw_average': 'Raw Average',
       'weighted_average': 'Weighted Average',
-      'pass_rate': 'Pass Rate',
       'raw_average_description': 'Simple average of all grades',
       'weighted_average_description': 'Average weighted by ECTS and module type',
       'pass_rate_description': 'Percentage of modules with grade ≥ 4.0',
@@ -40,12 +42,12 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
       'in_progress': 'In Progress',
       'passed': 'Passed',
       'failed': 'Failed',
-      'grade_range_5.5_6.0': '5.5-6.0',
-      'grade_range_5.0_5.4': '5.0-5.4',
-      'grade_range_4.5_4.9': '4.5-4.9',
-      'grade_range_4.0_4.4': '4.0-4.4',
-      'grade_range_3.5_3.9': '3.5-3.9',
-      'grade_range_1.0_3.4': '1.0-3.4'
+      'grade_range_5_5_6_0': '5.5-6.0',
+      'grade_range_5_0_5_4': '5.0-5.4',
+      'grade_range_4_5_4_9': '4.5-4.9',
+      'grade_range_4_0_4_4': '4.0-4.4',
+      'grade_range_3_5_3_9': '3.5-3.9',
+      'grade_range_1_0_3_4': '1.0-3.4'
     };
     return fallbacks[key] || key;
   };
@@ -214,7 +216,7 @@ export default function ModuleOverview({ stats, registrations }: ModuleOverviewP
                 transition={{ delay: 1.1 + index * 0.1 }}
                 className="flex justify-between mb-1"
               >
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{grade.range}</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{getTranslation(grade.key)}</span>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{grade.count}</span>
               </motion.div>
               <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">

@@ -16,20 +16,27 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
   // Move hooks to the top level
   const t = useTranslations('modules');
   const commonT = useTranslations('common');
+  const gradesT = useTranslations('grades');
 
   // Define fallback functions
   const getFallbackTranslation = useCallback((key: string): string => {
     const fallbacks: Record<string, string> = {
       'edit_module': 'Edit Module',
       'save': 'Save',
-      'cancel': 'Cancel'
+      'cancel': 'Cancel',
+      'module_name': 'Module Name',
+      'module_number': 'Module Number',
+      'ects': 'ECTS Credits',
+      'grade_weight': 'Grade Weight (%)'
     };
     return fallbacks[key] || key;
   }, []);
 
   const getCommonFallbackTranslation = useCallback((key: string): string => {
     const fallbacks: Record<string, string> = {
-      'error': 'An error occurred'
+      'error': 'An error occurred',
+      'save': 'Save',
+      'cancel': 'Cancel'
     };
     return fallbacks[key] || key;
   }, []);
@@ -39,9 +46,13 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
     try {
       return t(key);
     } catch {
-      return getFallbackTranslation(key);
+      try {
+        return gradesT(key);
+      } catch {
+        return getFallbackTranslation(key);
+      }
     }
-  }, [t, getFallbackTranslation]);
+  }, [t, gradesT, getFallbackTranslation]);
 
   const getCommonTranslation = useCallback((key: string): string => {
     try {
@@ -117,7 +128,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                 <div className="mt-4 space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Module Name
+                      {getTranslation('module_name')}
                     </label>
                     <div className="mt-1 text-gray-900 dark:text-gray-100">
                       {module.modulanlass.bezeichnung}
@@ -126,7 +137,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Module Number
+                      {getTranslation('module_number')}
                     </label>
                     <div className="mt-1 text-gray-900 dark:text-gray-100">
                       {module.modulanlass.nummer}

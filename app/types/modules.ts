@@ -71,6 +71,7 @@ export interface GradeDistribution {
   range: string;
   count: number;
   color: string;
+  key: string;
 }
 
 export interface ModuleProgress {

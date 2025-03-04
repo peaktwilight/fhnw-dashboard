@@ -115,18 +115,19 @@ export const groupModules = (modules: Registration[]): ModuleGroup[] => {
  */
 export const getGradeDistribution = (grades: number[]): GradeDistribution[] => {
   const ranges = [
-    { min: 5.5, max: 6.0, label: '5.5-6.0', color: 'bg-green-500' },
-    { min: 5.0, max: 5.4, label: '5.0-5.4', color: 'bg-green-400' },
-    { min: 4.5, max: 4.9, label: '4.5-4.9', color: 'bg-green-300' },
-    { min: 4.0, max: 4.4, label: '4.0-4.4', color: 'bg-green-200' },
-    { min: 3.5, max: 3.9, label: '3.5-3.9', color: 'bg-red-300' },
-    { min: 1.0, max: 3.4, label: '1.0-3.4', color: 'bg-red-500' },
+    { min: 5.5, max: 6.0, label: '5.5-6.0', color: 'bg-green-500', key: 'grade_range_5_5_6_0' },
+    { min: 5.0, max: 5.4, label: '5.0-5.4', color: 'bg-green-400', key: 'grade_range_5_0_5_4' },
+    { min: 4.5, max: 4.9, label: '4.5-4.9', color: 'bg-green-300', key: 'grade_range_4_5_4_9' },
+    { min: 4.0, max: 4.4, label: '4.0-4.4', color: 'bg-green-200', key: 'grade_range_4_0_4_4' },
+    { min: 3.5, max: 3.9, label: '3.5-3.9', color: 'bg-red-300', key: 'grade_range_3_5_3_9' },
+    { min: 1.0, max: 3.4, label: '1.0-3.4', color: 'bg-red-500', key: 'grade_range_1_0_3_4' },
   ];
 
   return ranges.map(range => ({
     range: range.label,
     count: grades.filter(g => g >= range.min && g <= range.max).length,
-    color: range.color
+    color: range.color,
+    key: range.key
   }));
 };
 

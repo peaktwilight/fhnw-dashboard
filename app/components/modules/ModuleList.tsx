@@ -13,7 +13,6 @@ interface ModuleListProps {
 
 export default function ModuleList({ modules, searchTerm, onSelectModule }: ModuleListProps) {
   const t = useTranslations('modules');
-  const commonT = useTranslations('common');
   
   const getFallbackTranslation = useCallback((key: string): string => {
     const fallbacks: Record<string, string> = {
@@ -26,7 +25,7 @@ export default function ModuleList({ modules, searchTerm, onSelectModule }: Modu
   const getTranslation = useCallback((key: string): string => {
     try {
       return t(key);
-    } catch (error) {
+    } catch {
       return getFallbackTranslation(key);
     }
   }, [t, getFallbackTranslation]);
