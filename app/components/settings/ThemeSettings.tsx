@@ -25,8 +25,8 @@ export default function ThemeSettings() {
   
   const getCommonFallbackTranslation = (key: string): string => {
     const fallbacks: Record<string, string> = {
-      'dark': 'Dark',
       'light': 'Light',
+      'dark': 'Dark',
       'system': 'System'
     };
     return fallbacks[key] || key;

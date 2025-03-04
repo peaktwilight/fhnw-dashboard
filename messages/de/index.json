@@ -68,7 +68,9 @@
     "confirm": "Bestätigen",
     "official_final": "Offizielle Note",
     "weight": "Gewichtung",
-    "add_grade": "Note hinzufügen"
+    "add_grade": "Note hinzufügen",
+    "light": "Hell",
+    "dark": "Dunkel"
   },
   "navbar": {
     "home": "Startseite",

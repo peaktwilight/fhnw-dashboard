@@ -72,7 +72,9 @@
     "welcome": "Welcome",
     "dark_mode": "Dark Mode",
     "light_mode": "Light Mode",
-    "close": "Close"
+    "close": "Close",
+    "light": "Light",
+    "dark": "Dark"
   },
   "navbar": {
     "home": "Home",
