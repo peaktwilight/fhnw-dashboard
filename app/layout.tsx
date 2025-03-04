@@ -2,8 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import { AppWrapper } from './components/providers/AppWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -40,11 +39,9 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900`}>
-        <Navbar />
-        <main className="flex-grow w-full px-4 py-8">
+        <AppWrapper>
           {children}
-        </main>
-        <Footer />
+        </AppWrapper>
       </body>
     </html>
   );
