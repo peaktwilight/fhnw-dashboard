@@ -235,7 +235,7 @@
     "train_departures": "Zugabfahrten vom Bahnhof Brugg"
   },
   "mensa": {
-    "title": "Mensa",
+    "title": "Mensa (Brugg-Windisch)",
     "menu": "Speiseplan",
     "today": "Heutiges Menü",
     "tomorrow": "Menü für morgen",
@@ -248,9 +248,11 @@
     "side_dish": "Beilage",
     "dessert": "Dessert",
     "no_menu": "Kein Menü für heute",
-    "error_fetching": "Fehler beim Abrufen der Mensadaten",
+    "error_fetching": "Fehler beim Abrufen der Mensa-Daten",
     "location": "Ort",
-    "daily_offerings": "Was gibt's in der FHNW Mensa"
+    "daily_offerings": "Tagesangebote der FHNW Mensa",
+    "description": "Sieh dir die aktuellen Tagesangebote auf der offiziellen SV Restaurant Webseite an.",
+    "view_menu_button": "Menü Brugg-Windisch anzeigen"
   },
   "news": {
     "title": "News & Events",

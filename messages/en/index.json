@@ -228,7 +228,7 @@
     "train_departures": "Train departures from Brugg station"
   },
   "mensa": {
-    "title": "Mensa",
+    "title": "Mensa (Brugg-Windisch)",
     "menu": "Menu",
     "today": "Today's Menu",
     "tomorrow": "Tomorrow's Menu",
@@ -243,7 +243,9 @@
     "no_menu": "No menu available for this day",
     "error_fetching": "Error fetching mensa data",
     "location": "Location",
-    "daily_offerings": "FHNW Mensa daily offerings"
+    "daily_offerings": "FHNW Mensa daily offerings",
+    "description": "View the current daily menu offerings on the official SV Restaurant website.",
+    "view_menu_button": "View Brugg-Windisch Menu"
   },
   "news": {
     "title": "News & Events",
