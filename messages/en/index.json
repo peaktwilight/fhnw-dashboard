@@ -342,5 +342,16 @@
     "room_reservation_desc": "Book rooms and facilities",
     "esp_registration": "ESP Registration",
     "esp_registration_desc": "Register for courses"
+  },
+  "newsWidget": {
+    "searchPlaceholder": "Search news...",
+    "errorLoading": "Error loading news: {error}",
+    "tryAgain": "Try again",
+    "noNewsFound": "No news articles found",
+    "adjustSearch": "Try adjusting your search",
+    "paginationInfo": "Page {currentPage} of {totalPages}",
+    "previousPageAria": "Previous page",
+    "nextPageAria": "Next page",
+    "localeCode": "en-GB"
   }
 } 

@@ -8,6 +8,7 @@ import {
   ChevronRightIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
+import { useTranslations } from 'next-intl';
 
 interface NewsItem {
   id: string;
@@ -144,6 +145,8 @@ const LoadingSkeleton = () => (
 );
 
 export default function NewsWidget({ limit }: NewsWidgetProps) {
+  const t = useTranslations('newsWidget');
+
   const [news, setNews] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -213,7 +216,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="font-medium">Error loading news: {error}</p>
+          <p className="font-medium">{t('errorLoading', { error })}</p>
         </div>
         <motion.button
           onClick={() => window.location.reload()}
@@ -224,7 +227,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          Try again
+          {t('tryAgain')}
         </motion.button>
       </motion.div>
     );
@@ -247,7 +250,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search news..."
+              placeholder={t('searchPlaceholder')}
               className="block w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             />
           </div>
@@ -288,9 +291,9 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12 text-gray-500 dark:text-gray-400"
           >
-            <p className="font-medium">No news articles found</p>
+            <p className="font-medium">{t('noNewsFound')}</p>
             {searchQuery && (
-              <p className="text-sm mt-2">Try adjusting your search</p>
+              <p className="text-sm mt-2">{t('adjustSearch')}</p>
             )}
           </motion.div>
         ) : (
@@ -337,7 +340,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
                       <div className="flex flex-col gap-2 flex-grow">
                         <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                           <CalendarIcon className="w-3.5 h-3.5" />
-                          {new Date(item.date).toLocaleDateString('de-CH', {
+                          {new Date(item.date).toLocaleDateString(t('localeCode'), {
                             year: 'numeric', month: '2-digit', day: '2-digit'
                           })}
                         </div>
@@ -368,12 +371,12 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
                   onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
                   disabled={currentPage === 0}
                   className="p-2 rounded-lg text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  aria-label="Previous page"
+                  aria-label={t('previousPageAria')}
                 >
                   <ChevronLeftIcon className="w-5 h-5" />
                 </motion.button>
                 <div className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                  Page {currentPage + 1} of {totalPages}
+                  {t('paginationInfo', { currentPage: currentPage + 1, totalPages })}
                 </div>
                 <motion.button
                   variants={buttonVariants}
@@ -382,7 +385,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
                   onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
                   disabled={currentPage === totalPages - 1}
                   className="p-2 rounded-lg text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  aria-label="Next page"
+                  aria-label={t('nextPageAria')}
                 >
                   <ChevronRightIcon className="w-5 h-5" />
                 </motion.button>

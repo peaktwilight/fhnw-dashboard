@@ -280,7 +280,11 @@
     "latest_updates": "Aktuelle Updates und Ankündigungen",
     "information_events": "Infoveranstaltungen und Tag der offenen Tür",
     "page_title": "News & Events",
-    "page_description": "Bleib auf dem Laufenden mit den neuesten FHNW-News und Events."
+    "page_description": "Bleib auf dem Laufenden mit den neuesten FHNW Updates und bevorstehenden Events.",
+    "fhnw_news": "FHNW News",
+    "latest_updates": "Neueste Updates und Ankündigungen",
+    "upcoming_events": "Bevorstehende Events",
+    "information_events": "Info-Events und Schnuppertage"
   },
   "theme": {
     "title": "Design-Einstellungen",
@@ -349,5 +353,16 @@
     "room_reservation_desc": "Buche Räume und Einrichtungen",
     "esp_registration": "ESP Anmeldung",
     "esp_registration_desc": "Registrierung für Kurse"
+  },
+  "newsWidget": {
+    "searchPlaceholder": "News suchen...",
+    "errorLoading": "Fehler beim Laden der News: {error}",
+    "tryAgain": "Erneut versuchen",
+    "noNewsFound": "Keine News-Artikel gefunden",
+    "adjustSearch": "Versuchen Sie, Ihre Suche anzupassen",
+    "paginationInfo": "Seite {currentPage} von {totalPages}",
+    "previousPageAria": "Vorherige Seite",
+    "nextPageAria": "Nächste Seite",
+    "localeCode": "de-CH"
   }
 } 
