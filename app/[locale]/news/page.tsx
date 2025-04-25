@@ -3,7 +3,6 @@
 import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import NewsWidget from '@/app/components/NewsWidget';
-import EventsWidget from '@/app/components/EventsWidget';
 import SectionHeader from '@/app/components/SectionHeader';
 import { useTranslations } from 'next-intl';
 
@@ -81,8 +80,6 @@ export default function NewsPage() {
       'page_description': 'Stay updated with the latest FHNW news and upcoming events.',
       'fhnw_news': 'FHNW News',
       'latest_updates': 'Latest updates and announcements',
-      'upcoming_events': 'Upcoming Events',
-      'information_events': 'Information events and open days'
     };
     return fallbacks[key] || key;
   };
@@ -136,25 +133,6 @@ export default function NewsPage() {
           </div>
           <div className="p-4">
             <NewsWidget />
-          </div>
-        </motion.section>
-
-        {/* Events Section */}
-        <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <SectionHeader
-              title={getTranslation('upcoming_events')}
-              subtitle={getTranslation('information_events')}
-              icon={
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              }
-              rightElement={<LiveIndicator />}
-            />
-          </div>
-          <div className="p-4">
-            <EventsWidget />
           </div>
         </motion.section>
       </motion.div>

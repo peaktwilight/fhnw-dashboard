@@ -1,35 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-interface FHNWNewsItem {
-  '@id': string; // Link and ID
-  '@type': string; // Added to fix linter error
-  title: string;
-  description: string;
-  effective: string; // Date string (ISO format)
-  image_field?: string; // Field name containing the image (e.g., 'preview_image_link')
-  image_scales?: {
-    // Dynamic key based on image_field
-    [key: string]: Array<{
-      scales: {
-        preview?: { download: string };
-        teaser?: { download: string };
-        // Potentially add other scales like 'tile', 'mini', 'large' etc. as fallbacks
-        large?: { download: string };
-        mini?: { download: string };
-      };
-      // Add base_path if constructing URL differently
-      base_path?: string;
-    }>;
-  };
-  teaser_text?: string; // Can be used as fallback description
-  teaser_title?: string; // Can be used as fallback title
-}
-
-interface FHNWNewsResponse {
-  items: FHNWNewsItem[];
-  // Might include other top-level fields like 'batching'
-  items_total?: number;
-}
+import { NextResponse } from 'next/server';
 
 interface NewsItem {
   id: string;
@@ -40,112 +9,109 @@ interface NewsItem {
   imageUrl?: string;
 }
 
-const FHNW_BASE_URL = 'https://www.fhnw.ch';
-
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  // Keep frontend query params for potential future use, but don't pass to API for now
-  const query = searchParams.get('query') || '';
-  const sortOrder = searchParams.get('sortOrder') || 'desc'; // Default to desc
-
-  console.log('Fetching news with frontend params (not passed to API yet):', { query, sortOrder });
-
-  // New base URL for the news API (fetching the list view)
-  const baseUrl = `${FHNW_BASE_URL}/++api++/de/medien/newsroom/news`;
-  // Basic parameters, fetching all items by default. Limit/offset can be added if needed.
-  const params = new URLSearchParams({
-    // Use 'fullobjects' to get detailed item data including image scales
-    fullobjects: 'true',
-    // Potentially add limit if performance becomes an issue, e.g., 'limit': '50'
-    // Sorting is implicitly by 'effective' descending based on observed page behavior,
-    // but cannot be directly controlled via simple URL params here.
-  });
-
-  const requestUrl = `${baseUrl}?${params.toString()}`;
-  console.log(`Fetching news from: ${requestUrl}`);
+export async function GET() {
+  // Use the official newsroom Solr endpoint directly
+  const solrUrl = "https://www.fhnw.ch/++api++//@solr?doEmptySearch=true&extra_conditions=W1siZWZmZWN0aXZlIiwiZGF0ZS1yYW5nZSIse31dLFsiU3ViamVjdCIsInN0cmluZyIseyJpbiI6WyJOZXdzIl19XV0%3D&facet_conditions=eyJ0YXhvbm9teV91bml2ZXJzaXR5Ijp7ImMiOnt9LCJtIjp0cnVlfX0%3D&group_select=4&lang=de&q=&rows=20&sort=effective%20desc";
 
   try {
-    const response = await fetch(requestUrl, {
-      headers: {
-        'Accept': 'application/json',
-      },
-      // Increase cache duration if appropriate, e.g., revalidate every hour
-      next: { revalidate: 600 } // Revalidate every 10 minutes
+    const response = await fetch(solrUrl, {
+      headers: { 'Accept': 'application/json' },
+      next: { revalidate: 600 }
     });
-
     const rawText = await response.text();
-
     if (!response.ok) {
-      console.error(`News API responded with status: ${response.status}`);
+      console.error(`News Solr API responded with status: ${response.status}`);
       console.error(`Response text: ${rawText}`);
-      // Try parsing error message if JSON
-      let errorMsg = `Failed to fetch news: ${response.statusText}`;
-      try {
-        const errorJson = JSON.parse(rawText);
-        errorMsg = errorJson.message || errorMsg;
-      } catch (e) { /* Ignore parsing error */ }
-      throw new Error(errorMsg);
+      throw new Error(`Failed to fetch news: ${response.statusText}`);
     }
-
-    let data: FHNWNewsResponse;
+    let data: unknown;
     try {
       data = JSON.parse(rawText);
     } catch (jsonError) {
-      console.error('Error parsing JSON from news API:', jsonError);
+      console.error('Error parsing JSON from news Solr API:', jsonError);
       console.error('Raw text that failed to parse:', rawText);
       throw new Error('Failed to parse news data as JSON');
     }
-
-    // Ensure 'items' array exists
-    if (!data || !Array.isArray(data.items)) {
-      console.error('Invalid news data format received (missing items array):', data);
-      throw new Error('Invalid news data format received: items array missing');
+    console.log('Solr API response:', JSON.stringify(data, null, 2));
+    let docs: unknown[] = [];
+    if (
+      typeof data === 'object' &&
+      data !== null &&
+      'response' in data &&
+      typeof (data as { response?: unknown }).response === 'object' &&
+      (data as { response?: unknown }).response !== null &&
+      'docs' in (data as { response: { docs?: unknown } }).response &&
+      Array.isArray((data as { response: { docs?: unknown } }).response.docs)
+    ) {
+      docs = (data as { response: { docs: unknown[] } }).response.docs ?? [];
     }
-
-    const newsItems: NewsItem[] = data.items
-      // Filter out items that might not be actual news (if needed based on @type)
-      .filter(item => item['@type'] === 'FHNWNews')
+    console.log('Solr docs:', JSON.stringify(docs, null, 2));
+    const FHNW_BASE_URL = 'https://www.fhnw.ch';
+    const newsItems: NewsItem[] = (docs as Record<string, unknown>[])
+      .filter((item) => (item as Record<string, unknown>).Type === 'FHNWNews')
       .map((item) => {
+        const doc = item as Record<string, unknown>;
         let imageUrl: string | undefined = undefined;
-        // Check if image data exists
-        if (item.image_field && item.image_scales && item.image_scales[item.image_field]?.[0]) {
-          const imgFieldKey = item.image_field as keyof typeof item.image_scales;
-          const imgDataArray = item.image_scales[imgFieldKey];
-
-          if (imgDataArray && imgDataArray.length > 0) {
-              const imgData = imgDataArray[0];
-              // Prefer teaser scale, then preview, then large, then mini as fallbacks
-              const scale = imgData.scales.teaser || imgData.scales.preview || imgData.scales.large || imgData.scales.mini;
-              if (scale?.download) {
-                  // Construct absolute URL if the download path is relative
-                  imageUrl = scale.download.startsWith('http')
-                      ? scale.download
-                      : `${FHNW_BASE_URL}${scale.download.startsWith('/') ? '' : '/'}${scale.download}`;
+        if (doc.image_field && doc.image_scales) {
+          try {
+            const scalesObj = JSON.parse(doc.image_scales as string);
+            const fieldArr = scalesObj[doc.image_field as string];
+            if (Array.isArray(fieldArr) && fieldArr.length > 0) {
+              const imageObj = fieldArr[0];
+              const scales = imageObj.scales || {};
+              const basePath = imageObj.base_path || '';
+              const preferredOrder = ['teaser', 'preview', 'large', 'mini', 'thumb', 'tile', 'icon'];
+              let found = undefined;
+              for (const key of preferredOrder) {
+                if (scales[key]?.download) {
+                  found = scales[key].download;
+                  break;
+                }
               }
+              if (!found) {
+                for (const key in scales) {
+                  if (scales[key]?.download) {
+                    found = scales[key].download;
+                    break;
+                  }
+                }
+              }
+              if (found) {
+                if (typeof found === 'string' && found.startsWith('@@images/')) {
+                  imageUrl = `${FHNW_BASE_URL}${basePath}/${found}`;
+                } else if (typeof found === 'string' && found.startsWith('http')) {
+                  imageUrl = found;
+                } else if (typeof found === 'string') {
+                  imageUrl = `${FHNW_BASE_URL}${found.startsWith('/') ? '' : '/'}${found}`;
+                }
+              }
+            }
+          } catch (e) {
+            console.error('Error parsing image_scales for item', doc, e);
           }
         }
-
-        // Use teaser_title or title
-        const title = item.teaser_title || item.title || 'No title';
-        // Use teaser_text or description
-        const description = item.teaser_text || item.description || '';
-
+        const id = typeof doc.UID === 'string' ? doc.UID : (typeof doc['@id'] === 'string' ? doc['@id'] : '');
+        const title = typeof doc.Title === 'string' ? doc.Title : 'No title';
+        const description = typeof doc.Description === 'string' ? doc.Description : '';
+        const date = typeof doc.effective === 'string' ? doc.effective : '';
+        let link = '';
+        if (typeof doc['@id'] === 'string') {
+          link = doc['@id'];
+        } else if (typeof doc.path_string === 'string') {
+          link = `${FHNW_BASE_URL}${doc.path_string.replace('/Plone', '')}`;
+        }
         return {
-          id: item['@id'], // Use @id as a unique identifier
-          title: title,
-          description: description,
-          date: item.effective, // Keep ISO date string
-          link: item['@id'], // The @id is the direct link to the news item
-          imageUrl: imageUrl,
+          id,
+          title,
+          description,
+          date,
+          link,
+          imageUrl,
         };
-    });
-
-    // Sort items by date descending (newest first) as API doesn't reliably sort
-    newsItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-    console.log(`Successfully fetched and processed ${newsItems.length} news items.`);
+      });
+    console.log('Mapped newsItems:', JSON.stringify(newsItems, null, 2));
+    // Already sorted by effective desc from API
     return NextResponse.json(newsItems);
-
   } catch (error) {
     console.error('Error in news API route:', error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred while fetching news';

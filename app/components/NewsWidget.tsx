@@ -4,12 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 import { 
   CalendarIcon, 
-  ArrowTopRightOnSquareIcon, 
   ChevronLeftIcon, 
   ChevronRightIcon,
   MagnifyingGlassIcon,
-  FunnelIcon,
-  XMarkIcon
 } from '@heroicons/react/24/outline';
 
 interface NewsItem {
@@ -81,6 +78,7 @@ const buttonVariants = {
 };
 
 const ITEMS_PER_PAGE = 6;
+const DEFAULT_IMAGE = '/news-fallback.jpg';
 
 const shimmerAnimation = {
   initial: {
@@ -151,23 +149,18 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
 
   const filteredNews = useMemo(() => {
     let filtered = [...news];
-
     if (searchQuery) {
       const lowerCaseQuery = searchQuery.toLowerCase();
       filtered = filtered.filter(item => 
-        item.title.toLowerCase().includes(lowerCaseQuery) ||
-        item.description.toLowerCase().includes(lowerCaseQuery)
+        item.title.toLowerCase().includes(lowerCaseQuery)
       );
     }
-
     if (limit) {
       filtered = filtered.slice(0, limit);
     }
-
     return filtered;
   }, [news, searchQuery, limit]);
 
@@ -176,23 +169,18 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
       try {
         setIsLoading(true);
         setError(null);
-        console.log('Fetching news from API route...');
-
         const response = await fetch(`/api/news`);
         const data: NewsItem[] | { error: string } = await response.json();
-
+        console.log('NewsWidget received from /api/news:', data);
         if (!response.ok || ('error' in data)) {
           const errorMessage = ('error' in data) ? data.error : `Failed to fetch news (${response.status})`;
           console.error('Error response from /api/news:', errorMessage);
           throw new Error(errorMessage);
         }
-
         if (!Array.isArray(data)) {
           console.error('Invalid response format from /api/news - expected an array:', data);
           throw new Error('Invalid response format - expected an array');
         }
-
-        console.log(`Fetched ${data.length} news items.`);
         setNews(data);
       } catch (err) {
         console.error('Error in NewsWidget fetchNews:', err);
@@ -201,7 +189,6 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
         setIsLoading(false);
       }
     };
-
     fetchNews();
   }, []);
 
@@ -214,12 +201,6 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
     currentPage * ITEMS_PER_PAGE,
     (currentPage + 1) * ITEMS_PER_PAGE
   );
-
-  const clearFilters = () => {
-    setSearchQuery('');
-  };
-
-  const hasActiveFilters = searchQuery !== '';
 
   if (error) {
     return (
@@ -237,9 +218,8 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
         <motion.button
           onClick={() => window.location.reload()}
           className="mt-4 text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-2"
-          variants={buttonVariants}
-          whileHover="hover"
-          whileTap="tap"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -271,65 +251,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
               className="block w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             />
           </div>
-
-          <motion.button
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            onClick={() => setShowFilters(!showFilters)}
-            className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-          >
-            <FunnelIcon className="h-5 w-5" />
-            <span>Filter</span>
-            {hasActiveFilters && (
-              <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full text-xs">
-                {searchQuery ? 1 : 0}
-              </span>
-            )}
-          </motion.button>
-
-          <motion.a
-            href="https://www.fhnw.ch/de/medien/newsroom/news"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-4 py-2 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-          >
-            View All
-            <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-          </motion.a>
         </div>
-
-        <AnimatePresence>
-          {showFilters && hasActiveFilters && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-            >
-              <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/50">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">Active Filters</h3>
-                  <motion.button
-                    variants={buttonVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    onClick={clearFilters}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 flex items-center gap-1"
-                  >
-                    <XMarkIcon className="w-4 h-4" />
-                    Clear search
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {isLoading ? (
           <motion.div 
             initial={{ opacity: 0 }}
@@ -396,18 +318,22 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
                       rel="noopener noreferrer"
                       className="block h-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-all duration-200 p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-200 dark:hover:border-blue-500/30 relative z-10 flex flex-col"
                     >
-                      {item.imageUrl && (
-                        <div className="relative w-full aspect-[16/9] overflow-hidden rounded-lg mb-3">
-                          <motion.img
-                            src={item.imageUrl}
-                            alt={item.title}
-                            className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-300"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.3 }}
-                          />
-                        </div>
-                      )}
+                      <div className="relative w-full aspect-[16/9] overflow-hidden rounded-lg mb-3">
+                        <motion.img
+                          src={item.imageUrl || DEFAULT_IMAGE}
+                          alt={item.title}
+                          className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-300"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                          onError={e => {
+                            const target = e.target as HTMLImageElement;
+                            if (target.src !== window.location.origin + DEFAULT_IMAGE) {
+                              target.src = DEFAULT_IMAGE;
+                            }
+                          }}
+                        />
+                      </div>
                       <div className="flex flex-col gap-2 flex-grow">
                         <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                           <CalendarIcon className="w-3.5 h-3.5" />
