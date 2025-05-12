@@ -34,6 +34,7 @@ interface WeatherData {
     description: string;
     icon: string;
   }>;
+  timestamp?: number;
 }
 
 // Weather icon components using Heroicons
@@ -66,6 +67,13 @@ function getWeatherIcon(code: string) {
   // Default to clear day if unknown
   return <WeatherIcons.ClearDay />;
 }
+
+// Cache duration in milliseconds (30 minutes)
+const CACHE_DURATION = 30 * 60 * 1000;
+// Weather data refresh interval (10 minutes)
+const REFRESH_INTERVAL = 10 * 60 * 1000;
+// Storage key for cached weather data
+const STORAGE_KEY = 'fhnw-dashboard-weather-cache';
 
 export default function WeatherWidget() {
   // Move hooks outside try-catch
@@ -111,29 +119,75 @@ export default function WeatherWidget() {
     }
   }, [commonT, getCommonFallbackTranslation]);
   */
-  
+
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Load cached data on mount
+  useEffect(() => {
+    setIsMounted(true);
+
+    try {
+      // Only run on client-side
+      if (typeof window !== 'undefined') {
+        const cachedData = localStorage.getItem(STORAGE_KEY);
+
+        if (cachedData) {
+          const parsedData: WeatherData = JSON.parse(cachedData);
+          const timestamp = parsedData.timestamp || 0;
+
+          // Use cached data if it's within the cache duration
+          if (Date.now() - timestamp < CACHE_DURATION) {
+            setWeather(parsedData);
+            setLoading(false);
+          }
+        }
+      }
+    } catch (err) {
+      // Silently fail on cache loading errors
+      console.error('Failed to load cached weather data:', err);
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchWeather() {
       try {
-        setLoading(true);
+        // If we already have cached data, don't show loading state
+        if (!weather) {
+          setLoading(true);
+        }
+
         // Brugg coordinates
         const lat = 47.4814;
         const lon = 8.2079;
         const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
         const data = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(data.error || getTranslation('error_fetching'));
         }
-        
-        setWeather(data);
+
+        // Add timestamp for cache validation
+        const weatherData = {
+          ...data,
+          timestamp: Date.now()
+        };
+
+        setWeather(weatherData);
         setError(null);
         setRetryCount(0);
+
+        // Cache the data
+        if (isMounted && typeof window !== 'undefined') {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(weatherData));
+          } catch (err) {
+            console.error('Failed to cache weather data:', err);
+          }
+        }
       } catch (err) {
         console.error('Weather widget error:', err);
         setError(err instanceof Error ? err.message : getTranslation('error_fetching'));
@@ -147,10 +201,15 @@ export default function WeatherWidget() {
       }
     }
 
-    fetchWeather();
-    const interval = setInterval(fetchWeather, 600000);
-    return () => clearInterval(interval);
-  }, [getTranslation, retryCount]);
+    // Only fetch if we're on the client side and either:
+    // 1. We have no data yet, or
+    // 2. This is a scheduled refresh
+    if (isMounted) {
+      fetchWeather();
+      const interval = setInterval(fetchWeather, REFRESH_INTERVAL);
+      return () => clearInterval(interval);
+    }
+  }, [getTranslation, retryCount, isMounted, weather]);
 
   if (loading) {
     return (
@@ -305,6 +364,17 @@ export default function WeatherWidget() {
               </motion.div>
             ))}
           </motion.div>
+        )}
+      </motion.div>
+      {/* Last updated timestamp */}
+      <motion.div
+        variants={weatherItemVariants}
+        className="mt-2 text-xs text-right text-gray-500 dark:text-gray-400"
+      >
+        {weather?.timestamp && (
+          <span>
+            {getTranslation('last_updated')}: {new Date(weather.timestamp).toLocaleTimeString()}
+          </span>
         )}
       </motion.div>
     </motion.div>

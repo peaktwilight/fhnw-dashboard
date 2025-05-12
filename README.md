@@ -3,7 +3,7 @@
 > 🎓 A modern, unified dashboard for FHNW students. Access all your essential resources in one place.  
 > **[Live Demo →](https://fhnw.doruk.ch)**
 
-[![Version](https://img.shields.io/badge/version-1.1-blue.svg)](https://github.com/peaktwilight/fhnw-dashboard/releases)
+[![Version](https://img.shields.io/badge/version-1.2.1-blue.svg)](https://github.com/peaktwilight/fhnw-dashboard/releases)
 [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://fhnw.doruk.ch)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -91,11 +91,11 @@ This is an unofficial student project and is not affiliated with FHNW. Made by a
 
 ## 🔄 Recent Updates
 
-- 📰 Added FHNW news section
-- 🎯 Enhanced navbar with smart section tracking
-- 🎨 Added smooth highlight animations
-- ✨ Added 5-day weather forecast
-- 📊 Enhanced grade analytics
-- 🌙 Improved dark mode
-- 📱 Optimized mobile experience
-- ⚡️ Performance improvements
+- ⚡️ Improved performance with dual-layer caching for weather data (v1.2.1)
+- 🚀 Enhanced SEO with structured data and metadata (v1.2.0)
+- ✨ Improved animations and page transitions (v1.2.0)
+- 🌐 Added robust internationalization (v1.2.0)
+- 📅 Fixed date handling with locale support (v1.2.0)
+- 📰 Added FHNW news section (v1.1)
+- 🎯 Enhanced navbar with smart section tracking (v1.1)
+- 📊 Enhanced grade analytics (v1.1)

@@ -1,6 +1,6 @@
 {
-  "name": "temp-fhnw",
-  "version": "0.1.0",
+  "name": "fhnw-dashboard",
+  "version": "1.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

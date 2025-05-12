@@ -207,7 +207,10 @@
     "location": "Location",
     "updated": "Updated",
     "error_fetching": "Error fetching weather data",
-    "weather_in_brugg": "Current weather in Brugg"
+    "weather_in_brugg": "Current weather in Brugg",
+    "cached_data": "Showing cached data",
+    "cache_expired": "Cache expired, fetching new data",
+    "last_updated": "Last updated"
   },
   "transport": {
     "title": "Transport",
