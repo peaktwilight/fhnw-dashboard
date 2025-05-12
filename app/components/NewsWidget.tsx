@@ -15,7 +15,7 @@ import {
   cardVariants as itemVariants,
   buttonVariants,
   shimmerAnimation,
-  gradientAnimation
+  // gradientAnimation - Unused but kept for potential future use
 } from '../utils/animationUtils';
 
 interface NewsItem {

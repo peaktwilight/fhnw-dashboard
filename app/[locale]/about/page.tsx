@@ -1,12 +1,12 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function AboutPage() {
   const locale = useLocale();
-  const t = useTranslations();
+  // const t = useTranslations();
   
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },

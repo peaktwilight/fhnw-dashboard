@@ -70,8 +70,9 @@ function getWeatherIcon(code: string) {
 export default function WeatherWidget() {
   // Move hooks outside try-catch
   const t = useTranslations('weather');
-  const commonT = useTranslations('common');
-  
+  // Only used for future reference
+  // const commonT = useTranslations('common');
+
   // Define fallback functions
   const getFallbackTranslation = useCallback((key: string): string => {
     const fallbacks: Record<string, string> = {
@@ -80,14 +81,6 @@ export default function WeatherWidget() {
       'humidity': 'Humidity',
       'today': 'Today',
       'tomorrow': 'Tomorrow'
-    };
-    return fallbacks[key] || key;
-  }, []);
-  
-  const getCommonFallbackTranslation = useCallback((key: string): string => {
-    const fallbacks: Record<string, string> = {
-      'error': 'An error occurred',
-      'loading': 'Loading...'
     };
     return fallbacks[key] || key;
   }, []);
@@ -101,6 +94,15 @@ export default function WeatherWidget() {
     }
   }, [t, getFallbackTranslation]);
 
+  /* Commented out for future use
+  const getCommonFallbackTranslation = useCallback((key: string): string => {
+    const fallbacks: Record<string, string> = {
+      'error': 'An error occurred',
+      'loading': 'Loading...'
+    };
+    return fallbacks[key] || key;
+  }, []);
+
   const getCommonTranslation = useCallback((key: string): string => {
     try {
       return commonT(key);
@@ -108,6 +110,7 @@ export default function WeatherWidget() {
       return getCommonFallbackTranslation(key);
     }
   }, [commonT, getCommonFallbackTranslation]);
+  */
   
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);

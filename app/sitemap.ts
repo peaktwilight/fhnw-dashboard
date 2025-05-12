@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       sitemapEntries.push({
         url: `${BASE_URL}/${locale}${route}`,
         lastModified: new Date(),
-        changeFrequency: 'weekly',
+        changeFrequency: 'weekly' as const,
         priority: route === '' ? 1.0 : 0.8,
       })
     }

@@ -59,7 +59,7 @@ export default function Footer() {
         timeZoneName: 'short'
       });
       setFormattedBuildTime(formatted);
-    } catch (error) {
+    } catch {
       setFormattedBuildTime(buildTimeISO);
     }
   }, []);
