@@ -69,11 +69,11 @@ export default function FormattedDate({
     }
   }, [date, format, t]);
   
-  // On the server, render a static date to avoid hydration mismatch
+  // On the server, render an empty/hidden element to avoid hydration mismatch
   if (!isMounted) {
     return (
       <time dateTime={date} className={className}>
-        {new Date(date).toISOString().split('T')[0]}
+        <span className="opacity-0">Loading date...</span>
       </time>
     );
   }

@@ -146,14 +146,9 @@ export default function Navbar() {
               data-path="/"
               className="flex items-center gap-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 hover:opacity-80 transition-opacity"
             >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
-              >
+              <span className="inline-block hover:scale-110 transition-transform duration-200">
                 <Squares2X2Icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              </motion.div>
+              </span>
               FHNW Dashboard
             </Link>
           </motion.div>
