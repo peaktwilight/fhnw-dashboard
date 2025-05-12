@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || 'dev';
 
 // Store just the raw date string and let client-side component handle formatting
-const buildTimeISO = process.env.NEXT_PUBLIC_BUILD_TIME || new Date().toISOString();
+// Ensure we get a consistently formatted date string that won't change between renders
+const buildTimeISO = process.env.NEXT_PUBLIC_BUILD_TIME || '2023-01-01T00:00:00.000Z';
 
 const footerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -47,20 +48,23 @@ export default function Footer() {
 
   // Format the build time on the client side only
   useEffect(() => {
-    setIsMounted(true);
-    try {
-      const date = new Date(buildTimeISO);
-      const formatted = date.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZoneName: 'short'
-      });
-      setFormattedBuildTime(formatted);
-    } catch {
-      setFormattedBuildTime(buildTimeISO);
+    // Only update in the client-side environment
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+      try {
+        const date = new Date(buildTimeISO);
+        const formatted = date.toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZoneName: 'short'
+        });
+        setFormattedBuildTime(formatted);
+      } catch {
+        setFormattedBuildTime(buildTimeISO.split('T')[0]);
+      }
     }
   }, []);
   return (
@@ -177,7 +181,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 font-mono">
               <span>Build: {buildId}</span>
               <span>•</span>
-              <span>{isMounted ? formattedBuildTime : buildTimeISO.split('T')[0]}</span>
+              <span suppressHydrationWarning>{isMounted ? formattedBuildTime : buildTimeISO.split('T')[0]}</span>
             </div>
           </motion.div>
         </motion.div>
