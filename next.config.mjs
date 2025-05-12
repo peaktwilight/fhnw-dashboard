@@ -25,6 +25,27 @@ const nextConfig = {
           { key: 'Access-Control-Allow-Headers', value: 'X-Requested-With, Content-Type, Authorization' },
         ],
       },
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, stale-while-revalidate=86400'
+          }
+        ],
+      },
     ];
   },
   // Expose build-time environment variables

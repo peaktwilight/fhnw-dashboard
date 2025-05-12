@@ -135,6 +135,11 @@ export default function Home() {
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               {t('home.subtitle')}
             </p>
+            {/* Hidden SEO-friendly description - only visible to screen readers */}
+            <div className="sr-only">
+              <h2>{locale === 'de' ? 'Inoffizielles FHNW Studenten-Dashboard mit Campus-Tools, Notenverwaltung und aktuellen News' : 'Unofficial FHNW Student Dashboard with campus tools, grade management, and latest news'}</h2>
+              <p>{locale === 'de' ? 'Entwickelt von Studenten für Studenten, um den Alltag an der FHNW zu vereinfachen. Zugriff auf Wetter, Transport, Noten und wichtige Ressourcen.' : 'Developed by students for students to simplify daily life at FHNW. Access to weather, transport, grades, and essential resources.'}</p>
+            </div>
           </div>
         </motion.div>
 
@@ -170,14 +175,14 @@ export default function Home() {
                     >
                       {section.icon}
                     </motion.div>
-                    <motion.h3 
+                    <motion.h2
                       className="text-xl font-semibold text-gray-900 dark:text-white mb-3"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.2 }}
                     >
                       {section.title}
-                    </motion.h3>
+                    </motion.h2>
                     <motion.p 
                       className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed"
                       initial={{ opacity: 0 }}

@@ -324,7 +324,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
                       <div className="relative w-full aspect-[16/9] overflow-hidden rounded-lg mb-3">
                         <motion.img
                           src={item.imageUrl || DEFAULT_IMAGE}
-                          alt={item.title}
+                          alt={`FHNW News: ${item.title}`}
                           className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-300"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -340,13 +340,15 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
                       <div className="flex flex-col gap-2 flex-grow">
                         <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                           <CalendarIcon className="w-3.5 h-3.5" />
-                          {new Date(item.date).toLocaleDateString(t('localeCode'), {
-                            year: 'numeric', month: '2-digit', day: '2-digit'
-                          })}
+                          <time dateTime={item.date}>
+                            {new Date(item.date).toLocaleDateString(t('localeCode'), {
+                              year: 'numeric', month: '2-digit', day: '2-digit'
+                            })}
+                          </time>
                         </div>
-                        <h3 className="text-gray-900 dark:text-white font-semibold group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-200 line-clamp-2 text-base leading-snug">
+                        <h2 className="text-gray-900 dark:text-white font-semibold group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-200 line-clamp-2 text-base leading-snug">
                           {item.title}
-                        </h3>
+                        </h2>
                         <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 flex-grow">
                           {item.description}
                         </p>

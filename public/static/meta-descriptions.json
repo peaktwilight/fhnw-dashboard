@@ -1,0 +1,48 @@
+{
+  "de": {
+    "home": "Das inoffizielle FHNW Dashboard für Studierende. Alle wichtigen Infos und Links auf einen Blick: Noten, News, Wetter und Campus-Ressourcen.",
+    "grades": "Verwalte und überblicke deine FHNW Noten, Modulanmeldungen und deinen Studienfortschritt in einem übersichtlichen Dashboard.",
+    "campus": "Campus-Tools für FHNW Studierende: Aktuelles Wetter in Brugg-Windisch, Mensa-Menüs, Zugverbindungen und Campuskarte.",
+    "news": "Aktuelle FHNW News, Veranstaltungen und Ankündigungen der Fachhochschule Nordwestschweiz auf einen Blick.",
+    "about": "Über das inoffizielle FHNW Studenten-Dashboard: Ein digitaler Assistent für deinen Studienalltag an der Fachhochschule Nordwestschweiz.",
+    "keywords": [
+      "FHNW Dashboard",
+      "FHNW Studenten-Dashboard",
+      "FHNW Studentenportal",
+      "FHNW Noten",
+      "FHNW Brugg-Windisch",
+      "FHNW Campus",
+      "FHNW Modulübersicht",
+      "FHNW Studentenhilfe",
+      "FHNW Ressourcen",
+      "Fachhochschule Nordwestschweiz",
+      "FHNW Schweiz",
+      "FHNW Studierendenportal",
+      "FHNW News",
+      "FHNW Wetter"
+    ]
+  },
+  "en": {
+    "home": "The unofficial FHNW Dashboard for students. All essential info and links at a glance: grades, news, weather, and campus resources.",
+    "grades": "Manage and overview your FHNW grades, module registrations, and study progress in a well-organized dashboard.",
+    "campus": "Campus tools for FHNW students: Current weather in Brugg-Windisch, mensa menus, train connections, and campus map.",
+    "news": "Latest FHNW news, events, and announcements from the University of Applied Sciences Northwestern Switzerland at a glance.",
+    "about": "About the unofficial FHNW Student Dashboard: A digital assistant for your daily student life at the University of Applied Sciences Northwestern Switzerland.",
+    "keywords": [
+      "FHNW Dashboard",
+      "FHNW Student Dashboard",
+      "FHNW Student Portal",
+      "FHNW Grades",
+      "FHNW Brugg-Windisch",
+      "FHNW Campus",
+      "FHNW Module Overview",
+      "FHNW Student Help",
+      "FHNW Resources",
+      "University of Applied Sciences Northwestern Switzerland",
+      "FHNW Switzerland",
+      "FHNW Student Portal",
+      "FHNW News",
+      "FHNW Weather"
+    ]
+  }
+}
