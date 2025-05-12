@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import { useLocale, useTranslations } from 'next-intl';
 import FormattedDate from './FormattedDate';
 
 // Get build info from environment variables
@@ -43,6 +44,8 @@ const heartVariants = {
 };
 
 export default function Footer() {
+  const locale = useLocale();
+  const t = useTranslations('footer');
   return (
     <motion.footer
       variants={footerVariants}
@@ -66,23 +69,15 @@ export default function Footer() {
             {/* Navigation links - good for SEO and user experience */}
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
               <motion.a
-                href="/en/about"
+                href={`/${locale}/about`}
                 variants={linkVariants}
                 whileHover="hover"
                 className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
               >
-                About
+                {t('about')}
               </motion.a>
               <motion.a
-                href="/de/about"
-                variants={linkVariants}
-                whileHover="hover"
-                className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-              >
-                Über uns
-              </motion.a>
-              <motion.a
-                href="/en/campus"
+                href={`/${locale}/campus`}
                 variants={linkVariants}
                 whileHover="hover"
                 className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
@@ -90,17 +85,25 @@ export default function Footer() {
                 Campus
               </motion.a>
               <motion.a
-                href="/de/news"
+                href={`/${locale}/news`}
                 variants={linkVariants}
                 whileHover="hover"
                 className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
               >
-                FHNW News
+                {t('news')}
+              </motion.a>
+              <motion.a
+                href={`/${locale}/grades`}
+                variants={linkVariants}
+                whileHover="hover"
+                className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+              >
+                {locale === 'de' ? 'Noten' : 'Grades'}
               </motion.a>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-2">
-              <p>Made with</p>
+              <p>{t('made_with')}</p>
               <div className="inline-flex items-center gap-1">
                 <motion.svg
                   className="w-5 h-5 text-red-500"
@@ -111,7 +114,6 @@ export default function Footer() {
                 >
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </motion.svg>
-                <span>by</span>
                 <motion.a
                   href="https://github.com/peaktwilight"
                   target="_blank"
@@ -152,7 +154,7 @@ export default function Footer() {
             className="flex flex-col items-center gap-1"
           >
             <p className="text-xs text-gray-400 dark:text-gray-500">
-              Not affiliated with FHNW. Made by a student, for students.
+              {t('copyright')}
             </p>
             <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 font-mono">
               <span>Build: {buildId}</span>
