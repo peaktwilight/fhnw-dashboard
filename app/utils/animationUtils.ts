@@ -132,26 +132,27 @@ export const buttonVariants: Variants = {
 
 // Icon variants - for icons with hover effects
 export const iconVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    scale: 0.85, 
-    rotate: -5 
+  hidden: {
+    opacity: 0,
+    scale: 0.85,
+    y: 5
   },
   visible: {
     opacity: 1,
     scale: 1,
-    rotate: 0,
+    y: 0,
     transition: {
       duration: 0.35,
-      ease: easings.gentleBounce,
+      ease: easings.easeOut,
     }
   },
   hover: {
-    scale: 1.15,
-    rotate: [0, -5, 5, 0],
-    transition: { 
-      duration: 0.4,
-      ease: easings.gentleBounce,
+    scale: 1.08,
+    y: -2,
+    filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))",
+    transition: {
+      duration: 0.2,
+      ease: easings.easeInOut,
     }
   }
 };

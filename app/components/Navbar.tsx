@@ -22,10 +22,13 @@ const navVariants = {
 
 const logoVariants = {
   hover: {
-    scale: 1.05,
-    rotate: [0, -5, 5, -5, 0],
+    scale: 1.03,
+    y: -2,
+    color: ["#3B82F6", "#8B5CF6", "#3B82F6"],
     transition: {
-      duration: 0.5
+      scale: { duration: 0.2, ease: [0.34, 1.56, 0.64, 1] },
+      y: { duration: 0.2, ease: [0.34, 1.56, 0.64, 1] },
+      color: { duration: 1.5, repeat: Infinity, ease: "linear" }
     }
   }
 };
@@ -143,10 +146,11 @@ export default function Navbar() {
               data-path="/"
               className="flex items-center gap-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 hover:opacity-80 transition-opacity"
             >
-              <motion.div 
-                initial={{ rotate: 0 }}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, delay: 0.5 }}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
               >
                 <Squares2X2Icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </motion.div>
