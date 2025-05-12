@@ -43,6 +43,7 @@
     "cancel": "Cancel",
     "loading": "Loading...",
     "close": "Close",
+    "dateLocaleCode": "en-US",
     "language_settings": "Language Settings",
     "choose_language_description": "Choose your preferred language for FHNW Dashboard",
     "english_description": "Use English for all interface elements",

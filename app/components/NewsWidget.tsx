@@ -2,13 +2,21 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
-import { 
-  CalendarIcon, 
-  ChevronLeftIcon, 
+import {
+  CalendarIcon,
+  ChevronLeftIcon,
   ChevronRightIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
+import FormattedDate from './FormattedDate';
+import {
+  containerVariants,
+  cardVariants as itemVariants,
+  buttonVariants,
+  shimmerAnimation,
+  gradientAnimation
+} from '../utils/animationUtils';
 
 interface NewsItem {
   id: string;
@@ -23,77 +31,8 @@ interface NewsWidgetProps {
   limit?: number;
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut"
-    }
-  },
-  hover: {
-    y: -4,
-    scale: 1.02,
-    transition: {
-      duration: 0.2,
-      ease: "easeInOut"
-    }
-  },
-  tap: {
-    scale: 0.98,
-    transition: {
-      duration: 0.1
-    }
-  }
-};
-
-const buttonVariants = {
-  initial: { scale: 1 },
-  hover: { 
-    scale: 1.05,
-    transition: {
-      duration: 0.2,
-      ease: "easeInOut"
-    }
-  },
-  tap: { 
-    scale: 0.95,
-    transition: {
-      duration: 0.1
-    }
-  }
-};
-
 const ITEMS_PER_PAGE = 6;
-const DEFAULT_IMAGE = '/news-fallback.jpg';
-
-const shimmerAnimation = {
-  initial: {
-    backgroundPosition: "-468px 0",
-  },
-  animate: {
-    backgroundPosition: ["468px 0", "-468px 0"],
-    transition: {
-      repeat: Infinity,
-      duration: 1.5,
-      ease: "linear",
-    },
-  },
-};
+const DEFAULT_IMAGE = '/news-fallback.jpeg';
 
 const LoadingSkeleton = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -107,7 +46,7 @@ const LoadingSkeleton = () => (
       >
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <motion.div 
+            <motion.div
               variants={shimmerAnimation}
               initial="initial"
               animate="animate"
@@ -340,11 +279,7 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
                       <div className="flex flex-col gap-2 flex-grow">
                         <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                           <CalendarIcon className="w-3.5 h-3.5" />
-                          <time dateTime={item.date}>
-                            {new Date(item.date).toLocaleDateString(t('localeCode'), {
-                              year: 'numeric', month: '2-digit', day: '2-digit'
-                            })}
-                          </time>
+                          <FormattedDate date={item.date} format="medium" />
                         </div>
                         <h2 className="text-gray-900 dark:text-white font-semibold group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-200 line-clamp-2 text-base leading-snug">
                           {item.title}

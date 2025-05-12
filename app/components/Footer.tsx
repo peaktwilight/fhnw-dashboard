@@ -1,19 +1,12 @@
 'use client';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 // Get build info from environment variables
 const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || 'dev';
 
-const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME
-  ? new Date(process.env.NEXT_PUBLIC_BUILD_TIME).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZoneName: 'short'
-    })
-  : 'development';
+// Store just the raw date string and let client-side component handle formatting
+const buildTimeISO = process.env.NEXT_PUBLIC_BUILD_TIME || new Date().toISOString();
 
 const footerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -49,6 +42,27 @@ const heartVariants = {
 };
 
 export default function Footer() {
+  const [formattedBuildTime, setFormattedBuildTime] = useState<string>('');
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Format the build time on the client side only
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+      const date = new Date(buildTimeISO);
+      const formatted = date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      });
+      setFormattedBuildTime(formatted);
+    } catch (error) {
+      setFormattedBuildTime(buildTimeISO);
+    }
+  }, []);
   return (
     <motion.footer
       variants={footerVariants}
@@ -163,7 +177,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 font-mono">
               <span>Build: {buildId}</span>
               <span>•</span>
-              <span>{buildTime}</span>
+              <span>{isMounted ? formattedBuildTime : buildTimeISO.split('T')[0]}</span>
             </div>
           </motion.div>
         </motion.div>

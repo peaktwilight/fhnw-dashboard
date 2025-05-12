@@ -4,62 +4,19 @@ import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { 
+import {
   ChartBarIcon,
   MapIcon,
   CalendarIcon,
 } from '@heroicons/react/24/outline';
 import ResourcesSection from './ResourcesSection';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-};
-
-const sectionVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut"
-    }
-  },
-  hover: {
-    y: -8,
-    scale: 1.02,
-    transition: {
-      duration: 0.2,
-      ease: "easeInOut"
-    }
-  },
-  tap: {
-    scale: 0.98,
-    transition: {
-      duration: 0.1
-    }
-  }
-};
+import {
+  containerVariants,
+  sectionVariants,
+  cardVariants,
+  iconVariants,
+  gradientAnimation
+} from '../utils/animationUtils';
 
 export default function Home() {
   const t = useTranslations();
@@ -154,24 +111,20 @@ export default function Home() {
                   whileTap="tap"
                   className="group relative overflow-hidden rounded-2xl bg-white/50 dark:bg-gray-800/50 p-8 cursor-pointer border border-gray-100/20 dark:border-gray-700/20 backdrop-blur-sm hover:shadow-xl transition-shadow duration-300"
                 >
-                  <motion.div 
+                  <motion.div
                     className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 dark:from-blue-500/10 dark:via-purple-500/10 dark:to-blue-500/10"
-                    initial={{ opacity: 0, backgroundPosition: '0% 50%' }}
-                    whileHover={{ 
+                    initial={{ opacity: 0 }}
+                    whileHover={{
                       opacity: 1,
-                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                     }}
-                    transition={{ 
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
+                    variants={gradientAnimation}
+                    whileInView="animate"
                   />
                   <div className="relative z-10">
-                    <motion.div 
+                    <motion.div
                       className="mb-6"
-                      whileHover={{ scale: 1.1, rotate: [0, -5, 5, -5, 0] }}
-                      transition={{ duration: 0.5 }}
+                      variants={iconVariants}
+                      whileHover="hover"
                     >
                       {section.icon}
                     </motion.div>

@@ -5,29 +5,9 @@ import { motion } from 'framer-motion';
 import NewsWidget from '@/app/components/NewsWidget';
 import SectionHeader from '@/app/components/SectionHeader';
 import { useTranslations } from 'next-intl';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-};
-
-const sectionVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  }
-};
+import PageTransition from '@/app/components/PageTransition';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
+import { containerVariants, sectionVariants } from '@/app/utils/animationUtils';
 
 // Live indicator component
 const LiveIndicator = () => {
@@ -93,49 +73,47 @@ export default function NewsPage() {
   };
 
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-      </div>
-    }>
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="container mx-auto space-y-8"
-      >
-        {/* Page Header */}
+    <PageTransition>
+      <Suspense fallback={<LoadingSpinner size="large" className="min-h-screen" />}>
         <motion.div
-          variants={sectionVariants}
-          className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="container mx-auto space-y-8"
         >
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {getTranslation('page_title')}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            {getTranslation('page_description')}
-          </p>
-        </motion.div>
+          {/* Page Header */}
+          <motion.div
+            variants={sectionVariants}
+            className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700"
+          >
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {getTranslation('page_title')}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              {getTranslation('page_description')}
+            </p>
+          </motion.div>
 
-        {/* News Section */}
-        <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <SectionHeader
-              title={getTranslation('fhnw_news')}
-              subtitle={getTranslation('latest_updates')}
-              icon={
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                </svg>
-              }
-              rightElement={<LiveIndicator />}
-            />
-          </div>
-          <div className="p-4">
-            <NewsWidget />
-          </div>
-        </motion.section>
-      </motion.div>
-    </Suspense>
+          {/* News Section */}
+          <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+              <SectionHeader
+                title={getTranslation('fhnw_news')}
+                subtitle={getTranslation('latest_updates')}
+                icon={
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                }
+                rightElement={<LiveIndicator />}
+              />
+            </div>
+            <div className="p-4">
+              <NewsWidget />
+            </div>
+          </motion.section>
+        </motion.div>
+      </Suspense>
+    </PageTransition>
   );
-} 
+}

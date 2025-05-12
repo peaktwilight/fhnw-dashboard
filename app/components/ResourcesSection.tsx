@@ -13,6 +13,7 @@ import {
   PencilSquareIcon,
   LinkIcon,
 } from '@heroicons/react/24/outline';
+import { fadeInUp, gradientAnimation } from '../utils/animationUtils';
 
 export default function ResourcesSection() {
   // Move hook outside try-catch
@@ -150,24 +151,19 @@ export default function ResourcesSection() {
             target="_blank"
             rel="noopener noreferrer"
             className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 cursor-pointer"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 * index }}
+            variants={fadeInUp}
+            custom={index}
+            initial="hidden"
+            animate="visible"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <motion.div 
+            <motion.div
               className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 dark:from-blue-500/10 dark:via-purple-500/10 dark:to-blue-500/10"
               initial={{ opacity: 0 }}
-              whileHover={{ 
-                opacity: 1,
-                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-              }}
-              transition={{ 
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear"
-              }}
+              whileHover={{ opacity: 1 }}
+              variants={gradientAnimation}
+              whileInView="animate"
             />
             <div className="flex flex-col items-center text-center relative z-10">
               <div className="mb-4">

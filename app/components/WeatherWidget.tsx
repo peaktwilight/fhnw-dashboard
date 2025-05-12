@@ -1,15 +1,21 @@
 'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { 
-  SunIcon, 
-  MoonIcon, 
-  CloudIcon, 
+import {
+  SunIcon,
+  MoonIcon,
+  CloudIcon,
   CloudArrowDownIcon,
   SparklesIcon,
   BoltIcon
 } from '@heroicons/react/24/outline';
+import {
+  containerVariants as weatherContainerVariants,
+  cardVariants as weatherItemVariants,
+  iconVariants as weatherIconVariants
+} from '../utils/animationUtils';
 
 interface WeatherData {
   current: {
@@ -60,45 +66,6 @@ function getWeatherIcon(code: string) {
   // Default to clear day if unknown
   return <WeatherIcons.ClearDay />;
 }
-
-// Add animation variants before the component
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 }
-  }
-};
-
-const iconVariants = {
-  hidden: { opacity: 0, scale: 0.8, rotate: -10 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  },
-  hover: {
-    scale: 1.1,
-    rotate: 15,
-    transition: { duration: 0.3 }
-  }
-};
 
 export default function WeatherWidget() {
   // Move hooks outside try-catch
@@ -180,7 +147,7 @@ export default function WeatherWidget() {
     fetchWeather();
     const interval = setInterval(fetchWeather, 600000);
     return () => clearInterval(interval);
-  }, [getTranslation, getCommonTranslation, retryCount]);
+  }, [getTranslation, retryCount]);
 
   if (loading) {
     return (
@@ -246,23 +213,23 @@ export default function WeatherWidget() {
 
   return (
     <motion.div 
-      variants={containerVariants}
+      variants={weatherContainerVariants}
       initial="hidden"
       animate="visible"
       className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm"
     >
-      <motion.div variants={containerVariants} className="flex flex-col gap-4">
+      <motion.div variants={weatherContainerVariants} className="flex flex-col gap-4">
         {/* Current Weather */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
+        <motion.div variants={weatherItemVariants} className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <motion.div 
-              variants={iconVariants}
+              variants={weatherIconVariants}
               whileHover="hover"
               className="w-14 h-14"
             >
               {getWeatherIcon(weather.current.icon)}
             </motion.div>
-            <motion.div variants={itemVariants}>
+            <motion.div variants={weatherItemVariants}>
               <motion.div 
                 className="text-3xl font-bold text-gray-900 dark:text-white"
                 initial={{ opacity: 0, x: -20 }}
@@ -281,7 +248,7 @@ export default function WeatherWidget() {
             </motion.div>
           </div>
           <motion.div 
-            variants={itemVariants}
+            variants={weatherItemVariants}
             className="flex flex-col items-end gap-1"
           >
             <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
@@ -302,13 +269,13 @@ export default function WeatherWidget() {
         {/* Forecast */}
         {weather.forecast.length > 0 && (
           <motion.div 
-            variants={containerVariants}
+            variants={weatherContainerVariants}
             className="grid grid-cols-6 md:grid-cols-5 gap-2"
           >
             {weather.forecast.map((day, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
+                variants={weatherItemVariants}
                 whileHover={{ scale: 1.05 }}
                 className={`bg-white/30 dark:bg-gray-700/30 rounded-lg p-2 ${
                   index < 2 ? 'col-span-3 md:col-span-1' : 'col-span-2 md:col-span-1'
@@ -339,4 +306,4 @@ export default function WeatherWidget() {
       </motion.div>
     </motion.div>
   );
-} 
+}

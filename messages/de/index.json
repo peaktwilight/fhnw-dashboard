@@ -43,6 +43,7 @@
     "cancel": "Abbrechen",
     "loading": "Lädt...",
     "close": "Schließen",
+    "dateLocaleCode": "de-DE",
     "language_settings": "Spracheinstellungen",
     "choose_language_description": "Wähle deine Sprache fürs Dashboard",
     "english_description": "Englisch für alles verwenden",
