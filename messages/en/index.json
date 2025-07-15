@@ -163,7 +163,21 @@
     "grade_range_4_5_4_9": "4.5-4.9",
     "grade_range_4_0_4_4": "4.0-4.4",
     "grade_range_3_5_3_9": "3.5-3.9",
-    "grade_range_1_0_3_4": "1.0-3.4"
+    "grade_range_1_0_3_4": "1.0-3.4",
+    "registrations_title": "My Course Registrations",
+    "fetch_data": "Fetch Data",
+    "no_token": "Please authenticate first",
+    "loading": "Loading...",
+    "error_occurred": "An error occurred",
+    "module_code": "Module Code",
+    "module_name": "Module Name",
+    "date_range": "Date Range",
+    "no_data": "No registrations found",
+    "enter_token": "Enter Token",
+    "token_placeholder": "Paste your Bearer token here",
+    "save_token": "Save Token",
+    "token_instructions": "Get your token from browser DevTools",
+    "change_token": "Change Token"
   },
   "modules": {
     "title": "Modules",

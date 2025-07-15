@@ -159,7 +159,21 @@
     "grade_range_4_5_4_9": "4,5-4,9",
     "grade_range_4_0_4_4": "4,0-4,4",
     "grade_range_3_5_3_9": "3,5-3,9",
-    "grade_range_1_0_3_4": "1,0-3,4"
+    "grade_range_1_0_3_4": "1,0-3,4",
+    "registrations_title": "Meine Kursanmeldungen",
+    "fetch_data": "Daten abrufen",
+    "no_token": "Bitte authentifizieren Sie sich zuerst",
+    "loading": "Lädt...",
+    "error_occurred": "Ein Fehler ist aufgetreten",
+    "module_code": "Modulcode",
+    "module_name": "Modulname",
+    "date_range": "Zeitraum",
+    "no_data": "Keine Anmeldungen gefunden",
+    "enter_token": "Token eingeben",
+    "token_placeholder": "Fügen Sie hier Ihren Bearer-Token ein",
+    "save_token": "Token speichern",
+    "token_instructions": "Holen Sie sich Ihren Token aus den Browser-Entwicklertools",
+    "change_token": "Token ändern"
   },
   "modules": {
     "title": "Module",
