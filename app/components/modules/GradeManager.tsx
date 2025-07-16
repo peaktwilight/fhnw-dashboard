@@ -208,11 +208,17 @@ export default function GradeManager({
 
   const onDeleteGrade = (module: Registration) => {
     if (window.confirm(getTranslation('confirm_delete'))) {
-      const updatedModule = {
-        ...module,
-        freieNote: null
-      };
-      onUpdateRegistration(updatedModule);
+      // If this module was manually added, delete it entirely
+      if (module.statusName === getTranslation('manual_entry') && onDeleteModule) {
+        onDeleteModule(module.modulanlassAnmeldungId);
+      } else {
+        // For imported modules, just clear the grade
+        const updatedModule = {
+          ...module,
+          freieNote: null
+        };
+        onUpdateRegistration(updatedModule);
+      }
     }
   };
 
@@ -242,7 +248,12 @@ export default function GradeManager({
   if (!registrations) return null;
 
   const grouped = groupModules(registrations);
-  const overallAverage = calculateOverallAverage(grouped);
+  // Filter out groups where all modules have null grades (unless they're all manual entries)
+  const filteredGroups = grouped.filter(group => 
+    group.modules.some(m => m.freieNote !== null) || 
+    group.modules.every(m => m.statusName === getTranslation('manual_entry'))
+  );
+  const overallAverage = calculateOverallAverage(filteredGroups);
 
   return (
     <div className="p-6">
@@ -307,7 +318,7 @@ export default function GradeManager({
         </div>
 
         {/* Module Cards Grid */}
-        {grouped.length === 0 ? (
+        {filteredGroups.length === 0 ? (
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -346,7 +357,7 @@ export default function GradeManager({
           </motion.div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {grouped.map((group) => {
+            {filteredGroups.map((group) => {
             const finalGrade = calculateModuleFinalGrade(group.modules);
             const hasMainGrade = group.modules.some(m => m.moduleType?.type === 'MAIN' && m.freieNote !== null);
             
@@ -368,7 +379,7 @@ export default function GradeManager({
                       <div className="flex items-center gap-2">
                         {hasMainGrade && (
                           <span 
-                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
+                            className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400"
                             title={getTranslation('official_university_final')}
                           >
                             {getCommonTranslation('official_final')}
@@ -422,33 +433,44 @@ export default function GradeManager({
                   {/* Grades List */}
                   <div className="space-y-3">
                     {group.modules.map((module) => (
-                      <div 
+                      <motion.div 
                         key={module.modulanlassAnmeldungId}
-                        className="flex flex-col gap-2 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="relative bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
                       >
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <span className={`px-2 py-0.5 text-xs rounded-full ${
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className={`px-2.5 py-1 text-xs font-medium rounded-md ${
                               module.moduleType?.type === 'MSP' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
                               module.moduleType?.type === 'EN' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' :
                               'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                             }`}>
                               {module.moduleType?.type === 'MAIN' ? getCommonTranslation('official_final') : module.moduleType?.type || getCommonTranslation('official_final')}
                             </span>
-                            {module.freieNote !== null && (
-                              <span className={`text-sm font-medium ${
-                                module.bestanden 
-                                  ? 'text-green-600 dark:text-green-400' 
-                                  : 'text-red-600 dark:text-red-400'
-                              }`}>
-                                {module.freieNote.toFixed(1)}
+                            {module.moduleType?.weight && (
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                {getCommonTranslation('weight')}: {module.moduleType.weight}%
                               </span>
                             )}
                           </div>
-                          {module.moduleType?.weight && (
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
-                              {getCommonTranslation('weight')}: {module.moduleType.weight}%
-                            </span>
+                          {module.freieNote !== null && (
+                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-semibold ${
+                              module.bestanden 
+                                ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400' 
+                                : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+                            }`}>
+                              <span className="text-lg">{module.freieNote.toFixed(1)}</span>
+                              {module.bestanden ? (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                                </svg>
+                              ) : (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              )}
+                            </div>
                           )}
                         </div>
 
@@ -496,7 +518,7 @@ export default function GradeManager({
                               </>
                             )}
                           </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -508,7 +530,7 @@ export default function GradeManager({
       </div>
 
       {/* Floating Action Button */}
-      {grouped.length > 0 && (
+      {filteredGroups.length > 0 && (
         <motion.button
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}

@@ -1,6 +1,7 @@
 'use client';
 import React, { Fragment, useState, useCallback } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { motion } from 'framer-motion';
 import { Registration } from '../../types/modules';
 import { useTranslations } from 'next-intl';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -95,7 +96,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/25" />
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -109,89 +110,125 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
-                <div className="flex justify-between items-center mb-4">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
-                  >
-                    {getTranslation('edit_module')}
-                  </Dialog.Title>
-                  <button
-                    onClick={onClose}
-                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  >
-                    <XMarkIcon className="h-6 w-6" />
-                  </button>
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 text-left align-middle shadow-2xl transition-all">
+                {/* Header with gradient background */}
+                <div className="relative bg-gradient-to-r from-blue-500 to-indigo-600 p-6 pb-8">
+                  <div className="absolute inset-0 bg-black opacity-10"></div>
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-2xl font-bold text-white"
+                      >
+                        {getTranslation('edit_module')}
+                      </Dialog.Title>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={onClose}
+                        className="text-white/80 hover:text-white bg-white/20 rounded-lg p-1"
+                      >
+                        <XMarkIcon className="h-6 w-6" />
+                      </motion.button>
+                    </div>
+                    <p className="mt-2 text-blue-100">
+                      Manage module settings and credits
+                    </p>
+                  </div>
+                  <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white opacity-5 rounded-full"></div>
                 </div>
 
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {getTranslation('module_name')}
-                    </label>
-                    <div className="mt-1 text-gray-900 dark:text-gray-100">
-                      {module.modulanlass.bezeichnung}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {getTranslation('module_number')}
-                    </label>
-                    <div className="mt-1 text-gray-900 dark:text-gray-100">
-                      {module.modulanlass.nummer}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="ects" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {getTranslation('ects')}
-                    </label>
-                    <input
-                      type="number"
-                      id="ects"
-                      min="0"
-                      max="15"
-                      value={ects}
-                      onChange={(e) => setEcts(parseInt(e.target.value))}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
-                    />
-                  </div>
-
-                  {module.moduleType?.type !== 'MAIN' && (
-                    <div>
-                      <label htmlFor="weight" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {getTranslation('grade_weight')}
+                <div className="p-6 space-y-6">
+                  {/* Module Info Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                      <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+                        {getTranslation('module_name')}
                       </label>
-                      <input
-                        type="number"
-                        id="weight"
-                        min="0"
-                        max="100"
-                        value={weight}
-                        onChange={(e) => setWeight(parseInt(e.target.value))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
-                      />
+                      <div className="text-base font-semibold text-gray-900 dark:text-white">
+                        {module.modulanlass.bezeichnung}
+                      </div>
                     </div>
-                  )}
+
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                      <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+                        {getTranslation('module_number')}
+                      </label>
+                      <div className="text-base font-semibold text-gray-900 dark:text-white">
+                        {module.modulanlass.nummer}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Editable Fields */}
+                  <div className="space-y-5">
+                    <div>
+                      <label htmlFor="ects" className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                        {getTranslation('ects')}
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          id="ects"
+                          min="0"
+                          max="15"
+                          value={ects}
+                          onChange={(e) => setEcts(parseInt(e.target.value) || 0)}
+                          className="block w-full pl-4 pr-12 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        />
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                          <span className="text-gray-500 dark:text-gray-400 font-medium">ECTS</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {module.moduleType?.type !== 'MAIN' && (
+                      <div>
+                        <label htmlFor="weight" className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                          {getTranslation('grade_weight')}
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            id="weight"
+                            min="0"
+                            max="100"
+                            value={weight}
+                            onChange={(e) => setWeight(parseInt(e.target.value) || 0)}
+                            className="block w-full pl-4 pr-12 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          />
+                          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span className="text-gray-500 dark:text-gray-400 font-medium">%</span>
+                          </div>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                          Weight of this grade type in the final module grade calculation
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div className="mt-6 flex justify-end space-x-3">
-                  <button
+                {/* Action Buttons */}
+                <div className="bg-gray-50 dark:bg-gray-900/50 px-6 py-4 flex justify-end space-x-3">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     type="button"
                     onClick={onClose}
-                    className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600"
+                    className="px-6 py-2.5 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                   >
                     {getCommonTranslation('cancel')}
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     type="button"
                     onClick={handleSave}
-                    className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-200"
                   >
                     {getCommonTranslation('save')}
-                  </button>
+                  </motion.button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
