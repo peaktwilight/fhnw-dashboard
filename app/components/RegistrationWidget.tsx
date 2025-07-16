@@ -91,7 +91,7 @@ export default function RegistrationWidget() {
 
   const [registrations, setRegistrations] = useState<Registration[] | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [showJsonInput, setShowJsonInput] = useState(true);
+  const [showJsonInput, setShowJsonInput] = useState(false);
   const [selectedModule, setSelectedModule] = useState<Registration | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<typeof tabs[number]['id']>('grade-manager');
@@ -129,6 +129,9 @@ export default function RegistrationWidget() {
       } catch (error) {
         console.error('Error loading saved data:', error);
       }
+    } else {
+      // Initialize with empty array if no saved data
+      setRegistrations([]);
     }
   }, []);
 
@@ -150,6 +153,16 @@ export default function RegistrationWidget() {
           : reg
       );
         // Save to localStorage
+      localStorage.setItem('studenthub_registrations', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleDeleteModule = (moduleId: number) => {
+    setRegistrations(prev => {
+      if (!prev) return null;
+      const updated = prev.filter(reg => reg.modulanlassAnmeldungId !== moduleId);
+      // Save to localStorage
       localStorage.setItem('studenthub_registrations', JSON.stringify(updated));
       return updated;
     });
@@ -443,6 +456,7 @@ export default function RegistrationWidget() {
                         registrations={registrations}
                         onUpdateRegistration={handleUpdateRegistration}
                         onAddManualGrade={handleAddManualGrade}
+                        onDeleteModule={handleDeleteModule}
                       />
                     )}
                         </motion.div>

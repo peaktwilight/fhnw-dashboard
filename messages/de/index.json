@@ -159,7 +159,14 @@
     "grade_range_4_5_4_9": "4,5-4,9",
     "grade_range_4_0_4_4": "4,0-4,4",
     "grade_range_3_5_3_9": "3,5-3,9",
-    "grade_range_1_0_3_4": "1,0-3,4"
+    "grade_range_1_0_3_4": "1,0-3,4",
+    "api_shutdown_title": "Service vorübergehend nicht verfügbar",
+    "api_shutdown_message": "Die API der FHNW wurde aus Sicherheitsgründen mit einer CORS-Policy abgeschaltet. Diese Funktion ist derzeit nicht verfügbar. Ich werde schauen, ob wir mit unserer Hochschule zusammenarbeiten können, um diesen Service Teil einer offiziellen Implementierung zu machen :)",
+    "no_modules_yet": "Noch keine Module",
+    "start_adding_module": "Füge dein erstes Modul mit dem + Button hinzu",
+    "delete_module_confirm": "Das gesamte Modul löschen",
+    "module_deleted": "Modul erfolgreich gelöscht",
+    "add_first_module": "Erstes Modul hinzufügen"
   },
   "modules": {
     "title": "Module",
@@ -281,14 +288,10 @@
     "category": "Kategorie",
     "event_details": "Event-Details",
     "fhnw_news": "FHNW News",
-    "latest_updates": "Aktuelle Updates und Ankündigungen",
-    "information_events": "Infoveranstaltungen und Tag der offenen Tür",
-    "page_title": "News & Events",
-    "page_description": "Bleib auf dem Laufenden mit den neuesten FHNW Updates und bevorstehenden Events.",
-    "fhnw_news": "FHNW News",
     "latest_updates": "Neueste Updates und Ankündigungen",
-    "upcoming_events": "Bevorstehende Events",
-    "information_events": "Info-Events und Schnuppertage"
+    "information_events": "Info-Events und Schnuppertage",
+    "page_title": "News & Events",
+    "page_description": "Bleib auf dem Laufenden mit den neuesten FHNW Updates und bevorstehenden Events."
   },
   "theme": {
     "title": "Design-Einstellungen",

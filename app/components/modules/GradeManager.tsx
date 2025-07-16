@@ -10,12 +10,14 @@ interface GradeManagerProps {
   registrations: Registration[] | null;
   onUpdateRegistration: (module: Registration) => void;
   onAddManualGrade: (grade: ManualGrade) => void;
+  onDeleteModule?: (moduleId: number) => void;
 }
 
 export default function GradeManager({ 
   registrations, 
   onUpdateRegistration, 
-  onAddManualGrade 
+  onAddManualGrade,
+  onDeleteModule 
 }: GradeManagerProps) {
   // Move hooks to the top level
   const t = useTranslations('grades');
@@ -274,8 +276,40 @@ export default function GradeManager({
         </div>
 
         {/* Module Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {grouped.map((group) => {
+        {grouped.length === 0 ? (
+          <div className="text-center py-12">
+            <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{getTranslation('no_modules_yet')}</h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">{getTranslation('start_adding_module')}</p>
+            <motion.button
+              variants={buttonVariants}
+              initial="initial"
+              whileHover="hover"
+              whileTap="tap"
+              onClick={() => {
+                setNewManualGrade({
+                  moduleName: '',
+                  grade: 4.0,
+                  weight: 100,
+                  ects: 3,
+                  type: 'MAIN',
+                  isExistingModule: false
+                });
+                setShowAddGradeModal(true);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              {getTranslation('add_manual_grade')}
+            </motion.button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {grouped.map((group) => {
             const finalGrade = calculateModuleFinalGrade(group.modules);
             const hasMainGrade = group.modules.some(m => m.moduleType?.type === 'MAIN' && m.freieNote !== null);
             
@@ -315,6 +349,25 @@ export default function GradeManager({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
                         </motion.button>
+                        {/* Show delete button only for manually added modules */}
+                        {!hasMainGrade && group.modules.every(m => m.statusName === getTranslation('manual_entry')) && onDeleteModule && (
+                          <motion.button
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            onClick={() => {
+                              if (window.confirm(`Delete the entire module "${group.name}"?`)) {
+                                group.modules.forEach(m => onDeleteModule(m.modulanlassAnmeldungId));
+                              }
+                            }}
+                            className="p-1 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-200"
+                            title="Delete module"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </motion.button>
+                        )}
                       </div>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
@@ -414,8 +467,33 @@ export default function GradeManager({
               </motion.div>
             );
           })}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Floating Action Button */}
+      <motion.button
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => {
+          setNewManualGrade({
+            moduleName: '',
+            grade: 4.0,
+            weight: 100,
+            ects: 3,
+            type: 'MAIN',
+            isExistingModule: false
+          });
+          setShowAddGradeModal(true);
+        }}
+        className="fixed bottom-6 right-6 w-14 h-14 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-40"
+        title={getTranslation('add_manual_grade')}
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        </svg>
+      </motion.button>
 
       {/* Add Grade Modal */}
       {showAddGradeModal && (

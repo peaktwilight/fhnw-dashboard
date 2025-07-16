@@ -70,10 +70,6 @@
     "official_final": "Official Final",
     "weight": "Weight",
     "add_grade": "Add Grade",
-    "welcome": "Welcome",
-    "dark_mode": "Dark Mode",
-    "light_mode": "Light Mode",
-    "close": "Close",
     "light": "Light",
     "dark": "Dark"
   },
@@ -163,7 +159,14 @@
     "grade_range_4_5_4_9": "4.5-4.9",
     "grade_range_4_0_4_4": "4.0-4.4",
     "grade_range_3_5_3_9": "3.5-3.9",
-    "grade_range_1_0_3_4": "1.0-3.4"
+    "grade_range_1_0_3_4": "1.0-3.4",
+    "api_shutdown_title": "Service Temporarily Unavailable",
+    "api_shutdown_message": "The FHNW API has been shut down for security reasons with a CORS policy. This functionality is currently not available. I will see if we can work together with our school to make this service part of an official implementation :)",
+    "no_modules_yet": "No modules yet",
+    "start_adding_module": "Start by adding your first module using the + button",
+    "delete_module_confirm": "Delete the entire module",
+    "module_deleted": "Module deleted successfully",
+    "add_first_module": "Add Your First Module"
   },
   "modules": {
     "title": "Modules",
