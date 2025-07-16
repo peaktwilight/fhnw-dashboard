@@ -453,8 +453,7 @@ export default function GradeManager({
                         </div>
 
                         {/* Action Buttons */}
-                        {(!hasMainGrade || module.moduleType?.type !== 'MAIN') && (
-                          <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 mt-2">
                             {module.freieNote === null ? (
                               <motion.button
                                 variants={buttonVariants}
@@ -497,7 +496,6 @@ export default function GradeManager({
                               </>
                             )}
                           </div>
-                        )}
                       </div>
                     ))}
                   </div>
@@ -548,34 +546,43 @@ export default function GradeManager({
               {editingModule ? getTranslation('edit_grade') : getTranslation('add_manual_grade')}
             </h3>
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <button
-                  onClick={() => setNewManualGrade(prev => ({ ...prev, isExistingModule: false }))}
-                  className={`px-3 py-2 rounded-lg ${
-                    !newManualGrade.isExistingModule
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-                  }`}
-                >
-                  {getTranslation('new_module')}
-                </button>
-                <button
-                  onClick={() => setNewManualGrade(prev => ({ ...prev, isExistingModule: true }))}
-                  className={`px-3 py-2 rounded-lg ${
-                    newManualGrade.isExistingModule
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-                  }`}
-                >
-                  {getTranslation('existing_module')}
-                </button>
-              </div>
+              {!editingModule && (
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => setNewManualGrade(prev => ({ ...prev, isExistingModule: false }))}
+                    className={`px-3 py-2 rounded-lg ${
+                      !newManualGrade.isExistingModule
+                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                    }`}
+                  >
+                    {getTranslation('new_module')}
+                  </button>
+                  <button
+                    onClick={() => setNewManualGrade(prev => ({ ...prev, isExistingModule: true }))}
+                    className={`px-3 py-2 rounded-lg ${
+                      newManualGrade.isExistingModule
+                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                    }`}
+                  >
+                    {getTranslation('existing_module')}
+                  </button>
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {getTranslation('module_name')}
                 </label>
-                {newManualGrade.isExistingModule ? (
+                {editingModule ? (
+                  <input
+                    type="text"
+                    value={newManualGrade.moduleName}
+                    disabled
+                    className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
+                  />
+                ) : newManualGrade.isExistingModule ? (
                   <select
                     value={newManualGrade.moduleName}
                     onChange={(e) => {
