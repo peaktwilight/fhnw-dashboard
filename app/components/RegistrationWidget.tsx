@@ -263,7 +263,7 @@ export default function RegistrationWidget() {
           initial="hidden"
           animate="visible"
           variants={containerVariants}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700"
+          className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
         >
       {/* Header Section */}
           <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">

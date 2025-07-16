@@ -166,7 +166,9 @@
     "start_adding_module": "Füge dein erstes Modul mit dem + Button hinzu",
     "delete_module_confirm": "Das gesamte Modul löschen",
     "module_deleted": "Modul erfolgreich gelöscht",
-    "add_first_module": "Erstes Modul hinzufügen"
+    "add_first_module": "Erstes Modul hinzufügen",
+    "average_grade": "Notendurchschnitt",
+    "ects_earned": "ECTS erworben"
   },
   "modules": {
     "title": "Module",
