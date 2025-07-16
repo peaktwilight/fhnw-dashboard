@@ -94,6 +94,7 @@ export default function GradeManager({
   });
   const [selectedModule, setSelectedModule] = useState<Registration | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingModule, setEditingModule] = useState<Registration | null>(null);
 
   // Calculate final grade for a module
   const calculateModuleFinalGrade = (grades: Registration[]) => {
@@ -153,13 +154,30 @@ export default function GradeManager({
 
   const handleAddManualGrade = () => {
     if (newManualGrade.moduleName && !isNaN(newManualGrade.grade)) {
-      onAddManualGrade({
-        moduleName: newManualGrade.moduleName,
-        grade: Number(newManualGrade.grade),
-        weight: newManualGrade.weight,
-        ects: newManualGrade.ects,
-        type: newManualGrade.type
-      });
+      if (editingModule) {
+        // Update existing grade
+        const updatedModule = {
+          ...editingModule,
+          freieNote: Number(newManualGrade.grade),
+          moduleType: {
+            ...editingModule.moduleType,
+            weight: newManualGrade.weight,
+            ects: newManualGrade.ects,
+            type: newManualGrade.type
+          },
+          bestanden: Number(newManualGrade.grade) >= 4
+        };
+        onUpdateRegistration(updatedModule);
+      } else {
+        // Add new grade
+        onAddManualGrade({
+          moduleName: newManualGrade.moduleName,
+          grade: Number(newManualGrade.grade),
+          weight: newManualGrade.weight,
+          ects: newManualGrade.ects,
+          type: newManualGrade.type
+        });
+      }
 
       // Reset form and close modal
       setNewManualGrade({
@@ -170,11 +188,13 @@ export default function GradeManager({
         type: 'MAIN',
         isExistingModule: false
       });
+      setEditingModule(null);
       setShowAddGradeModal(false);
     }
   };
 
   const onEditGrade = (module: Registration) => {
+    setEditingModule(module);
     setNewManualGrade({
       moduleName: module.modulanlass.bezeichnung,
       grade: module.freieNote || 4.0,
@@ -524,7 +544,9 @@ export default function GradeManager({
             animate={{ scale: 1, opacity: 1 }}
             className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-md shadow-2xl"
           >
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{getTranslation('add_manual_grade')}</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+              {editingModule ? getTranslation('edit_grade') : getTranslation('add_manual_grade')}
+            </h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <button
@@ -648,6 +670,7 @@ export default function GradeManager({
               <button
                 onClick={() => {
                   setShowAddGradeModal(false);
+                  setEditingModule(null);
                   setNewManualGrade({
                     moduleName: '',
                     grade: 4.0,
@@ -665,7 +688,7 @@ export default function GradeManager({
                 onClick={handleAddManualGrade}
                 className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
               >
-                {getTranslation('add_grade')}
+                {editingModule ? getCommonTranslation('save') : getTranslation('add_grade')}
               </button>
             </div>
           </motion.div>
