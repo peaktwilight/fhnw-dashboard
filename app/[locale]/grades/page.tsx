@@ -91,7 +91,7 @@ export default function GradesPage() {
                   The grades feature now uses the updated FHNW Anmeldung API to fetch your course registrations and module data directly from the official system.
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  You'll need to authenticate with your FHNW credentials to access your personal registration data.
+                  You&apos;ll need to authenticate with your FHNW credentials to access your personal registration data.
                 </p>
               </div>
             </div>

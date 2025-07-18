@@ -45,7 +45,6 @@ const itemVariants = {
 
 export default function AnmeldungWidget() {
   const t = useTranslations('grades');
-  const commonT = useTranslations('common');
 
   const [anmeldungen, setAnmeldungen] = useState<AnmeldungData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -87,13 +86,6 @@ export default function AnmeldungWidget() {
     }
   };
 
-  const getCommonTranslation = (key: string): string => {
-    try {
-      return commonT(key);
-    } catch {
-      return getFallbackTranslation(key);
-    }
-  };
 
   useEffect(() => {
     // Check for stored token
@@ -270,7 +262,7 @@ export default function AnmeldungWidget() {
                   <p>2. Open browser DevTools (F12)</p>
                   <p>3. Go to Network tab</p>
                   <p>4. Navigate to your registrations</p>
-                  <p>5. Find the API request to "Anmeldung"</p>
+                  <p>5. Find the API request to &quot;Anmeldung&quot;</p>
                   <p>6. Copy the Authorization header value</p>
                 </div>
               </div>
