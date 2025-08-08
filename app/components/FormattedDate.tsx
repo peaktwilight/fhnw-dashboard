@@ -19,50 +19,57 @@ export default function FormattedDate({
   
   // Format the date client-side only
   useEffect(() => {
+    // Only format the date on the client side
+    const dateObj = new Date(date);
+
+    // If the date cannot be parsed, return the original string instead of
+    // throwing an error when calling toISOString()
+    if (isNaN(dateObj.getTime())) {
+      setFormattedDate(date);
+      return;
+    }
+
+    // Get locale code from translations or fallback
+    let localeCode = 'en-US';
     try {
-      // Only format the date on the client side
-      const dateObj = new Date(date);
-      
-      // Get locale code from translations or fallback
-      let localeCode = 'en-US';
-      try {
-        localeCode = t('dateLocaleCode');
-      } catch {
-        // Use default
-      }
-      
-      // Format date options based on the requested format
-      let options: Intl.DateTimeFormatOptions;
-      switch(format) {
-        case 'short':
-          options = { 
-            year: 'numeric', 
-            month: '2-digit', 
-            day: '2-digit' 
-          };
-          break;
-        case 'long':
-          options = { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
-          };
-          break;
-        case 'medium':
-        default:
-          options = { 
-            year: 'numeric', 
-            month: '2-digit', 
-            day: '2-digit' 
-          };
-      }
-      
+      localeCode = t('dateLocaleCode');
+    } catch {
+      // Use default
+    }
+
+    // Format date options based on the requested format
+    let options: Intl.DateTimeFormatOptions;
+    switch(format) {
+      case 'short':
+        options = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        };
+        break;
+      case 'long':
+        options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        };
+        break;
+      case 'medium':
+      default:
+        options = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        };
+    }
+
+    try {
       setFormattedDate(dateObj.toLocaleDateString(localeCode, options));
     } catch {
-      // Fallback to ISO format
-      setFormattedDate(new Date(date).toISOString().split('T')[0]);
+      // Fallback to ISO format (safe since we've validated the date)
+      setFormattedDate(dateObj.toISOString().split('T')[0]);
     }
   }, [date, format, t]);
   
