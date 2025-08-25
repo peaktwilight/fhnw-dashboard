@@ -46,7 +46,9 @@ export default function GradeManager({
       'weight': 'Weight',
       'ects': 'ECTS',
       'type': 'Type',
-      'official_university_final': 'Official University Final',
+      'official_university_final': 'Official Final Grade',
+      'calculated_final': 'Calculated Final Grade',
+      'official_grade': 'Official',
       'add_grade': 'Add Grade',
       'edit': 'Edit',
       'delete': 'Delete'
@@ -370,21 +372,47 @@ export default function GradeManager({
                 className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
               >
                 <div className="p-4 space-y-4">
+                  {/* Final Grade Display - Prominent at Top */}
+                  {finalGrade !== null && (
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          {hasMainGrade && (
+                            <div className="flex items-center gap-1.5 px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded-md">
+                              <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              <span className="text-xs font-medium text-green-700 dark:text-green-300">{getTranslation('official_university_final')}</span>
+                            </div>
+                          )}
+                          {!hasMainGrade && (
+                            <span className="text-xs font-medium text-blue-700 dark:text-blue-300">{getTranslation('calculated_final')}</span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{getTranslation('final_grade')}:</span>
+                          <span className={`text-3xl font-bold ${
+                            finalGrade >= 4 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                          }`}>
+                            {finalGrade.toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   {/* Module Header */}
                   <div className="flex flex-col gap-2">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-base font-semibold text-gray-900 dark:text-white line-clamp-2">
-                        {group.name}
-                      </h3>
+                      <div className="flex-1">
+                        <h3 className="text-base font-semibold text-gray-900 dark:text-white line-clamp-2">
+                          {group.name}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1 text-sm text-gray-600 dark:text-gray-400">
+                          <span>{getTranslation('ects')}: {group.ects}</span>
+                        </div>
+                      </div>
                       <div className="flex items-center gap-2">
-                        {hasMainGrade && (
-                          <span 
-                            className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400"
-                            title={getTranslation('official_university_final')}
-                          >
-                            {getCommonTranslation('official_final')}
-                          </span>
-                        )}
                         <motion.button
                           variants={buttonVariants}
                           whileHover="hover"
@@ -419,15 +447,6 @@ export default function GradeManager({
                         )}
                       </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <span>{getTranslation('ects')}: {group.ects}</span>
-                      {finalGrade !== null && (
-                        <>
-                          <span>•</span>
-                          <span>{getTranslation('final_grade')}: {finalGrade.toFixed(2)}</span>
-                        </>
-                      )}
-                    </div>
                   </div>
 
                   {/* Grades List */}
@@ -441,13 +460,22 @@ export default function GradeManager({
                       >
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className={`px-2.5 py-1 text-xs font-medium rounded-md ${
-                              module.moduleType?.type === 'MSP' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
-                              module.moduleType?.type === 'EN' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' :
-                              'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                            }`}>
-                              {module.moduleType?.type === 'MAIN' ? getCommonTranslation('official_final') : module.moduleType?.type || getCommonTranslation('official_final')}
-                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <span className={`px-2.5 py-1 text-xs font-medium rounded-md ${
+                                module.moduleType?.type === 'MSP' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
+                                module.moduleType?.type === 'EN' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' :
+                                'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                              }`}>
+                                {module.moduleType?.type === 'MSP' ? 'MSP' : module.moduleType?.type === 'EN' ? 'EN' : 'Final'}
+                              </span>
+                              {module.moduleType?.type === 'MAIN' && (
+                                <div className="flex items-center" title={getTranslation('official_university_final')}>
+                                  <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                  </svg>
+                                </div>
+                              )}
+                            </div>
                             {module.moduleType?.weight && (
                               <span className="text-xs text-gray-500 dark:text-gray-400">
                                 {getCommonTranslation('weight')}: {module.moduleType.weight}%

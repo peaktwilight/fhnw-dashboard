@@ -235,6 +235,52 @@ export default function RegistrationWidget() {
     }
   };
 
+  const handleImportData = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        try {
+          const text = await file.text();
+          const data = JSON.parse(text) as Registration[];
+          
+          // Validate the imported data structure
+          if (Array.isArray(data) && data.length > 0) {
+            // Check if it's valid registration data
+            const isValid = data.every(item => 
+              item.modulanlassAnmeldungId && 
+              item.modulanlass && 
+              item.modulanlass.bezeichnung
+            );
+            
+            if (isValid) {
+              setRegistrations(data);
+              const timestamp = new Date().toISOString();
+              setLastUpdated(timestamp);
+              
+              // Save to localStorage
+              localStorage.setItem('studenthub_registrations', JSON.stringify(data));
+              localStorage.setItem('studenthub_last_updated', timestamp);
+              
+              // Show success message (you might want to add a toast notification here)
+              alert(getTranslation('import_success') || 'Data imported successfully!');
+            } else {
+              alert(getTranslation('import_invalid_format') || 'Invalid data format. Please select a valid module export file.');
+            }
+          } else {
+            alert(getTranslation('import_empty') || 'The file appears to be empty or invalid.');
+          }
+        } catch (error) {
+          console.error('Error importing data:', error);
+          alert(getTranslation('import_error') || 'Error importing data. Please check the file format.');
+        }
+      }
+    };
+    input.click();
+  };
+
   if (!mounted) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
@@ -279,34 +325,51 @@ export default function RegistrationWidget() {
             )}
           </div>
               <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-            {registrations && !showJsonInput && (
+            {!showJsonInput && (
                   <>
               <motion.button
                 variants={buttonVariants}
                 initial="initial"
                 whileHover="hover"
                 whileTap="tap"
-                      onClick={handleExportData}
-                      className="text-sm px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
+                onClick={handleImportData}
+                className="text-sm px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
               >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
-                      {getCommonTranslation('export')}
+                {getCommonTranslation('import')}
               </motion.button>
-                        <motion.button
-                          variants={buttonVariants}
-                          initial="initial"
-                          whileHover="hover"
-                          whileTap="tap"
-                      onClick={() => setShowJsonInput(true)}
-                      className="text-sm px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
-                        >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                      {getCommonTranslation('update')}
-                        </motion.button>
+              {registrations && (
+                <>
+                  <motion.button
+                    variants={buttonVariants}
+                    initial="initial"
+                    whileHover="hover"
+                    whileTap="tap"
+                    onClick={handleExportData}
+                    className="text-sm px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    {getCommonTranslation('export')}
+                  </motion.button>
+                  <motion.button
+                    variants={buttonVariants}
+                    initial="initial"
+                    whileHover="hover"
+                    whileTap="tap"
+                    onClick={() => setShowJsonInput(true)}
+                    className="text-sm px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    {getCommonTranslation('update')}
+                  </motion.button>
+                </>
+              )}
                   </>
                 )}
                       </div>

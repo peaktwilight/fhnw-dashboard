@@ -16,14 +16,9 @@ export default function FormattedDate({
 }: FormattedDateProps) {
   const t = useTranslations('common');
   const [formattedDate, setFormattedDate] = useState<string>('');
-  const [isMounted, setIsMounted] = useState(false);
   
-  // Format the date client-side only
   useEffect(() => {
-    setIsMounted(true);
-    
     try {
-      // Only format the date on the client side
       const dateObj = new Date(date);
       
       // Get locale code from translations or fallback
@@ -69,18 +64,9 @@ export default function FormattedDate({
     }
   }, [date, format, t]);
   
-  // On the server, render an empty/hidden element to avoid hydration mismatch
-  if (!isMounted) {
-    return (
-      <time dateTime={date} className={className}>
-        <span className="opacity-0">Loading date...</span>
-      </time>
-    );
-  }
-  
   return (
-    <time dateTime={date} className={className}>
-      {formattedDate}
-    </time>
+    <span className={className} suppressHydrationWarning>
+      {formattedDate || '\u00A0'}
+    </span>
   );
 }

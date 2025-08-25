@@ -1,14 +1,9 @@
 'use client';
 import { motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
-import FormattedDate from './FormattedDate';
 
 // Get build info from environment variables
 const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || 'dev';
-
-// Store just the raw date string and let client-side component handle formatting
-// Ensure we get a consistently formatted date string that won't change between renders
-const buildTimeISO = process.env.NEXT_PUBLIC_BUILD_TIME || '2023-01-01T00:00:00.000Z';
 
 const footerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -157,13 +152,7 @@ export default function Footer() {
               {t('copyright')}
             </p>
             <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 font-mono">
-              <span>Build: {buildId}</span>
-              <span>•</span>
-              <FormattedDate
-                date={buildTimeISO}
-                format="medium"
-                className="text-xs text-gray-400 dark:text-gray-500 font-mono"
-              />
+              <span>Build: {buildId.slice(0, 7)}</span>
             </div>
           </motion.div>
         </motion.div>
