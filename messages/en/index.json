@@ -175,7 +175,21 @@
     "module_deleted": "Module deleted successfully",
     "add_first_module": "Add Your First Module",
     "average_grade": "Average Grade",
-    "ects_earned": "ECTS Earned"
+    "ects_earned": "ECTS Earned",
+    "registrations_title": "My Course Registrations",
+    "fetch_data": "Fetch Data",
+    "no_token": "Please authenticate first",
+    "loading": "Loading...",
+    "error_occurred": "An error occurred",
+    "module_code": "Module Code",
+    "module_name": "Module Name",
+    "date_range": "Date Range",
+    "no_data": "No registrations found",
+    "enter_token": "Enter Token",
+    "token_placeholder": "Paste your Bearer token here",
+    "save_token": "Save Token",
+    "token_instructions": "Get your token from browser DevTools",
+    "change_token": "Change Token"
   },
   "modules": {
     "title": "Modules",

@@ -21,6 +21,12 @@ export default function FormattedDate({
     try {
       const dateObj = new Date(date);
       
+      // If the date cannot be parsed, return the original string
+      if (isNaN(dateObj.getTime())) {
+        setFormattedDate(date);
+        return;
+      }
+      
       // Get locale code from translations or fallback
       let localeCode = 'en-US';
       try {
@@ -58,15 +64,20 @@ export default function FormattedDate({
       }
       
       setFormattedDate(dateObj.toLocaleDateString(localeCode, options));
-    } catch {
+    } catch (error) {
       // Fallback to ISO format
-      setFormattedDate(new Date(date).toISOString().split('T')[0]);
+      try {
+        const dateObj = new Date(date);
+        setFormattedDate(dateObj.toISOString().split('T')[0]);
+      } catch {
+        setFormattedDate(date);
+      }
     }
   }, [date, format, t]);
   
   return (
-    <span className={className} suppressHydrationWarning>
-      {formattedDate || '\u00A0'}
-    </span>
+    <time dateTime={date} className={className} suppressHydrationWarning>
+      {formattedDate || 'Loading...'}
+    </time>
   );
 }

@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RegistrationWidget from '@/app/components/RegistrationWidget';
 import { useTranslations } from 'next-intl';
+import AnmeldungWidget from '@/app/components/AnmeldungWidget';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -261,6 +262,14 @@ export default function GradesPage() {
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
           >
             <RegistrationWidget />
+          </motion.section>
+
+          {/* Anmeldung Widget - Using new FHNW API */}
+          <motion.section 
+            variants={itemVariants}
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden mt-6"
+          >
+            <AnmeldungWidget />
           </motion.section>
         </div>
       </motion.div>

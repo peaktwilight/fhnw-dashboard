@@ -8,6 +8,7 @@ import { ThemeScript } from '../components/providers/ThemeScript';
 import { SchemaMarkup } from '../components/SchemaMarkup';
 import { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
