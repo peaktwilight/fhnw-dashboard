@@ -64,7 +64,7 @@ export default function FormattedDate({
       }
       
       setFormattedDate(dateObj.toLocaleDateString(localeCode, options));
-    } catch (error) {
+    } catch {
       // Fallback to ISO format
       try {
         const dateObj = new Date(date);

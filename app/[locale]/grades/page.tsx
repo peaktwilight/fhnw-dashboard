@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import RegistrationWidget from '@/app/components/RegistrationWidget';
 import { useTranslations } from 'next-intl';
 import AnmeldungWidget from '@/app/components/AnmeldungWidget';
+import { Registration } from '@/app/types/modules';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -44,7 +45,7 @@ const cardVariants = {
 export default function GradesPage() {
   const t = useTranslations('grades');
   const [showNotice, setShowNotice] = useState(true);
-  const [registrations, setRegistrations] = useState<any[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
 
   useEffect(() => {
     // Check if notice has been dismissed before

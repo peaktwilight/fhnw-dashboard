@@ -1,19 +1,9 @@
 'use client';
 import { motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
-import dynamic from 'next/dynamic';
-
-const FormattedDate = dynamic(() => import('./FormattedDate'), { 
-  ssr: false,
-  loading: () => <span className="text-xs text-gray-400 dark:text-gray-500 font-mono">Loading...</span>
-});
 
 // Get build info from environment variables
 const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || 'dev';
-
-// Store just the raw date string and let client-side component handle formatting
-// Ensure we get a consistently formatted date string that won't change between renders
-const buildTimeISO = process.env.NEXT_PUBLIC_BUILD_TIME || '2025-07-15T00:00:00.000Z';
 const footerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
