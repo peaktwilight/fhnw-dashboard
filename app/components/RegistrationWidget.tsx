@@ -265,16 +265,16 @@ export default function RegistrationWidget() {
               localStorage.setItem('studenthub_last_updated', timestamp);
               
               // Show success message (you might want to add a toast notification here)
-              alert(getTranslation('import_success') || 'Data imported successfully!');
+              alert(getCommonTranslation('import_success') || 'Data imported successfully!');
             } else {
-              alert(getTranslation('import_invalid_format') || 'Invalid data format. Please select a valid module export file.');
+              alert(getCommonTranslation('import_invalid_format') || 'Invalid data format. Please select a valid module export file.');
             }
           } else {
-            alert(getTranslation('import_empty') || 'The file appears to be empty or invalid.');
+            alert(getCommonTranslation('import_empty') || 'The file appears to be empty or invalid.');
           }
         } catch (error) {
           console.error('Error importing data:', error);
-          alert(getTranslation('import_error') || 'Error importing data. Please check the file format.');
+          alert(getCommonTranslation('import_error') || 'Error importing data. Please check the file format.');
         }
       }
     };
