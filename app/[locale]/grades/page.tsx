@@ -93,14 +93,14 @@ export default function GradesPage() {
 
     const modulesWithGrades = registrations.filter(r => r.freieNote !== null);
     const totalModules = registrations.length;
-    const average = modulesWithGrades.length > 0 
-      ? modulesWithGrades.reduce((sum, r) => sum + r.freieNote, 0) / modulesWithGrades.length
+    const average = modulesWithGrades.length > 0
+      ? modulesWithGrades.reduce((sum, r) => sum + (r.freieNote ?? 0), 0) / modulesWithGrades.length
       : 0;
     const ects = registrations
       .filter(r => r.freieNote !== null && r.freieNote >= 4)
       .reduce((sum, r) => sum + (r.moduleType?.ects || 0), 0);
     const passRate = modulesWithGrades.length > 0
-      ? (modulesWithGrades.filter(r => r.freieNote >= 4).length / modulesWithGrades.length) * 100
+      ? (modulesWithGrades.filter(r => (r.freieNote ?? 0) >= 4).length / modulesWithGrades.length) * 100
       : 0;
 
     return { 

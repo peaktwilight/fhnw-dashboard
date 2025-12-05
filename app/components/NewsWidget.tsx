@@ -113,14 +113,11 @@ export default function NewsWidget({ limit }: NewsWidgetProps) {
         setError(null);
         const response = await fetch(`/api/news`);
         const data: NewsItem[] | { error: string } = await response.json();
-        console.log('NewsWidget received from /api/news:', data);
         if (!response.ok || ('error' in data)) {
           const errorMessage = ('error' in data) ? data.error : `Failed to fetch news (${response.status})`;
-          console.error('Error response from /api/news:', errorMessage);
           throw new Error(errorMessage);
         }
         if (!Array.isArray(data)) {
-          console.error('Invalid response format from /api/news - expected an array:', data);
           throw new Error('Invalid response format - expected an array');
         }
         setNews(data);

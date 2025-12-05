@@ -81,7 +81,6 @@ export default function GradesWidget() {
       const params = new URLSearchParams(hash);
       const accessToken = params.get('access_token');
       if (accessToken) {
-        console.log('Client: Access token found in URL hash:', accessToken);
         localStorage.setItem('studenthub_token', `Bearer ${accessToken}`);
         // Clean the URL and reload the page for a fresh start with the token stored
         window.history.replaceState({}, document.title, window.location.pathname);
@@ -99,9 +98,7 @@ export default function GradesWidget() {
 
     const fetchGrades = async () => {
       try {
-        // Retrieve token from localStorage and log it
         const token = localStorage.getItem('studenthub_token');
-        console.log('Client: Using token from localStorage:', token);
 
         const headers: HeadersInit = {
           'Accept': 'application/json',
@@ -110,15 +107,12 @@ export default function GradesWidget() {
 
         if (token) {
           headers['Authorization'] = token;
-        } else {
-          console.log('Client: No token found in localStorage');
         }
 
         const response = await fetch('/api/grades', { headers });
         const data = await response.json();
 
         if (!response.ok) {
-          console.log('Client: API response not OK:', response.status, data);
           if (response.status === 401 || data.requiresLogin) {
             setRequiresLogin(true);
             setError(getTranslation('login_required'));
@@ -128,7 +122,6 @@ export default function GradesWidget() {
           return;
         }
 
-        console.log('Client: Fetched grades data:', data);
         setGrades(data);
         setError(null);
         setRequiresLogin(false);
