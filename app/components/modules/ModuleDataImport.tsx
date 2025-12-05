@@ -86,14 +86,14 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
       transition={{ duration: 0.3 }}
       className="overflow-hidden"
     >
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-700">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-6 rounded-lg mb-6 shadow-sm"
+          className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 p-6 rounded-lg mb-6 shadow-sm"
         >
-          <h3 className="text-xl font-semibold text-blue-800 dark:text-blue-200 mb-4 flex items-center">
+          <h3 className="text-xl font-semibold text-orange-800 dark:text-orange-200 mb-4 flex items-center">
             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -112,7 +112,7 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
                     whileHover="hover"
                     whileTap="tap"
                     onClick={handleLogin}
-                    className="mt-2 inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm shadow-md hover:shadow-lg"
+                    className="mt-2 inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors text-sm shadow-md hover:shadow-lg"
                   >
                     <span>{getTranslation('open_studenthub')}</span>
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,7 +132,7 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
                     whileHover="hover"
                     whileTap="tap"
                     onClick={handleOpenAnmeldungen}
-                    className="mt-2 inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm shadow-md hover:shadow-lg"
+                    className="mt-2 inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors text-sm shadow-md hover:shadow-lg"
                   >
                     <span>{getTranslation('view_module_data')}</span>
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,22 +184,22 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
                 transition={{ delay: index * 0.1 }}
                 className="flex items-start space-x-3 relative"
               >
-                <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 font-semibold shadow-sm">
+                <div className="flex-shrink-0 w-8 h-8 bg-orange-100 dark:bg-orange-800 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-300 font-semibold shadow-sm">
                   {step.step}
                 </div>
                 <div className="flex-1">
-                  <p className="text-blue-800 dark:text-blue-200 font-medium">{step.title}</p>
-                  <p className="text-blue-600 dark:text-blue-300 text-sm mt-1">
+                  <p className="text-orange-800 dark:text-orange-200 font-medium">{step.title}</p>
+                  <p className="text-orange-600 dark:text-orange-300 text-sm mt-1">
                     {step.description}
                   </p>
                   {step.shortcuts && (
                     <div className="mt-2 flex flex-wrap gap-3">
                       {step.shortcuts.map(shortcut => (
-                        <div key={shortcut.os} className="flex items-center space-x-1 text-sm text-gray-600 dark:text-gray-300">
+                        <div key={shortcut.os} className="flex items-center space-x-1 text-sm text-slate-600 dark:text-slate-300">
                           <span>{shortcut.os}:</span>
                           {shortcut.keys.map((key, keyIndex) => (
                             <React.Fragment key={key}>
-                              <kbd className="px-2 py-0.5 bg-gray-100 dark:bg-gray-600 rounded shadow">
+                              <kbd className="px-2 py-0.5 bg-slate-100 dark:bg-slate-600 rounded shadow">
                                 {key}
                               </kbd>
                               {keyIndex < shortcut.keys.length - 1 && <span>+</span>}
@@ -224,7 +224,7 @@ export default function ModuleDataImport({ onDataImported }: ModuleDataImportPro
         >
           <div className="relative">
             <textarea
-              className="w-full p-4 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
+              className="w-full p-4 border border-slate-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-slate-700 dark:border-slate-600 dark:text-white font-mono text-sm"
               rows={8}
               placeholder={getTranslation('paste_here')}
               value={jsonInput}

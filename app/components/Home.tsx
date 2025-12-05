@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
   ArrowRightIcon,
-  SparklesIcon,
 } from '@heroicons/react/24/outline';
 import ResourcesSection from './ResourcesSection';
 
@@ -45,10 +44,9 @@ export default function Home() {
             <div className="relative text-center">
               {/* Badge */}
               <motion.div variants={itemVariants} className="flex justify-center mb-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20">
-                  <SparklesIcon className="w-4 h-4 text-orange-500" />
-                  <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
-                    {locale === 'de' ? 'Von Studierenden, für Studierende' : 'Built by Students, for Students'}
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800/50">
+                  <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                    {locale === 'de' ? 'Inoffizielles Studierenden-Tool' : 'Unofficial Student Tool'}
                   </span>
                 </div>
               </motion.div>

@@ -52,10 +52,10 @@ export default function ThemeSettings() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
           {getTranslation('title')}
         </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           {getTranslation('description')}
         </p>
       </div>
@@ -68,8 +68,8 @@ export default function ThemeSettings() {
           onClick={() => setTheme('light')}
           className={`p-4 rounded-lg border ${
             theme === 'light'
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-              : 'border-gray-200 dark:border-gray-700 hover:border-blue-500'
+              ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
+              : 'border-slate-200 dark:border-slate-700 hover:border-orange-500'
           }`}
         >
           <div className="flex items-center justify-between mb-3">
@@ -77,7 +77,7 @@ export default function ThemeSettings() {
               <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
             </svg>
             <div className={`h-4 w-4 rounded-full border ${
-              theme === 'light' ? 'border-blue-500 bg-blue-500' : 'border-gray-300 dark:border-gray-600'
+              theme === 'light' ? 'border-orange-500 bg-orange-500' : 'border-slate-300 dark:border-slate-600'
             }`}>
               {theme === 'light' && (
                 <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
@@ -86,8 +86,8 @@ export default function ThemeSettings() {
               )}
             </div>
           </div>
-          <h3 className="font-medium text-gray-900 dark:text-white">{getCommonTranslation('light')}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h3 className="font-medium text-slate-900 dark:text-white">{getCommonTranslation('light')}</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             {getTranslation('light_description')}
           </p>
         </motion.button>
@@ -99,8 +99,8 @@ export default function ThemeSettings() {
           onClick={() => setTheme('dark')}
           className={`p-4 rounded-lg border ${
             theme === 'dark'
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-              : 'border-gray-200 dark:border-gray-700 hover:border-blue-500'
+              ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
+              : 'border-slate-200 dark:border-slate-700 hover:border-orange-500'
           }`}
         >
           <div className="flex items-center justify-between mb-3">
@@ -108,7 +108,7 @@ export default function ThemeSettings() {
               <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
             </svg>
             <div className={`h-4 w-4 rounded-full border ${
-              theme === 'dark' ? 'border-blue-500 bg-blue-500' : 'border-gray-300 dark:border-gray-600'
+              theme === 'dark' ? 'border-orange-500 bg-orange-500' : 'border-slate-300 dark:border-slate-600'
             }`}>
               {theme === 'dark' && (
                 <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
@@ -117,8 +117,8 @@ export default function ThemeSettings() {
               )}
             </div>
           </div>
-          <h3 className="font-medium text-gray-900 dark:text-white">{getCommonTranslation('dark')}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h3 className="font-medium text-slate-900 dark:text-white">{getCommonTranslation('dark')}</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             {getTranslation('dark_description')}
           </p>
         </motion.button>
@@ -130,8 +130,8 @@ export default function ThemeSettings() {
           onClick={() => setTheme('system')}
           className={`p-4 rounded-lg border ${
             theme === 'system'
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-              : 'border-gray-200 dark:border-gray-700 hover:border-blue-500'
+              ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
+              : 'border-slate-200 dark:border-slate-700 hover:border-orange-500'
           }`}
         >
           <div className="flex items-center justify-between mb-3">
@@ -139,7 +139,7 @@ export default function ThemeSettings() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             <div className={`h-4 w-4 rounded-full border ${
-              theme === 'system' ? 'border-blue-500 bg-blue-500' : 'border-gray-300 dark:border-gray-600'
+              theme === 'system' ? 'border-orange-500 bg-orange-500' : 'border-slate-300 dark:border-slate-600'
             }`}>
               {theme === 'system' && (
                 <svg className="w-4 h-4 text-white" viewBox="0 0 20 20" fill="currentColor">
@@ -148,8 +148,8 @@ export default function ThemeSettings() {
               )}
             </div>
           </div>
-          <h3 className="font-medium text-gray-900 dark:text-white">{getCommonTranslation('system')}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <h3 className="font-medium text-slate-900 dark:text-white">{getCommonTranslation('system')}</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             {getTranslation('system_description')}
           </p>
         </motion.button>

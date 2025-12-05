@@ -18,7 +18,7 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="flex items-center space-x-4">
-      <span className="text-sm text-gray-700 dark:text-gray-300">
+      <span className="text-sm text-slate-700 dark:text-slate-300">
         {t('language')}:
       </span>
       <div className="flex space-x-2">
@@ -26,8 +26,8 @@ export default function LanguageSwitcher() {
           onClick={() => switchLocale('en')}
           className={`px-3 py-1 text-sm rounded-md transition-colors ${
             locale === 'en'
-              ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+              ? 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
           English
@@ -36,8 +36,8 @@ export default function LanguageSwitcher() {
           onClick={() => switchLocale('de')}
           className={`px-3 py-1 text-sm rounded-md transition-colors ${
             locale === 'de'
-              ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+              ? 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
           Deutsch

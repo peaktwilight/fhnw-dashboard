@@ -25,7 +25,7 @@ export default function Navbar() {
 
   const getFallbackTranslation = (key: string): string => {
     const fallbacks: Record<string, string> = {
-      'home': 'Home', 'grades': 'Grades', 'campus': 'Your FHNW Tools',
+      'home': 'Home', 'grades': 'Grades', 'campus': 'Tools',
       'news': 'News', 'settings': 'Settings'
     };
     return fallbacks[key] || key;
@@ -56,7 +56,7 @@ export default function Navbar() {
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
           ? 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg shadow-sm border-b border-slate-200 dark:border-slate-800'
-          : 'bg-transparent'
+          : 'bg-white/0 dark:bg-slate-900/0 border-b border-transparent'
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">

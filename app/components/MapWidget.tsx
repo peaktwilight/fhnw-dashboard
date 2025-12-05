@@ -22,8 +22,8 @@ const MapComponent = dynamic(
   { 
     ssr: false,
     loading: () => (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+      <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-lg">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
       </div>
     )
   }
@@ -42,7 +42,7 @@ export default function MapWidget() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm"
+      className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4 backdrop-blur-sm"
     >
       <div className="w-full h-[300px] rounded-lg overflow-hidden">
         {isMounted && <MapComponent />}

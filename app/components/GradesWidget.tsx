@@ -145,11 +145,11 @@ export default function GradesWidget() {
 
   if (!mounted) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+      <div className="bg-white dark:bg-slate-800 rounded-lg p-6">
         <div className="animate-pulse space-y-3">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-5/6"></div>
         </div>
       </div>
     );
@@ -157,11 +157,11 @@ export default function GradesWidget() {
 
   if (loading) {
     return (
-      <div className="animate-pulse bg-white dark:bg-gray-800 rounded-lg p-6">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+      <div className="animate-pulse bg-white dark:bg-slate-800 rounded-lg p-6">
+        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-4"></div>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+            <div key={i} className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full"></div>
           ))}
         </div>
       </div>
@@ -170,14 +170,14 @@ export default function GradesWidget() {
 
   if (error) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+      <div className="bg-white dark:bg-slate-800 rounded-lg p-6">
         <div className="text-center">
           <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
           {requiresLogin && (
             <div className="mt-4 space-y-4">
               <button
                 onClick={handleLogin}
-                className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
               >
                 <span>{getTranslation('login_button')}</span>
                 <svg
@@ -194,12 +194,12 @@ export default function GradesWidget() {
                   />
                 </svg>
               </button>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-slate-600 dark:text-slate-400">
                 {getTranslation('login_required')}
               </div>
               <button
                 onClick={() => window.location.reload()}
-                className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg transition-colors"
+                className="px-4 py-2 text-sm bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-lg transition-colors"
               >
                 {getCommonTranslation('reset')}
               </button>
@@ -215,24 +215,24 @@ export default function GradesWidget() {
   const currentModules = grades.filter((grade) => grade.freieNote === null);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 space-y-6">
+    <div className="bg-white dark:bg-slate-800 rounded-lg p-6 space-y-6">
       {/* Completed Modules */}
       {gradedModules.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
             {getTranslation('completed')}
           </h3>
           <div className="space-y-3">
             {gradedModules.map((grade) => (
               <div
                 key={grade.modulanlassAnmeldungId}
-                className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700 rounded-lg"
               >
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white">
+                  <p className="font-medium text-slate-900 dark:text-white">
                     {grade.modulanlass.bezeichnung.split(' ').slice(0, -1).join(' ')}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-300">
+                  <p className="text-sm text-slate-500 dark:text-slate-300">
                     {grade.modulanlass.anlassleitungen[0]?.leitungsperson.vorname}{' '}
                     {grade.modulanlass.anlassleitungen[0]?.leitungsperson.nachname}
                   </p>
@@ -255,19 +255,19 @@ export default function GradesWidget() {
       {/* Current Semester Modules */}
       {currentModules.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
             {getTranslation('in_progress')}
           </h3>
           <div className="space-y-3">
             {currentModules.map((module) => (
               <div
                 key={module.modulanlassAnmeldungId}
-                className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg"
               >
-                <p className="font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-slate-900 dark:text-white">
                   {module.modulanlass.bezeichnung.split(' ').slice(0, -1).join(' ')}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-300">
+                <p className="text-sm text-slate-500 dark:text-slate-300">
                   {module.modulanlass.anlassleitungen[0]?.leitungsperson.vorname}{' '}
                   {module.modulanlass.anlassleitungen[0]?.leitungsperson.nachname}
                 </p>
@@ -278,7 +278,7 @@ export default function GradesWidget() {
       )}
 
       {gradedModules.length === 0 && currentModules.length === 0 && (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+        <div className="text-center py-8 text-slate-500 dark:text-slate-400">
           {getTranslation('no_grades')}
         </div>
       )}

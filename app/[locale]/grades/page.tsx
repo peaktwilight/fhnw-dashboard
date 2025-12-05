@@ -121,7 +121,7 @@ export default function GradesPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-500 border-t-transparent"></div>
       </div>
     }>
       <motion.div
@@ -134,7 +134,7 @@ export default function GradesPage() {
           {/* Page Header with gradient background */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 p-8 sm:p-12 text-white shadow-xl"
+            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 p-8 sm:p-12 text-white shadow-xl"
           >
             <div className="absolute inset-0 bg-black opacity-10"></div>
             <div className="relative z-10">
@@ -200,17 +200,17 @@ export default function GradesPage() {
                 key={stat.label}
                 variants={cardVariants}
                 whileHover={{ scale: 1.02, y: -2 }}
-                className="relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
+                className="relative bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden"
               >
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.color} opacity-10 transform translate-x-8 -translate-y-8 rounded-full`}></div>
                 <div className="relative">
                   <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${stat.color} text-white mb-4`}>
                     {stat.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
                     {stat.value}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
                     {stat.label}
                   </p>
                 </div>
@@ -226,11 +226,11 @@ export default function GradesPage() {
                 initial="hidden"
                 animate="visible"
                 exit={{ opacity: 0, y: -20 }}
-                className="relative bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-600"
+                className="relative bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-600"
               >
                 <button
                   onClick={dismissNotice}
-                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -238,17 +238,17 @@ export default function GradesPage() {
                 </button>
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-                      <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                   </div>
                   <div className="flex-1 pr-8">
-                    <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
                       {getTranslation('api_shutdown_title')}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
                       {getTranslation('api_shutdown_message')}
                     </p>
                   </div>
@@ -258,17 +258,17 @@ export default function GradesPage() {
           </AnimatePresence>
 
           {/* Main Grades Widget */}
-          <motion.section 
+          <motion.section
             variants={itemVariants}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
           >
             <RegistrationWidget />
           </motion.section>
 
           {/* Anmeldung Widget - Using new FHNW API */}
-          <motion.section 
+          <motion.section
             variants={itemVariants}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden mt-6"
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden mt-6"
           >
             <AnmeldungWidget />
           </motion.section>

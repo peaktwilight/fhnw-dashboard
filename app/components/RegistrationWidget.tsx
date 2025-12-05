@@ -283,13 +283,13 @@ export default function RegistrationWidget() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 p-4">
         <div className="mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+      <div className="bg-white dark:bg-slate-800 rounded-lg p-6">
         <div className="animate-pulse space-y-3">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-5/6"></div>
             </div>
           </div>
         </div>
@@ -303,23 +303,23 @@ export default function RegistrationWidget() {
   const current = registrations?.filter(r => r.freieNote === null) || [];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <div className="mx-auto">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
-          className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+          className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700"
         >
       {/* Header Section */}
-          <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                   {getTranslation('grade_progress_dashboard')}
                 </h1>
             {lastUpdated && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                 {getCommonTranslation('last_updated')}: {new Date(lastUpdated).toLocaleString()}
               </p>
             )}
@@ -361,7 +361,7 @@ export default function RegistrationWidget() {
                     whileHover="hover"
                     whileTap="tap"
                     onClick={() => setShowJsonInput(true)}
-                    className="text-sm px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
+                    className="text-sm px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -388,12 +388,12 @@ export default function RegistrationWidget() {
           {registrations && (
             <>
               {/* Navigation Tabs */}
-              <div className="border-b border-gray-200 dark:border-gray-700">
+              <div className="border-b border-slate-200 dark:border-slate-700">
                 {/* Mobile Menu Button */}
                 <div className="md:hidden px-4 py-2">
                   <button
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="w-full flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg"
+                    className="w-full flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-lg"
                   >
                     <span className="flex items-center gap-2">
                       {tabs.find(tab => tab.id === activeTab)?.icon}
@@ -427,8 +427,8 @@ export default function RegistrationWidget() {
                             }}
                             className={`w-full flex items-center gap-2 px-4 py-2 rounded-lg ${
                               activeTab === tab.id
-                                ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                ? 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200'
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                             }`}
                           >
                             {tab.icon}
@@ -449,8 +449,8 @@ export default function RegistrationWidget() {
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ease-in-out ${
                       activeTab === tab.id
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 transform scale-105'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-102'
+                        ? 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200 transform scale-105'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:scale-102'
                     }`}
                   >
                         {tab.icon}
@@ -463,17 +463,17 @@ export default function RegistrationWidget() {
 
           {/* Search Bar */}
               {activeTab !== 'overview' && activeTab !== 'grade-manager' && (
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-700">
                   <div className="relative max-w-md mx-auto">
                 <input
                   type="text"
                   placeholder={getTranslation('search_placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                  className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400"
                 />
                 <svg
-                  className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500"
+                  className="absolute left-3 top-2.5 h-5 w-5 text-slate-400 dark:text-slate-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

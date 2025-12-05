@@ -262,10 +262,10 @@ export default function GradeManager({
       <div className="mb-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex-1">
-            <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
               {getTranslation('grade_manager')}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
               {getTranslation('grade_manager_description')}
             </p>
           </div>
@@ -273,16 +273,16 @@ export default function GradeManager({
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-gradient-to-br from-white/80 to-white/40 dark:from-gray-800/80 dark:to-gray-800/40 backdrop-blur-xl rounded-2xl px-5 py-3 border border-gray-200/50 dark:border-gray-700/50 shadow-lg"
+              className="bg-gradient-to-br from-white/80 to-white/40 dark:from-slate-800/80 dark:to-slate-800/40 backdrop-blur-xl rounded-2xl px-5 py-3 border border-slate-200/50 dark:border-slate-700/50 shadow-lg"
             >
-              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                 {getTranslation('overall_ects_average')}
               </p>
               <div className="flex items-baseline gap-1 mt-1">
-                <p className={`text-3xl font-black ${overallAverage >= 5.0 ? 'text-green-600 dark:text-green-400' : overallAverage >= 4.0 ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}`}>
+                <p className={`text-3xl font-black ${overallAverage >= 5.0 ? 'text-green-600 dark:text-green-400' : overallAverage >= 4.0 ? 'text-orange-600 dark:text-orange-400' : 'text-orange-600 dark:text-orange-400'}`}>
                   {overallAverage.toFixed(1)}
                 </p>
-                <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">/ 6.0</span>
+                <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">/ 6.0</span>
               </div>
             </motion.div>
           )}
@@ -294,17 +294,17 @@ export default function GradeManager({
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-500/5 dark:to-indigo-500/5 backdrop-blur rounded-xl p-4 border border-blue-200/30 dark:border-blue-700/30"
+          className="bg-gradient-to-r from-orange-500/10 to-amber-500/10 dark:from-orange-500/5 dark:to-amber-500/5 backdrop-blur rounded-xl p-4 border border-orange-200/30 dark:border-orange-700/30"
         >
           <div className="flex items-center gap-3">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 rounded-full bg-blue-500/20 dark:bg-blue-400/20 flex items-center justify-center">
-                <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-8 h-8 rounded-full bg-orange-500/20 dark:bg-orange-400/20 flex items-center justify-center">
+                <svg className="w-4 h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
             </div>
-            <div className="flex-1 text-sm text-blue-700 dark:text-blue-300">
+            <div className="flex-1 text-sm text-orange-700 dark:text-orange-300">
               <span className="font-medium">{getTranslation('grade_weight_info')}:</span> {getTranslation('weight_info_official')} • 
               EN: 50%, MSP: 50% • <span className="italic">{getTranslation('weight_info_adjust')}</span>
             </div>
@@ -316,15 +316,15 @@ export default function GradeManager({
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-16 px-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600"
+            className="text-center py-16 px-8 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-600"
           >
-            <div className="w-20 h-20 mx-auto mb-6 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-              <svg className="h-10 w-10 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-20 h-20 mx-auto mb-6 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center">
+              <svg className="h-10 w-10 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{getTranslation('no_modules_yet')}</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-sm mx-auto">{getTranslation('start_adding_module')}</p>
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">{getTranslation('no_modules_yet')}</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-sm mx-auto">{getTranslation('start_adding_module')}</p>
             <motion.button
               variants={buttonVariants}
               initial="initial"
@@ -341,7 +341,7 @@ export default function GradeManager({
                 });
                 setShowAddGradeModal(true);
               }}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-xl hover:from-orange-600 hover:to-amber-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -362,17 +362,17 @@ export default function GradeManager({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ scale: 1.02 }}
-                className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden"
               >
                 <div className="p-4 space-y-3">
                   {/* Compact Header with Grade */}
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-bold text-gray-900 dark:text-white truncate" title={group.name}>
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate" title={group.name}>
                         {group.name}
                       </h3>
                       <div className="flex items-center gap-3 mt-1">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
                           {group.ects} ECTS
                         </span>
                         {hasMainGrade && (
@@ -389,7 +389,7 @@ export default function GradeManager({
                       <div className="flex-shrink-0">
                         <div className={`inline-flex items-center px-2.5 py-1 rounded-xl font-bold text-lg ${
                           finalGrade >= 5.5 ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-700 dark:text-green-300' :
-                          finalGrade >= 4 ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-700 dark:text-blue-300' : 
+                          finalGrade >= 4 ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-orange-700 dark:text-orange-300' : 
                           'bg-gradient-to-r from-red-500/20 to-pink-500/20 text-red-700 dark:text-red-300'
                         }`}>
                           {finalGrade.toFixed(1)}
@@ -404,7 +404,7 @@ export default function GradeManager({
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleEditModule(group.modules[0])}
-                      className="p-1.5 bg-white/80 dark:bg-gray-700/80 backdrop-blur rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 shadow-sm"
+                      className="p-1.5 bg-white/80 dark:bg-slate-700/80 backdrop-blur rounded-lg text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 shadow-sm"
                       title={getTranslation('edit_module')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -420,7 +420,7 @@ export default function GradeManager({
                             group.modules.forEach(m => onDeleteModule(m.modulanlassAnmeldungId));
                           }
                         }}
-                        className="p-1.5 bg-white/80 dark:bg-gray-700/80 backdrop-blur rounded-lg text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 shadow-sm"
+                        className="p-1.5 bg-white/80 dark:bg-slate-700/80 backdrop-blur rounded-lg text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 shadow-sm"
                         title="Delete module"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -435,17 +435,17 @@ export default function GradeManager({
                     {group.modules.map((module) => (
                       <div 
                         key={module.modulanlassAnmeldungId}
-                        className="flex items-center justify-between gap-2 p-2 bg-gray-50/50 dark:bg-gray-700/30 rounded-xl"
+                        className="flex items-center justify-between gap-2 p-2 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl"
                       >
                         <div className="flex items-center gap-2 flex-1 min-w-0">
                           <span className={`px-2 py-0.5 text-xs font-bold rounded-lg ${
                             module.moduleType?.type === 'MSP' ? 'bg-purple-500/20 text-purple-700 dark:text-purple-300' :
                             module.moduleType?.type === 'EN' ? 'bg-indigo-500/20 text-indigo-700 dark:text-indigo-300' :
-                            'bg-blue-500/20 text-blue-700 dark:text-blue-300'
+                            'bg-blue-500/20 text-orange-700 dark:text-orange-300'
                           }`}>
                             {module.moduleType?.type === 'MSP' ? 'MSP' : module.moduleType?.type === 'EN' ? 'EN' : 'Final'}
                           </span>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
                             {module.moduleType?.weight}%
                           </span>
                         </div>
@@ -455,7 +455,7 @@ export default function GradeManager({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleAddGrade(module)}
-                            className="px-3 py-1 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-500/10 rounded-lg hover:bg-blue-500/20 transition-colors"
+                            className="px-3 py-1 text-xs font-medium text-orange-600 dark:text-orange-400 bg-orange-500/10 rounded-lg hover:bg-orange-500/20 transition-colors"
                           >
                             + Add
                           </motion.button>
@@ -473,7 +473,7 @@ export default function GradeManager({
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => onEditGrade(module)}
-                                className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                className="p-1 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                               >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -521,7 +521,7 @@ export default function GradeManager({
             });
             setShowAddGradeModal(true);
           }}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-40 group backdrop-blur-xl"
+          className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-40 group backdrop-blur-xl"
           title={getTranslation('add_manual_grade')}
         >
           <svg className="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -537,9 +537,9 @@ export default function GradeManager({
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl p-6 w-full max-w-md shadow-2xl border border-gray-200/50 dark:border-gray-700/50"
+            className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-3xl p-6 w-full max-w-md shadow-2xl border border-slate-200/50 dark:border-slate-700/50"
           >
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
               {editingModule ? getTranslation('edit_grade') : getTranslation('add_manual_grade')}
             </h3>
             <div className="space-y-4">
@@ -549,8 +549,8 @@ export default function GradeManager({
                     onClick={() => setNewManualGrade(prev => ({ ...prev, isExistingModule: false }))}
                     className={`px-3 py-2 rounded-lg ${
                       !newManualGrade.isExistingModule
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                        ? 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200'
+                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     {getTranslation('new_module')}
@@ -559,8 +559,8 @@ export default function GradeManager({
                     onClick={() => setNewManualGrade(prev => ({ ...prev, isExistingModule: true }))}
                     className={`px-3 py-2 rounded-lg ${
                       newManualGrade.isExistingModule
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                        ? 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200'
+                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     {getTranslation('existing_module')}
@@ -569,7 +569,7 @@ export default function GradeManager({
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                   {getTranslation('module_name')}
                 </label>
                 {editingModule ? (
@@ -577,7 +577,7 @@ export default function GradeManager({
                     type="text"
                     value={newManualGrade.moduleName}
                     disabled
-                    className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
+                    className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 bg-slate-100 dark:bg-slate-600 cursor-not-allowed"
                   />
                 ) : newManualGrade.isExistingModule ? (
                   <select
@@ -597,7 +597,7 @@ export default function GradeManager({
                         }));
                       }
                     }}
-                    className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600"
                   >
                     <option value="">{getTranslation('select_module')}</option>
                     {getAvailableModules().map(moduleName => (
@@ -611,13 +611,13 @@ export default function GradeManager({
                     type="text"
                     value={newManualGrade.moduleName}
                     onChange={(e) => setNewManualGrade(prev => ({ ...prev, moduleName: e.target.value }))}
-                    className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600"
                     placeholder={getTranslation('enter_module_name')}
                   />
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                   {getTranslation('grade')}
                 </label>
                 <input
@@ -627,11 +627,11 @@ export default function GradeManager({
                   step="0.1"
                   value={newManualGrade.grade}
                   onChange={(e) => setNewManualGrade(prev => ({ ...prev, grade: parseFloat(e.target.value) || 4.0 }))}
-                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                   {getTranslation('weight')} (%)
                 </label>
                 <input
@@ -640,11 +640,11 @@ export default function GradeManager({
                   max="100"
                   value={newManualGrade.weight}
                   onChange={(e) => setNewManualGrade(prev => ({ ...prev, weight: parseInt(e.target.value) || 100 }))}
-                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                   {getTranslation('ects')}
                 </label>
                 <input
@@ -652,17 +652,17 @@ export default function GradeManager({
                   min="0"
                   value={newManualGrade.ects}
                   onChange={(e) => setNewManualGrade(prev => ({ ...prev, ects: parseInt(e.target.value) || 0 }))}
-                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                   {getTranslation('type')}
                 </label>
                 <select
                   value={newManualGrade.type}
                   onChange={(e) => setNewManualGrade(prev => ({ ...prev, type: e.target.value as 'MAIN' | 'MSP' | 'EN' }))}
-                  className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                  className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600"
                 >
                   <option value="MAIN">{getTranslation('official_university_final')}</option>
                   <option value="MSP">MSP</option>
@@ -684,13 +684,13 @@ export default function GradeManager({
                     isExistingModule: false
                   });
                 }}
-                className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
               >
                 {getCommonTranslation('cancel')}
               </button>
               <button
                 onClick={handleAddManualGrade}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
               >
                 {editingModule ? getCommonTranslation('save') : getTranslation('add_grade')}
               </button>

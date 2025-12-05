@@ -84,19 +84,19 @@ export default function NewsPage() {
           {/* Page Header */}
           <motion.div
             variants={sectionVariants}
-            className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700"
+            className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-100 dark:border-slate-700"
           >
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
               {getTranslation('page_title')}
             </h1>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="text-slate-600 dark:text-slate-300">
               {getTranslation('page_description')}
             </p>
           </motion.div>
 
           {/* News Section */}
-          <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <motion.section variants={sectionVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-700">
               <SectionHeader
                 title={getTranslation('fhnw_news')}
                 subtitle={getTranslation('latest_updates')}

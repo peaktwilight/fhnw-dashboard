@@ -24,18 +24,18 @@ export default function MenuDisplay() {
   }, [t, getFallbackTranslation]);
 
   return (
-    <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg backdrop-blur-sm p-6 text-center">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+    <div className="bg-white/50 dark:bg-slate-800/50 rounded-lg backdrop-blur-sm p-6 text-center">
+      <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">
         {getTranslation('title')}
       </h3>
-      <p className="text-gray-600 dark:text-gray-300 mb-6">
+      <p className="text-slate-600 dark:text-slate-300 mb-6">
         {getTranslation('description')}
       </p>
       <a
         href={mensaUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+        className="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
       >
         <span className="text-white">{getTranslation('view_menu_button')}</span>
         <svg

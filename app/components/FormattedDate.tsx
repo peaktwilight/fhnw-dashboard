@@ -12,7 +12,7 @@ interface FormattedDateProps {
 export default function FormattedDate({ 
   date, 
   format = 'medium',
-  className = 'text-xs text-gray-500 dark:text-gray-400'
+  className = 'text-xs text-slate-500 dark:text-slate-400'
 }: FormattedDateProps) {
   const t = useTranslations('common');
   const [formattedDate, setFormattedDate] = useState<string>('');

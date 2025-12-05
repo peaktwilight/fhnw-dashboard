@@ -41,7 +41,7 @@ interface WeatherData {
 const WeatherIcons = {
   ClearDay: () => <SunIcon className="w-full h-full text-yellow-400" />,
   ClearNight: () => <MoonIcon className="w-full h-full text-blue-300" />,
-  Clouds: () => <CloudIcon className="w-full h-full text-gray-400 dark:text-gray-500" />,
+  Clouds: () => <CloudIcon className="w-full h-full text-slate-400 dark:text-slate-400" />,
   Rain: () => <CloudArrowDownIcon className="w-full h-full text-blue-400" />,
   Snow: () => <SparklesIcon className="w-full h-full text-blue-200" />,
   Thunder: () => <BoltIcon className="w-full h-full text-yellow-400" />
@@ -216,35 +216,35 @@ export default function WeatherWidget() {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm"
+        className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4 backdrop-blur-sm"
       >
         <div className="animate-pulse flex flex-col gap-4">
           {/* Current Weather Loading */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+              <div className="w-14 h-14 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
               <div>
-                <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                <div className="h-8 w-24 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
               </div>
             </div>
             <div className="flex flex-col items-end gap-2">
-              <div className="h-4 w-28 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded"></div>
+              <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
             </div>
           </div>
 
           {/* Forecast Loading */}
           <div className="grid grid-cols-3 gap-2">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="bg-white/30 dark:bg-gray-700/30 rounded-lg p-2">
-                <div className="h-3 w-12 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+              <div key={i} className="bg-white/30 dark:bg-slate-700/30 rounded-lg p-2">
+                <div className="h-3 w-12 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-1">
-                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                    <div className="h-3 w-6 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div className="h-4 w-8 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="h-3 w-6 bg-slate-200 dark:bg-slate-700 rounded"></div>
                   </div>
-                  <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                  <div className="w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded"></div>
                 </div>
               </div>
             ))}
@@ -278,7 +278,7 @@ export default function WeatherWidget() {
       variants={weatherContainerVariants}
       initial="hidden"
       animate="visible"
-      className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 backdrop-blur-sm"
+      className="bg-white/50 dark:bg-slate-800/50 rounded-lg p-4 backdrop-blur-sm"
     >
       <motion.div variants={weatherContainerVariants} className="flex flex-col gap-4">
         {/* Current Weather */}
@@ -293,14 +293,14 @@ export default function WeatherWidget() {
             </motion.div>
             <motion.div variants={weatherItemVariants}>
               <motion.div 
-                className="text-3xl font-bold text-gray-900 dark:text-white"
+                className="text-3xl font-bold text-slate-900 dark:text-white"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
               >
                 {Math.round(weather.current.temp)}°C
               </motion.div>
               <motion.div 
-                className="text-sm text-gray-600 dark:text-gray-300 capitalize"
+                className="text-sm text-slate-600 dark:text-slate-300 capitalize"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
@@ -313,13 +313,13 @@ export default function WeatherWidget() {
             variants={weatherItemVariants}
             className="flex flex-col items-end gap-1"
           >
-            <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-300">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span>{getTranslation('feels_like')} {Math.round(weather.current.feels_like)}°C</span>
             </div>
-            <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-300">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
@@ -339,21 +339,21 @@ export default function WeatherWidget() {
                 key={index}
                 variants={weatherItemVariants}
                 whileHover={{ scale: 1.05 }}
-                className={`bg-white/30 dark:bg-gray-700/30 rounded-lg p-2 ${
+                className={`bg-white/30 dark:bg-slate-700/30 rounded-lg p-2 ${
                   index < 2 ? 'col-span-3 md:col-span-1' : 'col-span-2 md:col-span-1'
                 }`}
               >
-                <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
                   {index === 0 ? getTranslation('today') : 
                    index === 1 ? getTranslation('tomorrow') : 
                    new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">
+                    <span className="text-sm font-bold text-slate-900 dark:text-white">
                       {Math.round(day.temp.max)}°
                     </span>
-                    <span className="text-xs text-gray-600 dark:text-gray-400">
+                    <span className="text-xs text-slate-600 dark:text-slate-400">
                       {Math.round(day.temp.min)}°
                     </span>
                   </div>
@@ -369,7 +369,7 @@ export default function WeatherWidget() {
       {/* Last updated timestamp */}
       <motion.div
         variants={weatherItemVariants}
-        className="mt-2 text-xs text-right text-gray-500 dark:text-gray-400"
+        className="mt-2 text-xs text-right text-slate-500 dark:text-slate-400"
       >
         {weather?.timestamp && (
           <span>

@@ -42,12 +42,12 @@ export default function MensaMenu() {
   return (
     <div className="card">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Mensa Menu</h2>
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Mensa Menu</h2>
         <a 
           href="https://fhnw.sv-restaurant.ch/de/menuplan/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          className="text-sm text-orange-500 dark:text-orange-400 hover:underline"
         >
           View Full Menu →
         </a>
@@ -55,17 +55,17 @@ export default function MensaMenu() {
       
       {loading ? (
         <div className="animate-pulse flex flex-col space-y-4">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
         </div>
       ) : (
         <div className="space-y-4">
           {menu.map((item, index) => (
-            <div key={index} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <h3 className="font-medium text-gray-900 dark:text-white">{item.title}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300">{item.description}</p>
+            <div key={index} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
+              <h3 className="font-medium text-slate-900 dark:text-white">{item.title}</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300">{item.description}</p>
               {item.price && (
-                <p className="text-sm font-medium text-gray-900 dark:text-white mt-2">
+                <p className="text-sm font-medium text-slate-900 dark:text-white mt-2">
                   {item.price} CHF
                 </p>
               )}

@@ -37,7 +37,7 @@ export default function ModuleList({ modules, searchTerm, onSelectModule }: Modu
       <div className="space-y-3">
         {filteredModules.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500 dark:text-gray-400">{getTranslation('no_modules_found')}</p>
+            <p className="text-slate-500 dark:text-slate-400">{getTranslation('no_modules_found')}</p>
           </div>
         ) : (
           filteredModules.map((reg, index) => (
@@ -49,21 +49,21 @@ export default function ModuleList({ modules, searchTerm, onSelectModule }: Modu
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onSelectModule(reg)}
-              className="w-full text-left focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg"
+              className="w-full text-left focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg"
             >
               <motion.div 
-                className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors shadow-sm hover:shadow-md"
+                className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors shadow-sm hover:shadow-md"
                 layoutId={`module-${reg.modulanlassAnmeldungId}`}
               >
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white">
+                  <p className="font-medium text-slate-900 dark:text-white">
                     {reg.modulanlass.bezeichnung}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     {reg.modulanlass.anlassleitungen[0]?.leitungsperson.vorname}{' '}
                     {reg.modulanlass.anlassleitungen[0]?.leitungsperson.nachname}
                   </p>
-                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <div className="flex items-center text-xs text-slate-500 dark:text-slate-400 mt-1">
                     {reg.freieNote === null ? (
                       <>
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@ export default function ModuleList({ modules, searchTerm, onSelectModule }: Modu
                     )}
                   </div>
                   {reg.modulanlass.wochentag && reg.freieNote === null && (
-                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div className="flex items-center text-xs text-slate-500 dark:text-slate-400 mt-1">
                       <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>

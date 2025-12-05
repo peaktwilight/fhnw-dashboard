@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "FHNW Student Dashboard",
-    "subtitle": "Study smarter, not harder.",
+    "subtitle": "Grades, campus info, and more - all in one dashboard.",
     "sections": {
       "grades": {
         "title": "Grades Dashboard",
@@ -81,7 +81,7 @@
   "navbar": {
     "home": "Home",
     "grades": "Grades",
-    "campus": "Your FHNW Tools",
+    "campus": "Tools",
     "news": "News",
     "settings": "Settings"
   },

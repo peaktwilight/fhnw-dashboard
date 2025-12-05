@@ -118,7 +118,7 @@ export default function CampusPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
       </div>
     }>
       <motion.div
@@ -130,19 +130,19 @@ export default function CampusPage() {
         {/* Page Header */}
         <motion.div
           variants={sectionVariants}
-          className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700"
+          className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-100 dark:border-slate-700"
         >
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
             {getTranslation('title', t, 'campus')}
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-slate-600 dark:text-slate-300">
             {getTranslation('description', t, 'campus')}
           </p>
         </motion.div>
 
         {/* Transport Section */}
-        <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <motion.section variants={sectionVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700">
             <SectionHeader
               title={getTranslation('title', transportT, 'transport')}
               subtitle={getTranslation('train_departures', transportT, 'transport')}
@@ -160,8 +160,8 @@ export default function CampusPage() {
         </motion.section>
 
         {/* Menu Section */}
-        <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <motion.section variants={sectionVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700">
             <SectionHeader
               title={getTranslation('title', mensaT, 'mensa')}
               subtitle={getTranslation('daily_offerings', mensaT, 'mensa')}
@@ -179,8 +179,8 @@ export default function CampusPage() {
         </motion.section>
 
         {/* Weather Section */}
-        <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <motion.section variants={sectionVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700">
             <SectionHeader
               title={getTranslation('title', weatherT, 'weather')}
               subtitle={getTranslation('weather_in_brugg', weatherT, 'weather')}
@@ -198,8 +198,8 @@ export default function CampusPage() {
         </motion.section>
 
         {/* Campus Map Section */}
-        <motion.section variants={sectionVariants} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <motion.section variants={sectionVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700">
             <SectionHeader
               title={getTranslation('campus_map', t, 'campus')}
               subtitle={getTranslation('map_description', t, 'campus')}
