@@ -125,7 +125,7 @@ export default function CampusPage() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="container mx-auto space-y-8"
+        className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8"
       >
         {/* Page Header */}
         <motion.div

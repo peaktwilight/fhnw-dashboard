@@ -30,7 +30,7 @@ export default function AboutPage() {
   // Content is optimized for SEO, particularly in German
   return (
     <motion.div 
-      className="container mx-auto px-4 py-12 max-w-4xl"
+      className="max-w-6xl mx-auto px-4 sm:px-6 py-12"
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
