@@ -1,161 +1,87 @@
 'use client';
+
 import { motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { HeartIcon } from '@heroicons/react/24/solid';
 
-// Get build info from environment variables
 const buildId = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || 'dev';
-const footerVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  }
-};
-
-const linkVariants = {
-  hover: {
-    scale: 1.05,
-    transition: {
-      duration: 0.2,
-      ease: "easeInOut"
-    }
-  }
-};
-
-const heartVariants = {
-  animate: {
-    scale: [1, 1.2, 1],
-    transition: {
-      duration: 1,
-      repeat: Infinity,
-      repeatType: "reverse" as const
-    }
-  }
-};
 
 export default function Footer() {
   const locale = useLocale();
   const t = useTranslations('footer');
-  return (
-    <motion.footer
-      variants={footerVariants}
-      initial="hidden"
-      animate="visible"
-      className="bg-white dark:bg-gray-800 shadow-sm mt-auto"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col items-center justify-center space-y-3"
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-col items-center gap-4 text-sm text-gray-500 dark:text-gray-400"
-          >
-            {/* Navigation links - good for SEO and user experience */}
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-              <motion.a
-                href={`/${locale}/about`}
-                variants={linkVariants}
-                whileHover="hover"
-                className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-              >
-                {t('about')}
-              </motion.a>
-              <motion.a
-                href={`/${locale}/campus`}
-                variants={linkVariants}
-                whileHover="hover"
-                className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-              >
-                Campus
-              </motion.a>
-              <motion.a
-                href={`/${locale}/news`}
-                variants={linkVariants}
-                whileHover="hover"
-                className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-              >
-                {t('news')}
-              </motion.a>
-              <motion.a
-                href={`/${locale}/grades`}
-                variants={linkVariants}
-                whileHover="hover"
-                className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-              >
-                {locale === 'de' ? 'Noten' : 'Grades'}
-              </motion.a>
-            </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-2">
-              <p>{t('made_with')}</p>
-              <div className="inline-flex items-center gap-1">
-                <motion.svg
-                  className="w-5 h-5 text-red-500"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  variants={heartVariants}
-                  animate="animate"
-                >
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </motion.svg>
-                <motion.a
-                  href="https://github.com/peaktwilight"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variants={linkVariants}
-                  whileHover="hover"
-                  className="font-medium hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-                >
-                  Doruk Tan Ozturk
-                </motion.a>
-              </div>
-              <span className="hidden sm:inline">•</span>
-              <motion.a
-                href="https://github.com/peaktwilight/fhnw-dashboard"
+  const navLinks = [
+    { href: `/${locale}/about`, label: t('about') },
+    { href: `/${locale}/campus`, label: 'Campus' },
+    { href: `/${locale}/news`, label: t('news') },
+    { href: `/${locale}/grades`, label: locale === 'de' ? 'Noten' : 'Grades' },
+  ];
+
+  return (
+    <footer className="relative mt-auto border-t border-slate-200 dark:border-slate-800">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div className="flex flex-col items-center gap-8">
+          {/* Navigation Links */}
+          <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Divider */}
+          <div className="w-12 h-px bg-slate-200 dark:bg-slate-700" />
+
+          {/* Made with love */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center gap-2">
+              <span>{t('made_with')}</span>
+              <motion.span
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <HeartIcon className="w-4 h-4 text-red-500" />
+              </motion.span>
+              <a
+                href="https://github.com/peaktwilight"
                 target="_blank"
                 rel="noopener noreferrer"
-                variants={linkVariants}
-                whileHover="hover"
-                className="group inline-flex items-center gap-1 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                className="font-medium text-slate-900 dark:text-white hover:text-orange-500 transition-colors"
               >
-                <motion.svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                </motion.svg>
-                <span>Open Source</span>
-              </motion.a>
+                Doruk Tan Ozturk
+              </a>
             </div>
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col items-center gap-1"
-          >
-            <p className="text-xs text-gray-400 dark:text-gray-500">
-              {t('copyright')}
-            </p>
-            <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 font-mono">
-              <span>Build: {buildId.slice(0, 7)}</span>
-            </div>
-          </motion.div>
-        </motion.div>
+
+            <span className="hidden sm:inline text-slate-300 dark:text-slate-600">•</span>
+
+            <a
+              href="https://github.com/peaktwilight/fhnw-dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+              </svg>
+              <span>Open Source</span>
+            </a>
+          </div>
+
+          {/* Copyright & Build Info */}
+          <div className="flex flex-col items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
+            <p>{t('copyright')}</p>
+            <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded font-mono">
+              Build: {buildId.slice(0, 7)}
+            </span>
+          </div>
+        </div>
       </div>
-    </motion.footer>
+    </footer>
   );
-} 
+}

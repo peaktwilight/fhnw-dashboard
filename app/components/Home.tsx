@@ -5,170 +5,120 @@ import { motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
-  ChartBarIcon,
-  MapIcon,
-  CalendarIcon,
+  ArrowRightIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 import ResourcesSection from './ResourcesSection';
-import {
-  containerVariants,
-  sectionVariants,
-  cardVariants,
-  iconVariants,
-  gradientAnimation
-} from '../utils/animationUtils';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+};
 
 export default function Home() {
   const t = useTranslations();
   const locale = useLocale();
 
-  const sections = [
-    {
-      title: t('home.sections.grades.title'),
-      description: t('home.sections.grades.description'),
-      icon: (
-        <div className="inline-flex">
-          <ChartBarIcon className="w-10 h-10 text-emerald-500/90 dark:text-emerald-400/90" />
-        </div>
-      ),
-      features: [
-        { text: t('home.sections.grades.features.moduleInfo'), color: 'emerald' },
-        { text: t('home.sections.grades.features.gradeStats'), color: 'emerald' }
-      ],
-      href: '/grades'
-    },
-    {
-      title: t('home.sections.campus.title'),
-      description: t('home.sections.campus.description'),
-      icon: (
-        <div className="inline-flex">
-          <MapIcon className="w-10 h-10 text-amber-500/90 dark:text-amber-400/90" />
-        </div>
-      ),
-      features: [
-        { text: t('home.sections.campus.features.mensa'), color: 'rose' },
-        { text: t('home.sections.campus.features.weather'), color: 'sky' },
-        { text: t('home.sections.campus.features.transport'), color: 'amber' }
-      ],
-      href: `/${locale}/campus`
-    },
-    {
-      title: t('home.sections.news.title'),
-      description: t('home.sections.news.description'),
-      icon: (
-        <div className="inline-flex">
-          <CalendarIcon className="w-10 h-10 text-purple-500/90 dark:text-purple-400/90" />
-        </div>
-      ),
-      features: [
-        { text: t('home.sections.news.features.news'), color: 'violet' },
-        { text: t('home.sections.news.features.updates'), color: 'fuchsia' }
-      ],
-      href: `/${locale}/news`
-    }
-  ];
-
   return (
     <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="w-8 h-8 rounded-full border-2 border-orange-200 border-t-orange-500 animate-spin" />
       </div>
     }>
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="container mx-auto px-4 space-y-12 pb-8 max-w-6xl"
+        className="relative"
       >
-        {/* Welcome Section */}
-        <motion.div
-          variants={sectionVariants}
-          className="text-center py-12"
-        >
-          <div className="text-center py-8">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
-              {t('home.title')}
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              {t('home.subtitle')}
-            </p>
-            {/* Hidden SEO-friendly description - only visible to screen readers */}
-            <div className="sr-only">
-              <h2>{locale === 'de' ? 'Inoffizielles FHNW Studenten-Dashboard mit Campus-Tools, Notenverwaltung und aktuellen News' : 'Unofficial FHNW Student Dashboard with campus tools, grade management, and latest news'}</h2>
-              <p>{locale === 'de' ? 'Entwickelt von Studenten für Studenten, um den Alltag an der FHNW zu vereinfachen. Zugriff auf Wetter, Transport, Noten und wichtige Ressourcen.' : 'Developed by students for students to simplify daily life at FHNW. Access to weather, transport, grades, and essential resources.'}</p>
+        {/* Hero Section */}
+        <section className="relative overflow-hidden">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-16 sm:pt-20 sm:pb-24">
+            <div className="relative text-center">
+              {/* Badge */}
+              <motion.div variants={itemVariants} className="flex justify-center mb-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20">
+                  <SparklesIcon className="w-4 h-4 text-orange-500" />
+                  <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
+                    {locale === 'de' ? 'Von Studierenden, für Studierende' : 'Built by Students, for Students'}
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Main heading */}
+              <motion.div variants={itemVariants} className="max-w-4xl mx-auto">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
+                  {locale === 'de' ? (
+                    <>
+                      Deine <span className="text-orange-500">FHNW</span> Tools
+                      <br className="hidden sm:block" />
+                      <span className="text-slate-500 dark:text-slate-400"> an einem Ort</span>
+                    </>
+                  ) : (
+                    <>
+                      Your <span className="text-orange-500">FHNW</span> Tools
+                      <br className="hidden sm:block" />
+                      <span className="text-slate-500 dark:text-slate-400"> in One Place</span>
+                    </>
+                  )}
+                </h1>
+                <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
+                  {t('home.subtitle')}
+                </p>
+              </motion.div>
+
+              {/* CTA buttons */}
+              <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <Link
+                  href={`/${locale}/grades`}
+                  className="group flex items-center gap-2 px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  {locale === 'de' ? 'Noten verwalten' : 'Manage Grades'}
+                  <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  href={`/${locale}/campus`}
+                  className="group flex items-center gap-2 px-6 py-3.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-semibold rounded-xl transition-all duration-300"
+                >
+                  {locale === 'de' ? 'Campus erkunden' : 'Explore Campus'}
+                  <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+
+              {/* Stats */}
+              <motion.div variants={itemVariants} className="flex items-center justify-center gap-6 text-sm text-slate-500 dark:text-slate-400">
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  {locale === 'de' ? '100% Kostenlos' : '100% Free'}
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                  Open Source
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-violet-500"></span>
+                  {locale === 'de' ? '2 Sprachen' : '2 Languages'}
+                </span>
+              </motion.div>
             </div>
           </div>
-        </motion.div>
-
-        {/* Sections Grid */}
-        <motion.div variants={sectionVariants}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {sections.map((section) => (
-              <Link key={section.title} href={section.href}>
-                <motion.div
-                  variants={cardVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="group relative overflow-hidden rounded-2xl bg-white/50 dark:bg-gray-800/50 p-8 cursor-pointer border border-gray-100/20 dark:border-gray-700/20 backdrop-blur-sm hover:shadow-xl transition-shadow duration-300"
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 dark:from-blue-500/10 dark:via-purple-500/10 dark:to-blue-500/10"
-                    initial={{ opacity: 0 }}
-                    whileHover={{
-                      opacity: 1,
-                    }}
-                    variants={gradientAnimation}
-                    whileInView="animate"
-                  />
-                  <div className="relative z-10">
-                    <motion.div
-                      className="mb-6"
-                      variants={iconVariants}
-                      whileHover="hover"
-                    >
-                      {section.icon}
-                    </motion.div>
-                    <motion.h2
-                      className="text-xl font-semibold text-gray-900 dark:text-white mb-3"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      {section.title}
-                    </motion.h2>
-                    <motion.p 
-                      className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      {section.description}
-                    </motion.p>
-                    <motion.div 
-                      className="flex flex-wrap gap-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.4 }}
-                    >
-                      {section.features.map((feature, index) => (
-                        <span
-                          key={index}
-                          className={`px-3 py-1 text-xs font-medium bg-${feature.color}-100/30 dark:bg-${feature.color}-900/20 text-${feature.color}-700 dark:text-${feature.color}-300 rounded-full`}
-                        >
-                          {feature.text}
-                        </span>
-                      ))}
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
-          </div>
-        </motion.div>
+        </section>
 
         {/* Resources Section */}
-        <ResourcesSection />
+        <section className="py-16 sm:py-24 border-t border-slate-200 dark:border-slate-800">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <ResourcesSection />
+          </div>
+        </section>
       </motion.div>
     </Suspense>
   );
-} 
+}

@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "FHNW Studenten-Dashboard",
-    "subtitle": "FHNW auf einen Blick – Alles, was du brauchst, an einem Ort",
+    "subtitle": "Lerne smarter, nicht härter.",
     "sections": {
       "grades": {
         "title": "Noten-Dashboard",
@@ -81,7 +81,7 @@
   "navbar": {
     "home": "Startseite",
     "grades": "Noten",
-    "campus": "Campus",
+    "campus": "Deine FHNW Tools",
     "news": "News",
     "settings": "Einstellungen"
   },

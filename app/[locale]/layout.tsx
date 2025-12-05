@@ -7,10 +7,24 @@ import { ThemeProvider } from '../components/providers/ThemeProvider';
 import { ThemeScript } from '../components/providers/ThemeScript';
 import { SchemaMarkup } from '../components/SchemaMarkup';
 import { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Sora, Outfit } from 'next/font/google';
 import '../globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+// Sora - Geometric, modern display font for headings
+const sora = Sora({
+  subsets: ['latin'],
+  variable: '--font-sora',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+});
+
+// Outfit - Clean, refined body font
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
+});
 
 export async function generateMetadata({ params }: { params: { locale: string } | Promise<{ locale: string }> }): Promise<Metadata> {
   // Ensure params is awaited
@@ -136,7 +150,7 @@ export default async function LocaleLayout({
             <ThemeScript />
             <SchemaMarkup />
           </head>
-          <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900`}>
+          <body className={`${outfit.variable} ${sora.variable} font-sans min-h-screen flex flex-col`}>
             <ThemeProvider>
               <NextIntlClientProvider locale={defaultLocale} messages={messages}>
                 <AppWrapper>
@@ -162,7 +176,7 @@ export default async function LocaleLayout({
           <ThemeScript />
           <SchemaMarkup />
         </head>
-        <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900`}>
+        <body className={`${outfit.variable} ${sora.variable} font-sans min-h-screen flex flex-col`}>
           <ThemeProvider>
             <NextIntlClientProvider locale={locale} messages={messages}>
               <AppWrapper>
@@ -188,7 +202,7 @@ export default async function LocaleLayout({
           <ThemeScript />
           <SchemaMarkup />
         </head>
-        <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900`}>
+        <body className={`${outfit.variable} ${sora.variable} font-sans min-h-screen flex flex-col`}>
           <ThemeProvider>
             <NextIntlClientProvider locale={defaultLocale} messages={messages}>
               <AppWrapper>
