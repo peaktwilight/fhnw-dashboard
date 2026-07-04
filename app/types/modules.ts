@@ -1,3 +1,5 @@
+import type { Variants } from 'framer-motion';
+
 export interface ModuleType {
   type: 'MSP' | 'EN' | 'MAIN';
   weight: number;
@@ -101,7 +103,7 @@ export interface NewManualGrade extends ManualGrade {
 }
 
 // Animation variants
-export const tutorialStepVariants = {
+export const tutorialStepVariants: Variants = {
   hidden: { 
     opacity: 0,
     x: -20,
@@ -118,7 +120,7 @@ export const tutorialStepVariants = {
   }
 };
 
-export const buttonVariants = {
+export const buttonVariants: Variants = {
   initial: { scale: 1 },
   hover: { 
     scale: 1.05,
@@ -135,12 +137,12 @@ export const buttonVariants = {
   }
 };
 
-export const backdropVariants = {
+export const backdropVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 }
 };
 
-export const modalVariants = {
+export const modalVariants: Variants = {
   hidden: { 
     opacity: 0,
     scale: 0.95,

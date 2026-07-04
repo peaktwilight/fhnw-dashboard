@@ -148,7 +148,7 @@ export default async function LocaleLayout({
           <head>
             <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
             <ThemeScript />
-            <SchemaMarkup />
+            <SchemaMarkup locale={defaultLocale} />
           </head>
           <body className={`${outfit.variable} ${sora.variable} font-sans min-h-screen flex flex-col`}>
             <ThemeProvider>
@@ -174,7 +174,7 @@ export default async function LocaleLayout({
         <head>
           <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
           <ThemeScript />
-          <SchemaMarkup />
+          <SchemaMarkup locale={locale} />
         </head>
         <body className={`${outfit.variable} ${sora.variable} font-sans min-h-screen flex flex-col`}>
           <ThemeProvider>
@@ -200,7 +200,7 @@ export default async function LocaleLayout({
         <head>
           <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
           <ThemeScript />
-          <SchemaMarkup />
+          <SchemaMarkup locale={defaultLocale} />
         </head>
         <body className={`${outfit.variable} ${sora.variable} font-sans min-h-screen flex flex-col`}>
           <ThemeProvider>

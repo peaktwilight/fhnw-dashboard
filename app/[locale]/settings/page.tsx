@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 
@@ -15,7 +15,7 @@ const LanguageSwitcher = dynamic(() => import('../../components/settings/Languag
   loading: () => <div className="h-32 w-full animate-pulse bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
 });
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 

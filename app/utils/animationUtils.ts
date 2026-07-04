@@ -5,7 +5,8 @@
 import { Variants } from 'framer-motion';
 
 // Ease curves
-export const easings = {
+type BezierEasing = [number, number, number, number];
+export const easings: Record<string, BezierEasing> = {
   // Smooth ease out - good for entrances
   easeOut: [0.16, 1, 0.3, 1],
   // Smooth ease in-out - good for hover states
@@ -158,7 +159,7 @@ export const iconVariants: Variants = {
 };
 
 // Loading skeleton animation
-export const shimmerAnimation = {
+export const shimmerAnimation: Variants = {
   initial: {
     backgroundPosition: "-200% 0",
   },
@@ -204,7 +205,7 @@ export const bounceAnimation: Variants = {
 };
 
 // Gradient animation for backgrounds
-export const gradientAnimation = {
+export const gradientAnimation: Variants = {
   initial: { 
     backgroundPosition: "0% 50%" 
   },
@@ -219,7 +220,7 @@ export const gradientAnimation = {
 };
 
 // Page transition for route changes
-export const routeChangeTransition = {
+export const routeChangeTransition: Variants = {
   initial: {
     x: 20,
     opacity: 0,

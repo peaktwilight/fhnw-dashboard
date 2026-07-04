@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import WeatherWidget from '@/app/components/WeatherWidget';
 import StationBoard from '@/app/components/StationBoard';
 import MenuDisplay from '@/app/components/MenuDisplay';
@@ -9,7 +9,7 @@ import MapWidget from '@/app/components/MapWidget';
 import SectionHeader from '@/app/components/SectionHeader';
 import { useTranslations } from 'next-intl';
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -20,7 +20,7 @@ const containerVariants = {
   }
 };
 
-const sectionVariants = {
+const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,

@@ -1,10 +1,4 @@
-'use client';
-
-import { useLocale } from 'next-intl';
-
-export function SchemaMarkup() {
-  const locale = useLocale();
-  
+export function SchemaMarkup({ locale }: { locale: string }) {
   const isGerman = locale === 'de';
   
   const websiteSchema = {
