@@ -59,12 +59,22 @@ const CACHE_DURATION = 10 * 60 * 1000;
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const lat = searchParams.get('lat');
-    const lon = searchParams.get('lon');
+    const latParam = searchParams.get('lat');
+    const lonParam = searchParams.get('lon');
 
-    if (!lat || !lon) {
+    if (!latParam || !lonParam) {
       return NextResponse.json(
         { error: 'Latitude and longitude are required' },
+        { status: 400 }
+      );
+    }
+
+    const lat = Number(latParam);
+    const lon = Number(lonParam);
+    // The dashboard's only supported weather location is the Brugg campus.
+    if (lat !== 47.4814 || lon !== 8.2079) {
+      return NextResponse.json(
+        { error: 'Unsupported weather location' },
         { status: 400 }
       );
     }
