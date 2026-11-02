@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
     // Return the data with CORS headers
     return NextResponse.json(data, {
       headers: {
+        'Cache-Control': 'private, no-store',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
